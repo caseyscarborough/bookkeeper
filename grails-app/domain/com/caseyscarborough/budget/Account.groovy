@@ -12,6 +12,10 @@ class Account {
   static constraints = {
   }
 
+  static mapping = {
+    sort description: "asc"
+  }
+
   String getBalanceString() {
     String.format("\$%.2f", balance)
   }

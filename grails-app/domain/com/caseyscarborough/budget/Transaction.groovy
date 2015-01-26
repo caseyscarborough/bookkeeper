@@ -14,6 +14,10 @@ class Transaction {
   static constraints = {
   }
 
+  static mapping = {
+    sort date: "desc"
+  }
+
   String getAmountString() {
     String.format("\$%.2f", amount)
   }

@@ -44,9 +44,39 @@
 </head>
 
 <body>
-<div class="container">
+<div id="content">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-3">
+      <h1>New Account</h1>
+
+      <form id="new-account-form" onsubmit="return false">
+        <div id="account-error" class="alert alert-danger" style="display:none">
+          <div id="account-error-message"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Account Description</label>
+          <input type="text" class="form-control domain-property" id="description" placeholder="Account Description">
+        </div>
+
+        <div class="form-group">
+          <label for="balance">Balance</label>
+          <input type="number" class="form-control domain-property" id="balance" step="0.01" placeholder="Balance">
+        </div>
+
+        <div class="form-group">
+          <label for="type">Account Type</label>
+          <select class="form-control domain-property" id="type">
+            <g:each in="${accountTypes}" var="accountType">
+              <option value="${accountType}">${accountType.name}</option>
+            </g:each>
+          </select>
+        </div>
+        <button id="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <div class="col-md-9">
       <h1>Accounts</h1>
 
       <g:if test="${flash.message}">
@@ -82,39 +112,7 @@
         </div>
       </g:else>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h1>New Account</h1>
-
-      <form id="new-account-form" onsubmit="return false">
-        <div id="account-error" class="alert alert-danger" style="display:none">
-          <div id="account-error-message"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="description">Account Description</label>
-          <input type="text" class="form-control domain-property" id="description" placeholder="Account Description">
-        </div>
-
-        <div class="form-group">
-          <label for="balance">Balance</label>
-          <input type="number" class="form-control domain-property" id="balance" step="0.01" placeholder="Balance">
-        </div>
-
-        <div class="form-group">
-          <label for="type">Account Type</label>
-          <select class="form-control domain-property" id="type">
-            <g:each in="${accountTypes}" var="accountType">
-              <option value="${accountType}">${accountType.name}</option>
-            </g:each>
-          </select>
-        </div>
-        <button id="submit" class="btn btn-primary">Submit</button>
-      </form>
-
-    </div>
   </div>
 </div>
 </body>

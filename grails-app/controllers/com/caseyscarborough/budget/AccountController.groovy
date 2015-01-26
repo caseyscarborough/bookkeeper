@@ -11,6 +11,6 @@ class AccountController {
 
   def index() {
     def accountList = Account.findAllByUser(springSecurityService.currentUser)
-    [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()]
+    [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()?.sort { it.name }]
   }
 }

@@ -10,6 +10,10 @@ class Category {
   static constraints = {
   }
 
+  static mapping = {
+    sort name: "asc"
+  }
+
   String toString() {
     name
   }

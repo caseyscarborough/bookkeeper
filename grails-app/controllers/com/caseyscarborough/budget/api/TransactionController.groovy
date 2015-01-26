@@ -39,7 +39,7 @@ class TransactionController {
   @Transactional
   def delete(Long id) {
     def transactionInstance = Transaction.get(id)
-    transactionInstance.delete(flush: true)
+    transactionService.deleteTransaction(transactionInstance)
     response.status = HttpStatus.NO_CONTENT.value()
     render([] as JSON)
   }

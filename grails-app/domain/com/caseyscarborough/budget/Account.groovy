@@ -6,14 +6,14 @@ class Account {
 
   String description
   AccountType type
-  Double balance
+  BigDecimal balance
   User user
 
   static constraints = {
   }
 
   String getBalanceString() {
-    "\$${balance}"
+    String.format("\$%.2f", balance)
   }
 
   String toString() {

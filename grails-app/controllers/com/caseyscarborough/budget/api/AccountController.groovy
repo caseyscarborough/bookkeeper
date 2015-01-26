@@ -20,7 +20,7 @@ class AccountController {
   @Transactional
   def save() {
     try {
-      def account = accountService.createAccount(params.description, Double.parseDouble(params.balance), AccountType.valueOf(params.type), springSecurityService.currentUser)
+      def account = accountService.createAccount(params.description, new BigDecimal(params.balance), AccountType.valueOf(params.type), springSecurityService.currentUser)
       response.status = HttpStatus.CREATED.value()
       render account as JSON
     } catch (AccountException e) {

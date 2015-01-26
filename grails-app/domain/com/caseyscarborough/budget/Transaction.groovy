@@ -7,10 +7,14 @@ class Transaction {
   String description
   SubCategory subCategory
   Date date
-  Double amount
+  BigDecimal amount
   Account account
   User user
 
   static constraints = {
+  }
+
+  String getAmountString() {
+    String.format("\$%.2f", amount)
   }
 }

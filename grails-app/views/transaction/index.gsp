@@ -44,44 +44,9 @@
   </script>
 </head>
 <body>
-<div class="container">
+<div id="content">
   <div class="row">
-    <div class="col-md-12">
-      <h1>Transactions</h1>
-      <g:if test="${transactionInstanceCount > 0}">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Account</th>
-            <th>Date</th>
-            <th>Options</th>
-          </tr>
-          </thead>
-          <tbody>
-          <g:each in="${transactions}" var="transaction">
-            <tr id="transaction-${transaction.id}">
-              <td>${transaction.description}</td>
-              <td>${transaction.amount}</td>
-              <td>${transaction.account}</td>
-              <td>${transaction.date}</td>
-              <td><a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
-            </tr>
-          </g:each>
-          </tbody>
-        </table>
-      </g:if>
-      <g:else>
-        <div class="alert alert-info">
-          You do not have any transactions yet.
-        </div>
-      </g:else>
-    </div>
-    <hr>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-3">
       <h1>New Transaction</h1>
 
       <form id="new-transaction-form" onsubmit="return false">
@@ -91,7 +56,7 @@
 
         <div class="form-group">
           <label for="description">Transaction Description</label>
-          <input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description">
+          <input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description" autofocus="true">
         </div>
 
         <div class="form-group">
@@ -128,10 +93,42 @@
         <button id="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
+    <div class="col-md-9">
+      <h1>Transactions</h1>
+      <g:if test="${transactionInstanceCount > 0}">
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Account</th>
+            <th>Category</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <g:each in="${transactions}" var="transaction">
+            <tr id="transaction-${transaction.id}">
+              <td>${transaction.date.format("MM-dd-yyyy")}</td>
+              <td>${transaction.description}</td>
+              <td>${transaction.amountString}</td>
+              <td>${transaction.account}</td>
+              <td>${transaction.subCategory}</td>
+              <td><a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+            </tr>
+          </g:each>
+          </tbody>
+        </table>
+        <g:paginate total="${transactionInstanceCount}" />
+      </g:if>
+      <g:else>
+        <div class="alert alert-info">
+          You do not have any transactions yet.
+        </div>
+      </g:else>
+    </div>
   </div>
 </div>
-
-
-<g:paginate total="${transactionInstanceCount}" />
 </body>
 </html>

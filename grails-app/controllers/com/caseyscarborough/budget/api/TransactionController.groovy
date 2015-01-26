@@ -1,5 +1,4 @@
 package com.caseyscarborough.budget.api
-
 import com.caseyscarborough.budget.Account
 import com.caseyscarborough.budget.SubCategory
 import com.caseyscarborough.budget.Transaction
@@ -21,7 +20,7 @@ class TransactionController {
   def save() {
     try {
       def transaction = transactionService.createTransaction(
-          params.description, Double.parseDouble(params.amount), Account.get(params.account), SubCategory.get(params.subCategory), Date.parse("yyyy-MM-dd", params.date), springSecurityService.currentUser)
+          params.description, new BigDecimal(params.amount), Account.get(params.account), SubCategory.get(params.subCategory), Date.parse("MMddyyyy", params.date), springSecurityService.currentUser)
       response.status = HttpStatus.CREATED.value()
       render transaction as JSON
     } catch (TransactionException e) {

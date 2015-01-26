@@ -13,7 +13,7 @@ class AccountService {
 
   def messageSource
 
-  Account createAccount(String description, Double balance, AccountType type, User user) {
+  Account createAccount(String description, BigDecimal balance, AccountType type, User user) {
     def account = new Account(description: description, balance: balance, type: type, user: user)
     if (!account.save(flush: true)) {
       def message = messageSource.getMessage(account.errors.fieldError, Locale.default)

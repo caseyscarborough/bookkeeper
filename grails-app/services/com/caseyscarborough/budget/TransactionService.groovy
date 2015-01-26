@@ -12,7 +12,7 @@ class TransactionException extends RuntimeException {
 class TransactionService {
   def messageSource
 
-  def createTransaction(String description, Double amount, Account account, SubCategory subCategory, Date date, User user) {
+  def createTransaction(String description, BigDecimal amount, Account account, SubCategory subCategory, Date date, User user) {
     def transaction = new Transaction(description: description, amount: amount, account: account, subCategory: subCategory, date: date, user: user)
 
     if (!transaction.save(flush: true)) {

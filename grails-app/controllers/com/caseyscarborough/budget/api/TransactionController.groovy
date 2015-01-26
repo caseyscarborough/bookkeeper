@@ -20,7 +20,7 @@ class TransactionController {
   def save() {
     try {
       def transaction = transactionService.createTransaction(
-          params.description, new BigDecimal(params.amount), Account.get(params.account), SubCategory.get(params.subCategory), Date.parse("MMddyyyy", params.date), springSecurityService.currentUser)
+          params.description, new BigDecimal(params.amount), Account.get(params.account), SubCategory.get(params.subCategory), Date.parse("MM/dd/yyyy", params.date), springSecurityService.currentUser)
       response.status = HttpStatus.CREATED.value()
       render transaction as JSON
     } catch (TransactionException e) {

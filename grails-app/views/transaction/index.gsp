@@ -48,6 +48,8 @@
           $("#subCategory").val(suggestion.data);
         }
       });
+
+      $("#date").datepicker();
     });
   </script>
 </head>

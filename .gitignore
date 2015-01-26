@@ -21,3 +21,4 @@ out/
 
 # Ignore DataSource and TestConfig File
 grails-app/conf/DataSource.groovy
+*.db

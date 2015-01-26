@@ -42,4 +42,14 @@ class TransactionController {
     response.status = HttpStatus.NO_CONTENT.value()
     render([] as JSON)
   }
+
+  def queryDescription() {
+    def transactions = Transaction.findAllByUserAndDescriptionIlike(springSecurityService.currentUser, params.query + "%")
+    def output = []
+    transactions.each { t ->
+      output << [ value: t.description, data: t.subCategory.id ]
+    }
+    output = output.unique()
+    render([suggestions: output] as JSON)
+  }
 }

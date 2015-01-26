@@ -40,6 +40,14 @@
           }
         });
       });
+
+      $("#description").autocomplete({
+        serviceUrl: "${createLink(controller: 'transaction', action: 'queryDescription')}",
+        minChars: 3,
+        onSelect: function(suggestion) {
+          $("#subCategory").val(suggestion.data);
+        }
+      });
     });
   </script>
 </head>

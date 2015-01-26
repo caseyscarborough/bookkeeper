@@ -8,6 +8,7 @@
 //= require jquery/dist/jquery.min
 //= require bootstrap/dist/js/bootstrap.min
 //= require devbridge-autocomplete/dist/jquery.autocomplete.min
+//= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require_tree .
 //= require_self
 

@@ -17,4 +17,12 @@ class Transaction {
   String getAmountString() {
     String.format("\$%.2f", amount)
   }
+
+  String getCssClass() {
+    if (subCategory.type == CategoryType.DEBIT) {
+      return "debit"
+    } else {
+      return "credit"
+    }
+  }
 }

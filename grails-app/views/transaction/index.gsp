@@ -95,6 +95,9 @@
     </div>
     <div class="col-md-9">
       <h1>Transactions</h1>
+
+      <g:paginate total="${transactionInstanceCount}" />
+
       <g:if test="${transactionInstanceCount > 0}">
         <table class="table table-condensed table-hover">
           <thead>
@@ -109,7 +112,7 @@
           </thead>
           <tbody>
           <g:each in="${transactions}" var="transaction">
-            <tr id="transaction-${transaction.id}">
+            <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
               <td>${transaction.date.format("MM-dd-yyyy")}</td>
               <td>${transaction.description}</td>
               <td>${transaction.amountString}</td>
@@ -120,7 +123,6 @@
           </g:each>
           </tbody>
         </table>
-        <g:paginate total="${transactionInstanceCount}" />
       </g:if>
       <g:else>
         <div class="alert alert-info">

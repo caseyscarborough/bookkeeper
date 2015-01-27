@@ -10,7 +10,7 @@
       var ninetyDaysAgo = now.getTime() - (90 * 24 * 3600 * 1000);
       $('#spendingOverPastThreeMonths').highcharts({
         chart: { zoomType: 'x' },
-        title: { text: 'Net Outgoing Over Past Three Months' },
+        title: { text: 'Daily Spending Over Past Three Months' },
         subtitle: {
           text: document.ontouchstart === undefined ?
             'Click and drag in the plot area to zoom in' :

@@ -18,9 +18,13 @@ class TransactionController {
 
   def index(Integer max) {
     params.max = Math.min(max ?: 30, 100)
-    def transactions = Transaction.findAllByUser(springSecurityService.currentUser, params)
+    def category = SubCategory.get(params.category)
+    def transactions = category ? Transaction.findAllByUserAndSubCategory(springSecurityService.currentUser, category, params) :
+        Transaction.findAllByUser(springSecurityService.currentUser, params)
     def accounts = Account.findAllByUser(springSecurityService.currentUser)
-    [transactions: transactions, transactionInstanceCount: Transaction.count(), accounts: accounts, categories: Category.all]
+    def transactionCount = category ? Transaction.findAllByUserAndSubCategory(springSecurityService.currentUser, category).size() :
+        Transaction.findAllByUser(springSecurityService.currentUser).size()
+    [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
   }
 
   @Transactional

@@ -53,6 +53,14 @@
         }
       });
 
+      $("#filter").on('change', function() {
+        if ($(this).val() === 'ALL') {
+          window.location.href = "${createLink()}";
+          return;
+        }
+        window.location.href = "${createLink()}?category=" + $(this).val();
+      });
+
 
       function updateToAccount() {
         if ($("#subCategory option:selected").attr("data-type") === "Transfer") {
@@ -75,11 +83,26 @@
 <div id="content">
   <div class="row">
     <div class="col-md-12">
-      <h1>Transactions</h1>
-
-      <div>
-        <g:paginate total="${transactionInstanceCount}" />
-      </div><br>
+      <div class="pull-left">
+        <h1>Transactions</h1>
+        <g:paginate total="${transactionInstanceCount}" params="[category: params.category]"/>
+      </div>
+      <div class="pull-right">
+        <div class="form-group">
+          <label for="filter">Filter By:</label>
+          <select class="form-control domain-property" id="filter">
+            <option value="ALL">ALL</option>
+            <g:each in="${categories}" var="category">
+              <optgroup label="${category.name}">
+                <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
+                </g:each>
+              </optgroup>
+            </g:each>
+          </select>
+        </div>
+      </div>
+      <div class="clearfix"></div><br>
 
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>

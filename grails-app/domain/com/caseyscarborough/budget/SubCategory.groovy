@@ -4,12 +4,14 @@ class SubCategory {
 
   String name
   Category category
+  CategoryType type
 
   static constraints = {
+    type nullable: true
   }
 
   CategoryType getType() {
-    category.type
+    type ?: category.type
   }
 
   String toString() {

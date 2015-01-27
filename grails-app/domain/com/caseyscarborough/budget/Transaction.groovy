@@ -8,10 +8,12 @@ class Transaction {
   SubCategory subCategory
   Date date
   BigDecimal amount
-  Account account
+  Account fromAccount
+  Account toAccount
   User user
 
   static constraints = {
+    toAccount nullable: true
   }
 
   static mapping = {
@@ -25,8 +27,10 @@ class Transaction {
   String getCssClass() {
     if (subCategory.type == CategoryType.DEBIT) {
       return "debit"
-    } else {
+    } else if (subCategory.type == CategoryType.CREDIT) {
       return "credit"
+    } else {
+      return "transfer"
     }
   }
 }

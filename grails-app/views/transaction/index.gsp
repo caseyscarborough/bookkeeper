@@ -10,7 +10,10 @@
 
         var data = {};
         $(".domain-property").each(function () {
-          data[$(this).attr("id")] = $(this).val();
+          if ($(this).attr("disabled") === "disabled") {
+          } else {
+            data[$(this).attr("id")] = $(this).val();
+          }
         });
 
         $.ajax({
@@ -46,7 +49,22 @@
         minChars: 3,
         onSelect: function(suggestion) {
           $("#subCategory").val(suggestion.data);
+          updateToAccount();
         }
+      });
+
+
+      function updateToAccount() {
+        if ($("#subCategory option:selected").attr("data-type") === "Transfer") {
+          $("#toAccount").removeAttr("disabled");
+        } else {
+          $("#toAccount").attr("disabled", "disabled");
+        }
+      }
+
+      updateToAccount();
+      $("#subCategory").on('change', function() {
+        updateToAccount();
       });
 
       $("#date").datepicker();
@@ -56,71 +74,72 @@
 <body>
 <div id="content">
   <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
       <h1>Transactions</h1>
-
 
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
-      <g:if test="${transactionInstanceCount > 0}">
-        <table class="table table-condensed table-hover">
-          <thead>
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>From Account</th>
+          <th>Category</th>
+          <th>To Account</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          <form id="new-transaction-form" onsubmit="return false">
           <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Account</th>
-            <th>Category</th>
-            <th></th>
+            <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
+            <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
+            <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
+            <td>
+              <select class="form-control domain-property" id="fromAccount">
+                <g:each in="${accounts}" var="account">
+                  <option value="${account.id}">${account.description}</option>
+                </g:each>
+              </select>
+            </td>
+            <td>
+              <select class="form-control domain-property" id="subCategory">
+                <g:each in="${categories}" var="category">
+                  <optgroup label="${category.name}">
+                    <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                      <option data-type="${subcategory.type}" value="${subcategory.id}">${subcategory.name}</option>
+                    </g:each>
+                  </optgroup>
+                </g:each>
+              </select>
+            </td>
+            <td>
+              <select class="form-control domain-property" id="toAccount" disabled="disabled">
+                <g:each in="${accounts}" var="account">
+                  <option value="${account.id}">${account.description}</option>
+                </g:each>
+              </select>
+            </td>
+            <td><button id="submit" class="btn btn-primary">New</button></td>
           </tr>
-          </thead>
-          <tbody>
-            <form id="new-transaction-form" onsubmit="return false">
-            <tr>
-              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
-              <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
-              <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
-              <td>
-                <select class="form-control domain-property" id="account">
-                  <g:each in="${accounts}" var="account">
-                    <option value="${account.id}">${account.description}</option>
-                  </g:each>
-                </select>
-              </td>
-              <td>
-                <select class="form-control domain-property" id="subCategory">
-                  <g:each in="${categories}" var="category">
-                    <optgroup label="${category.name}">
-                      <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                        <option value="${subcategory.id}">${subcategory.name}</option>
-                      </g:each>
-                    </optgroup>
-                  </g:each>
-                </select>
-              </td>
-              <td><button id="submit" class="btn btn-primary">New</button></td>
-            </tr>
-            </form>
-          <g:each in="${transactions}" var="transaction">
-            <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
-              <td>${transaction.date.format("MM-dd-yyyy")}</td>
-              <td>${transaction.description}</td>
-              <td>${transaction.amountString}</td>
-              <td>${transaction.account}</td>
-              <td>${transaction.subCategory}</td>
-              <td><a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
-            </tr>
-          </g:each>
-          </tbody>
-        </table>
-        <g:paginate total="${transactionInstanceCount}" />
-      </g:if>
-      <g:else>
-        <div class="alert alert-info">
-          You do not have any transactions yet.
-        </div>
-      </g:else>
+          </form>
+        <g:each in="${transactions}" var="transaction">
+          <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
+            <td>${transaction.date.format("MM/dd/yyyy")}</td>
+            <td>${transaction.description}</td>
+            <td>${transaction.amountString}</td>
+            <td>${transaction.fromAccount}</td>
+            <td>${transaction.subCategory}</td>
+            <td>${transaction.toAccount}</td>
+            <td><a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+          </tr>
+        </g:each>
+        </tbody>
+      </table>
+      <g:paginate total="${transactionInstanceCount}" />
     </div>
   </div>
 </div>

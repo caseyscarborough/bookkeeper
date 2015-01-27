@@ -4,7 +4,8 @@ package com.caseyscarborough.budget
 enum CategoryType {
 
   CREDIT("Credit"),
-  DEBIT("Debit")
+  DEBIT("Debit"),
+  TRANSFER("Transfer")
 
   private final String name
 

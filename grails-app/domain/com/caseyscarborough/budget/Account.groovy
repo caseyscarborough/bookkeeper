@@ -23,4 +23,13 @@ class Account {
   String toString() {
     description
   }
+
+  String sendPayment(BigDecimal amount) {
+    balance += (type.isDebt) ? amount : -amount
+
+  }
+
+  String receivePayment(BigDecimal amount) {
+    balance += (type.isDebt) ? -amount : amount
+  }
 }

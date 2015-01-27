@@ -12,30 +12,37 @@ class TransactionException extends RuntimeException {
 class TransactionService {
   def messageSource
 
-  def createTransaction(String description, BigDecimal amount, Account account, SubCategory subCategory, Date date, User user) {
-    def transaction = new Transaction(description: description, amount: amount, account: account, subCategory: subCategory, date: date, user: user)
+  def createTransaction(String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, User user) {
+    def transaction = new Transaction(description: description, amount: amount, fromAccount: fromAccount, toAccount: toAccount, subCategory: subCategory, date: date, user: user)
 
     if (!transaction.save(flush: true)) {
       def message = messageSource.getMessage(transaction.errors.fieldError, Locale.default)
       throw new TransactionException(message: message, transaction: transaction)
     }
 
-    updateAccountBalance(account, transaction, false)
+    updateAccountBalance(transaction, false)
     return transaction
   }
 
   def deleteTransaction(Transaction transaction) {
     transaction.delete(flush: true)
-    updateAccountBalance(transaction.account, transaction, true)
+    updateAccountBalance(transaction, true)
   }
 
-  private void updateAccountBalance(Account account, Transaction transaction, Boolean deletion) {
-    def actualAmount = (account.type.isDebt) ? -transaction.amount : transaction.amount
-    if (!deletion) {
-      account.balance -= (transaction.subCategory.category.type == CategoryType.DEBIT) ? actualAmount : -actualAmount
-    } else {
-      account.balance += (transaction.subCategory.category.type == CategoryType.DEBIT) ? actualAmount : -actualAmount
+  private void updateAccountBalance(Transaction transaction, Boolean deletion) {
+    def amount = transaction.amount
+    if (deletion) {
+      amount = -amount
     }
-    account.save(flush: true)
+
+    if (transaction.subCategory.type == CategoryType.TRANSFER) {
+      transaction.fromAccount.sendPayment(amount)
+      transaction.toAccount.receivePayment(amount)
+      transaction.toAccount?.save(flush: true)
+      transaction.fromAccount?.save(flush: true)
+    } else {
+      transaction.fromAccount.balance -= (transaction.subCategory.category.type == CategoryType.DEBIT) ? amount : -amount
+      transaction.fromAccount.save(flush: true)
+    }
   }
 }

@@ -1,6 +1,7 @@
 package com.caseyscarborough.budget.security
 
 import com.caseyscarborough.budget.Account
+import com.caseyscarborough.budget.Budget
 import com.caseyscarborough.budget.BudgetItem
 import com.caseyscarborough.budget.Transaction
 
@@ -18,7 +19,7 @@ class User {
 	boolean accountLocked
 	boolean passwordExpired
 
-	static hasMany = [transactions: Transaction, accounts: Account]
+	static hasMany = [transactions: Transaction, accounts: Account, budgets: Budget]
 
 	static transients = ['springSecurityService']
 

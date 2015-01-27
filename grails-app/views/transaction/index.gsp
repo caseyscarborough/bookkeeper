@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="layout" content="main">
-  <title></title>
+  <title>Transactions</title>
 
   <script>
     $(function () {
@@ -124,6 +124,8 @@
           }
         });
       });
+
+      $("title").html($("#filter option:selected").html() + " Transactions");
     });
   </script>
 </head>

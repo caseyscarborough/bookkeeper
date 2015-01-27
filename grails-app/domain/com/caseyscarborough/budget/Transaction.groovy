@@ -21,7 +21,7 @@ class Transaction {
   }
 
   String getAmountString() {
-    String.format("\$%.2f", amount)
+    String.format("%.2f", amount)
   }
 
   String getCssClass() {

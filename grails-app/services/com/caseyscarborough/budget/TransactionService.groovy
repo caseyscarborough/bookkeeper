@@ -24,6 +24,17 @@ class TransactionService {
     return transaction
   }
 
+  def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date) {
+    transaction.description = description
+    transaction.amount = amount
+    transaction.fromAccount = fromAccount
+    transaction.toAccount = toAccount
+    transaction.subCategory = subCategory
+    transaction.date = date
+    transaction.save(flush: true)
+    return transaction
+  }
+
   def deleteTransaction(Transaction transaction) {
     transaction.delete(flush: true)
     updateAccountBalance(transaction, true)

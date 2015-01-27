@@ -14,7 +14,7 @@ class TransactionController {
   def transactionService
   def springSecurityService
 
-  static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+  static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
   def index(Integer max) {
     params.max = Math.min(max ?: 30, 100)
@@ -42,8 +42,30 @@ class TransactionController {
       render([message: "Please enter a valid amount for the transaction.", field: "amount"] as JSON)
     } catch (ParseException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render([message: "Please enter a valid date in the format YYYY-MM-DD.", field: "date"] as JSON)
+      render([message: "Please enter a valid date in the format DD/MM/YYYY.", field: "date"] as JSON)
     }
+  }
+
+  @Transactional
+  def update() {
+    try {
+      def transaction = Transaction.get(params.id)
+      transaction = transactionService.updateTransaction(
+          transaction, params.description, new BigDecimal(params.amount), Account.get(params.fromAccount), Account.get(params.toAccount), SubCategory.get(params.subCategory), Date.parse("MM/dd/yyyy", params.date)
+      )
+      response.status = HttpStatus.OK.value()
+      render transaction as JSON
+    } catch (TransactionException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: e.message, field: e.transaction.errors.fieldError.field] as JSON)
+    } catch (NumberFormatException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: "Please enter a valid amount for the transaction.", field: "amount"] as JSON)
+    } catch (ParseException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: "Please enter a valid date in the format DD/MM/YYYY.", field: "date"] as JSON)
+    }
+
   }
 
   @Transactional
@@ -58,7 +80,7 @@ class TransactionController {
     def transactions = Transaction.findAllByUserAndDescriptionIlike(springSecurityService.currentUser, params.query + "%")
     def output = []
     transactions.each { t ->
-      output << [ value: t.description, data: t.subCategory.id ]
+      output << [value: t.description, data: t.subCategory.id]
     }
     output = output.unique()
     render([suggestions: output] as JSON)

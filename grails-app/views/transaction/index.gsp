@@ -77,6 +77,10 @@
     <div class="col-md-12">
       <h1>Transactions</h1>
 
+      <div>
+        <g:paginate total="${transactionInstanceCount}" />
+      </div><br>
+
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
@@ -139,7 +143,6 @@
         </g:each>
         </tbody>
       </table>
-      <g:paginate total="${transactionInstanceCount}" />
     </div>
   </div>
 </div>

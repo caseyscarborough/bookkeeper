@@ -114,6 +114,8 @@ class BootStrap {
       savings.addToSubcategories(new SubCategory(name: "Retirement"))
       savings.addToSubcategories(new SubCategory(name: "Other"))
       savings.save(flush: true)
+
+      def misc = new Category(name: "Miscellaneous", type: CategoryType.DEBIT)
     }
   }
   def destroy = {

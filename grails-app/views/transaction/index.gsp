@@ -56,58 +56,13 @@
 <body>
 <div id="content">
   <div class="row">
-    <div class="col-md-3">
-      <h1>New Transaction</h1>
-
-      <form id="new-transaction-form" onsubmit="return false">
-        <div id="transaction-error" class="alert alert-danger" style="display:none">
-          <div id="transaction-error-message"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="description">Transaction Description</label>
-          <input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description" autofocus="true">
-        </div>
-
-        <div class="form-group">
-          <label for="amount">Amount</label>
-          <input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount">
-        </div>
-
-        <div class="form-group">
-          <label for="date">Date</label>
-          <input type="text" class="form-control domain-property" id="date" placeholder="Date">
-        </div>
-
-        <div class="form-group">
-          <label for="account">Account</label>
-          <select class="form-control domain-property" id="account">
-            <g:each in="${accounts}" var="account">
-              <option value="${account.id}">${account.description}</option>
-            </g:each>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="subCategory">Category</label>
-          <select class="form-control domain-property" id="subCategory">
-            <g:each in="${categories}" var="category">
-              <optgroup label="${category.name}">
-                <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                  <option value="${subcategory.id}">${subcategory.name}</option>
-                </g:each>
-              </optgroup>
-            </g:each>
-          </select>
-        </div>
-        <button id="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-    <div class="col-md-9">
+    <div class="col-md-10 col-md-offset-1">
       <h1>Transactions</h1>
 
-      <g:paginate total="${transactionInstanceCount}" />
 
+      <div id="transaction-error" class="alert alert-danger" style="display:none">
+        <div id="transaction-error-message"></div>
+      </div>
       <g:if test="${transactionInstanceCount > 0}">
         <table class="table table-condensed table-hover">
           <thead>
@@ -121,6 +76,32 @@
           </tr>
           </thead>
           <tbody>
+            <form id="new-transaction-form" onsubmit="return false">
+            <tr>
+              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
+              <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
+              <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
+              <td>
+                <select class="form-control domain-property" id="account">
+                  <g:each in="${accounts}" var="account">
+                    <option value="${account.id}">${account.description}</option>
+                  </g:each>
+                </select>
+              </td>
+              <td>
+                <select class="form-control domain-property" id="subCategory">
+                  <g:each in="${categories}" var="category">
+                    <optgroup label="${category.name}">
+                      <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                        <option value="${subcategory.id}">${subcategory.name}</option>
+                      </g:each>
+                    </optgroup>
+                  </g:each>
+                </select>
+              </td>
+              <td><button id="submit" class="btn btn-primary">New</button></td>
+            </tr>
+            </form>
           <g:each in="${transactions}" var="transaction">
             <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
               <td>${transaction.date.format("MM-dd-yyyy")}</td>
@@ -133,6 +114,7 @@
           </g:each>
           </tbody>
         </table>
+        <g:paginate total="${transactionInstanceCount}" />
       </g:if>
       <g:else>
         <div class="alert alert-info">

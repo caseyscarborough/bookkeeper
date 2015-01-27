@@ -15,10 +15,10 @@ class GraphController {
     def now = new Date()
     def startCal = Calendar.instance
     def endCal = Calendar.instance
-    startCal.add(Calendar.DAY_OF_YEAR, -90)
-    endCal.add(Calendar.DAY_OF_YEAR, -89)
+    startCal.add(Calendar.DAY_OF_YEAR, -91)
+    endCal.add(Calendar.DAY_OF_YEAR, -90)
 
-    while (endCal.time < now) {
+    while (endCal.time <= now) {
       def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
       BigDecimal total = 0
       transactions?.each { Transaction t ->

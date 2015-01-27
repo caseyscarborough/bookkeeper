@@ -14,8 +14,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><g:link controller="account" action="index">My Accounts</g:link></li>
-        <li><g:link controller="transaction" action="index">My Transactions</g:link></li>
+        <li><g:link controller="account" action="index">Accounts</g:link></li>
+        <li><g:link controller="transaction" action="index">Transactions</g:link></li>
+        <li><g:link controller="graph" action="index">Graphs</g:link></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <sec:ifNotLoggedIn>

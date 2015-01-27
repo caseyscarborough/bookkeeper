@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="content">
-  <g:render template="spendingOverPastThreeMonths" />
+  <g:render template="spendingByDay" />
   <g:render template="spendingByCategory"/>
 </div>
 

@@ -10,13 +10,14 @@ class GraphController {
 
   def index() {}
 
-  def spendingOverPastThreeMonths() {
+  def spendingByDay() {
     def data = []
     def now = new Date()
     def startCal = Calendar.instance
     def endCal = Calendar.instance
-    startCal.add(Calendar.DAY_OF_YEAR, -91)
-    endCal.add(Calendar.DAY_OF_YEAR, -90)
+    startCal.add(Calendar.YEAR, -1)
+    endCal.setTime(startCal.time)
+    endCal.add(Calendar.DAY_OF_YEAR, 1)
 
     while (endCal.time <= now) {
       def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
@@ -41,9 +42,9 @@ class GraphController {
     def now = new Date()
     def startCal = Calendar.instance
     def endCal = Calendar.instance
-    startCal.add(Calendar.MONTH, -7)
-    startCal.add(Calendar.DAY_OF_YEAR, -1)
+    startCal.add(Calendar.MONTH, -11)
     startCal.set(Calendar.DAY_OF_MONTH, 1)
+    startCal.add(Calendar.DAY_OF_YEAR, -1)
     startCal.set(Calendar.HOUR_OF_DAY, 23)
     startCal.set(Calendar.MINUTE, 59)
     startCal.set(Calendar.SECOND, 59)
@@ -55,13 +56,13 @@ class GraphController {
     int i = 0
     def months = []
     while (startCal.time <= now) {
-      months << startCal.time.format("MMM. yyyy")
-      log.debug("Generating transactions for ${endCal.get(Calendar.MONTH)} ${endCal.get(Calendar.YEAR)}")
+      months << endCal.time.format("MMM. yyyy")
+      log.debug("Generating transactions for ${endCal.get(Calendar.MONTH)} ${endCal.get(Calendar.YEAR)} starting on day ${startCal.get(Calendar.DAY_OF_MONTH)} and ending on ${endCal.get(Calendar.DAY_OF_MONTH)}")
       def transactions = Transaction.findAllByDateGreaterThanAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
           if (!data."${t.subCategory.category}") {
-            data."${t.subCategory.category}" = [0, 0, 0, 0, 0, 0, 0, 0]
+            data."${t.subCategory.category}" = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }
           try {
             if (t.subCategory.name == "Wages") log.debug(t.amount)

@@ -18,7 +18,7 @@ class User {
 	boolean accountLocked
 	boolean passwordExpired
 
-	static hasMany = [transactions: Transaction, accounts: Account, budgets: BudgetItem]
+	static hasMany = [transactions: Transaction, accounts: Account]
 
 	static transients = ['springSecurityService']
 

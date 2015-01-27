@@ -1,12 +1,12 @@
 <div class="row">
 <script>
-  $.getJSON("${createLink(controller: 'graph', action: 'spendingOverPastThreeMonths')}", function(data) {
+  $.getJSON("${createLink(controller: 'graph', action: 'spendingByDay')}", function(data) {
     var now = new Date()
     now.setHours(0, 0, 0, 0);
-    var ninetyDaysAgo = now.getTime() - (90 * 24 * 3600 * 1000);
-    $('#spendingOverPastThreeMonths').highcharts({
+    var timeInPast = now.getTime() - (365 * 24 * 3600 * 1000);
+    $('#spendingByDay').highcharts({
       chart: { zoomType: 'x' },
-      title: { text: 'Daily Spending Over Past Three Months' },
+      title: { text: 'Spending By Day' },
       subtitle: {
         text: document.ontouchstart === undefined ?
             'Click and drag in the plot area to zoom in' :
@@ -48,13 +48,13 @@
         type: 'area',
         name: 'USD',
         pointInterval: 24 * 3600 * 1000,
-        pointStart: ninetyDaysAgo,
+        pointStart: timeInPast,
         data: data
       }]
     });
   });
 </script>
 <div class="col-md-12">
-  <div id="spendingOverPastThreeMonths"></div>
+  <div id="spendingByDay"></div>
 </div>
 </div>

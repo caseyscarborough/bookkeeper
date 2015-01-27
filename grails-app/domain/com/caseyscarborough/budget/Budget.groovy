@@ -4,11 +4,9 @@ import com.caseyscarborough.budget.security.User
 
 class Budget {
 
-  Date startDate
-  Date endDate
   User user
-
-  static hasMany = [budgetItems: BudgetItem]
+  SubCategory subCategory
+  BigDecimal budgetedAmount
 
   static constraints = {
   }

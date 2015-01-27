@@ -87,6 +87,7 @@
       });
 
       $("#date").datepicker();
+      $("#edit-date").datepicker();
 
       $(".transaction-edit").click(function() {
         var id = $(this).attr("data-id");

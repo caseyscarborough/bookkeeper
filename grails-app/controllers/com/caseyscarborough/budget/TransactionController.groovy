@@ -35,7 +35,7 @@ class TransactionController {
       render([message: e.message, field: e.transaction.errors.fieldError.field] as JSON)
     } catch (NumberFormatException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render([message: "Please enter a valid amount for the transaction.", field: "transaction"] as JSON)
+      render([message: "Please enter a valid amount for the transaction.", field: "amount"] as JSON)
     } catch (ParseException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
       render([message: "Please enter a valid date in the format YYYY-MM-DD.", field: "date"] as JSON)

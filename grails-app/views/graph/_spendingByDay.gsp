@@ -3,7 +3,7 @@
   $.getJSON("${createLink(controller: 'graph', action: 'spendingByDay')}", function(data) {
     var now = new Date()
     now.setHours(0, 0, 0, 0);
-    var timeInPast = now.getTime() - (365 * 24 * 3600 * 1000);
+    var timeInPast = now.getTime() - (364 * 24 * 3600 * 1000);
     $('#spendingByDay').highcharts({
       chart: { zoomType: 'x' },
       title: { text: 'Spending By Day' },

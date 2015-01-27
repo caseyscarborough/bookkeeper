@@ -36,6 +36,7 @@ class BootStrap {
       def home = new Category(name: "Home/Bills", type: CategoryType.DEBIT)
       home.addToSubcategories(new SubCategory(name: "Electricity"))
       home.addToSubcategories(new SubCategory(name: "Gas"))
+      home.addToSubcategories(new SubCategory(name: "Credit Card Payment", type: CategoryType.TRANSFER))
       home.addToSubcategories(new SubCategory(name: "Home/Rental Insurance"))
       home.addToSubcategories(new SubCategory(name: "Furnishings"))
       home.addToSubcategories(new SubCategory(name: "Appliances"))
@@ -108,7 +109,7 @@ class BootStrap {
       transportation.save(flush: true)
 
       def savings = new Category(name: "Savings", type: CategoryType.DEBIT)
-      savings.addToSubcategories(new SubCategory(name: "Transfer to Savings"))
+      savings.addToSubcategories(new SubCategory(name: "Transfer", type: CategoryType.TRANSFER))
       savings.addToSubcategories(new SubCategory(name: "Emergency Fund"))
       savings.addToSubcategories(new SubCategory(name: "Retirement"))
       savings.addToSubcategories(new SubCategory(name: "Other"))

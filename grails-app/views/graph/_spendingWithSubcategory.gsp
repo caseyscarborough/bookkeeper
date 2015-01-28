@@ -3,6 +3,7 @@
     function getChart(time, chart) {
       $.getJSON("${createLink(controller: 'graph', action: 'spendingWithSubcategory')}?time=" + time, function(data) {
         $('#spendingWithSubcategory' + chart).highcharts({
+          credits: { enabled: false },
           chart: {
             type: 'pie',
             height: 600
@@ -21,12 +22,10 @@
               }
             }
           },
-
           tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
             pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.categoryTotal}</b> of {point.grandTotal} ({point.y:.1f}%)<br/>'
           },
-
           series: [{
             name: 'Categories',
             colorByPoint: true,

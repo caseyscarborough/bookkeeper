@@ -23,10 +23,11 @@
     var spinner = new Spinner(opts).spin(target);
 
     $.getJSON("${createLink(controller: 'graph', action: 'spendingByDay')}", function(data) {
-      var now = new Date()
-      now.setHours(0, 0, 0, 0);
-      var timeInPast = now.getTime() - (364 * 24 * 3600 * 1000);
+      var time = new Date(data.time);
+      time.setHours(0, 0, 0, 0);
+      time = time.getTime();
       $('#spendingByDay').highcharts({
+        credits: { enabled: false },
         chart: { zoomType: 'x', height: 500 },
         title: { text: 'Spending By Day' },
         subtitle: {
@@ -35,6 +36,7 @@
               'Pinch the chart to zoom in'
         },
         tooltip: {
+          headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
           pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
           '<td style="padding:0"><b>&dollar;{point.y:.2f}</b></td></tr>',
           footerFormat: '</table>',
@@ -65,13 +67,12 @@
             threshold: null
           }
         },
-
         series: [{
           type: 'area',
           name: 'USD',
           pointInterval: 24 * 3600 * 1000,
-          pointStart: timeInPast,
-          data: data
+          pointStart: time,
+          data: data.data
         }]
       });
     });

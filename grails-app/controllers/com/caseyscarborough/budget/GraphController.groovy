@@ -34,6 +34,7 @@ class GraphController {
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE))
     endCal.setTime(startCal.time)
     endCal.add(Calendar.DAY_OF_YEAR, 1)
+    def time = endCal.getTimeInMillis()
 
     while (endCal.time <= now) {
       def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
@@ -47,7 +48,7 @@ class GraphController {
       startCal.add(Calendar.DAY_OF_YEAR, 1)
       endCal.add(Calendar.DAY_OF_YEAR, 1)
     }
-    render data as JSON
+    render([data: data, time: time] as JSON)
   }
 
   def spendingByCategory() {

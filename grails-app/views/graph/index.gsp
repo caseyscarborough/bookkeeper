@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="layout" content="main">
-  <title></title>
+  <title>Graphs</title>
   <script>
 
   </script>

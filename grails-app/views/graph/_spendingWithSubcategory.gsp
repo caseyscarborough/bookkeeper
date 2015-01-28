@@ -17,14 +17,14 @@
             series: {
               dataLabels: {
                 enabled: true,
-                format: '{point.name}: {point.y:.1f}%'
+                format: '{point.name}: {point.categoryTotal}'
               }
             }
           },
 
           tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.categoryTotal}</b> of {point.grandTotal}<br/>'
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.categoryTotal}</b> of {point.grandTotal} ({point.y:.1f}%)<br/>'
           },
 
           series: [{
@@ -80,8 +80,8 @@
     <div class="form-group">
       <label for="spendingWithSubcategory-month1">Select Month</label>
       <select class="form-control" id="spendingWithSubcategory-month1">
-        <g:each in="${months}" var="month">
-          <option value="${month.value}">${month.name}</option>
+        <g:each in="${months}" var="month" status="i">
+          <option value="${month.value}" <g:if test="${i == 0}">selected</g:if>>${month.name}</option>
         </g:each>
       </select>
     </div>
@@ -92,8 +92,8 @@
     <div class="form-group">
       <label for="spendingWithSubcategory-month2">Select Month</label>
       <select class="form-control" id="spendingWithSubcategory-month2">
-        <g:each in="${months}" var="month">
-          <option value="${month.value}">${month.name}</option>
+        <g:each in="${months}" var="month" status="i">
+          <option value="${month.value}" <g:if test="${i == 1}">selected</g:if>>${month.name}</option>
         </g:each>
       </select>
     </div>

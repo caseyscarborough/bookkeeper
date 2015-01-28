@@ -124,8 +124,8 @@ class GraphController {
 
       if (categories.size() != i+1) {
         if (totalCategoryTransactionsSum > 0) {
-          categories << [drilldown: c.name, name: c.name, categoryTotal: "\$${totalCategoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", visible: true, y: (totalCategoryTransactionsSum / totalTransactionsSum)]
-          drilldown << [ id: c.name, name: c.name, categoryTotal: "\$${totalCategoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", data: []]
+          categories << [drilldown: "${c.name} - ${startCal.time.format("MMM. yyyy")}", name: c.name, categoryTotal: "\$${totalCategoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", visible: true, y: ((totalCategoryTransactionsSum / totalTransactionsSum) * 100)]
+          drilldown << [ id: "${c.name} - ${startCal.time.format("MMM. yyyy")}", name: c.name, categoryTotal: "\$${totalCategoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", data: []]
         }
       }
 
@@ -136,7 +136,7 @@ class GraphController {
 
         if (subCategoryTransactionsSum > 0) {
           if (totalCategoryTransactionsSum > 0) {
-            drilldown.last().data << [name: s.name, y: (subCategoryTransactionsSum / totalCategoryTransactionsSum), categoryTotal: "\$${subCategoryTransactionsSum}", grandTotal: "\$${totalCategoryTransactionsSum}"]
+            drilldown.last().data << [name: s.name, y: ((subCategoryTransactionsSum / totalCategoryTransactionsSum) * 100), categoryTotal: "\$${subCategoryTransactionsSum}", grandTotal: "\$${totalCategoryTransactionsSum}"]
           }
         }
       }

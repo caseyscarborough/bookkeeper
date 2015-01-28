@@ -81,7 +81,7 @@
       <label for="spendingWithSubcategory-month1">Select Month</label>
       <select class="form-control" id="spendingWithSubcategory-month1">
         <g:each in="${months}" var="month" status="i">
-          <option value="${month.value}" <g:if test="${i == 0}">selected</g:if>>${month.name}</option>
+          <option value="${month.value}" <g:if test="${i == 1}">selected</g:if>>${month.name}</option>
         </g:each>
       </select>
     </div>
@@ -93,7 +93,7 @@
       <label for="spendingWithSubcategory-month2">Select Month</label>
       <select class="form-control" id="spendingWithSubcategory-month2">
         <g:each in="${months}" var="month" status="i">
-          <option value="${month.value}" <g:if test="${i == 1}">selected</g:if>>${month.name}</option>
+          <option value="${month.value}" <g:if test="${i == 0}">selected</g:if>>${month.name}</option>
         </g:each>
       </select>
     </div>

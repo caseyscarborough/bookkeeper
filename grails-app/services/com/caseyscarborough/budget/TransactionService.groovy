@@ -52,7 +52,7 @@ class TransactionService {
       transaction.toAccount?.save(flush: true)
       transaction.fromAccount?.save(flush: true)
     } else {
-      transaction.fromAccount.balance -= (transaction.subCategory.category.type == CategoryType.DEBIT) ? amount : -amount
+      transaction.fromAccount.sendPayment(amount)
       transaction.fromAccount.save(flush: true)
     }
   }

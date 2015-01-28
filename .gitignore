@@ -10,6 +10,7 @@
 target/
 *.war
 out/
+test/
 
 # Ignore logs
 *.log

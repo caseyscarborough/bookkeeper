@@ -95,7 +95,7 @@
         $("#edit-date").val($("#transaction-" + id + "-date").html());
         $("#edit-amount").val($("#transaction-" + id + "-amount").html());
         $("#edit-description").val($("#transaction-" + id + "-description").html());
-        $("#edit-account option:contains(" + $('#transaction-' + id + '-account').html() + ")").attr('selected', true);
+        $("#edit-fromAccount option:contains(" + $('#transaction-' + id + '-fromAccount').html() + ")").attr('selected', true);
         $("#edit-subCategory option:contains(" + $('#transaction-' + id + '-subCategory').html() + ")").attr('selected', true);
         $("#edit-transaction-modal").modal('show');
       });

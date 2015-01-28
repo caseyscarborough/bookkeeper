@@ -6,6 +6,8 @@ class SubCategory {
   Category category
   CategoryType type
 
+  static hasMany = [transactions: Transaction]
+
   static constraints = {
     type nullable: true
   }

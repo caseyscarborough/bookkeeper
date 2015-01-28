@@ -18,6 +18,9 @@
         <li><g:link controller="transaction" action="index">Transactions</g:link></li>
         <li><g:link controller="graph" action="index">Graphs</g:link></li>
         <li><g:link controller="import" action="index">Import</g:link></li>
+        <sec:ifAnyGranted roles="ROLE_ADMIN">
+          <li><g:link controller="subCategory" action="index">SubCategory Management</g:link></li>
+        </sec:ifAnyGranted>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <sec:ifNotLoggedIn>

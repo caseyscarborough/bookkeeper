@@ -161,12 +161,12 @@
       <table class="table table-condensed table-hover">
         <thead>
         <tr>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>From Account</th>
-          <th>Category</th>
-          <th>To Account</th>
+          <g:sortableColumn property="date" title="Date" />
+          <g:sortableColumn property="description" title="Description" />
+          <g:sortableColumn property="amount" title="Amount" />
+          <g:sortableColumn property="fromAccount" title="From Account" />
+          <g:sortableColumn property="subCategory" title="Category" />
+          <g:sortableColumn property="toAccount" title="To Account" />
           <th></th>
         </tr>
         </thead>

@@ -12,4 +12,17 @@ class Budget {
 
   static constraints = {
   }
+
+  List getBudgetItems() {
+    def data = []
+    Category.all.each { Category c ->
+      def items = BudgetItem.where {
+        category.category == c && budget == this
+      }.get()
+      if (items?.count() > 0) {
+        data << [category: c, items: items]
+      }
+    }
+    return data
+  }
 }

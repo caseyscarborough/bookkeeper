@@ -2,6 +2,7 @@ package com.caseyscarborough.budget
 
 enum AccountType {
 
+  LOAN("Loan", true),
   CREDIT_CARD("Credit Card", true),
   CHECKING_ACCOUNT("Checking Account", false),
   SAVINGS_ACCOUNT("Savings Account", false),

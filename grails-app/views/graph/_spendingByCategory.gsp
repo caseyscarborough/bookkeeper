@@ -25,7 +25,8 @@
       $.getJSON("${createLink(controller: 'graph', action: 'spendingByCategory')}", function(data) {
         $('#spendingByCategory').highcharts({
           chart: {
-            type: 'column'
+            type: 'column',
+            height: 500
           },
           title: {
             text: 'Spending By Category'

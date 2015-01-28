@@ -10,7 +10,10 @@
 <body>
 <div id="content">
   <g:render template="spendingByDay" />
-  <g:render template="spendingByCategory"/>
+  <hr>
+  <g:render template="spendingByCategory" />
+  <hr>
+  <g:render template="spendingWithSubcategory" />
 </div>
 
 </body>

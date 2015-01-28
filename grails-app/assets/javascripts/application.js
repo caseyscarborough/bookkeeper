@@ -10,6 +10,7 @@
 //= require devbridge-autocomplete/dist/jquery.autocomplete.min
 //= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require highcharts/highcharts
+//= require highcharts/modules/drilldown
 //= require spin.js/spin.js
 //= require_tree .
 //= require_self

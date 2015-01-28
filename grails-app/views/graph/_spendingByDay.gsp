@@ -27,7 +27,7 @@
       now.setHours(0, 0, 0, 0);
       var timeInPast = now.getTime() - (364 * 24 * 3600 * 1000);
       $('#spendingByDay').highcharts({
-        chart: { zoomType: 'x' },
+        chart: { zoomType: 'x', height: 500 },
         title: { text: 'Spending By Day' },
         subtitle: {
           text: document.ontouchstart === undefined ?

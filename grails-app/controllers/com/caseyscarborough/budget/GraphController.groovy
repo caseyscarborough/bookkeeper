@@ -58,16 +58,21 @@ class GraphController {
     def endCal = Calendar.instance
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE - 1))
     startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal.add(Calendar.DAY_OF_YEAR, -1)
-    startCal = setCalendarToMidnight(startCal)
     endCal.setTime(startCal.time)
     endCal.add(Calendar.MONTH, 1)
+
+    startCal = setCalendarToMidnight(startCal)
+    endCal = setCalendarToMidnight(endCal)
+    startCal.add(Calendar.MINUTE, -1)
+    endCal.add(Calendar.MINUTE, -1)
 
     int i = 0
     def months = []
     while (startCal.time <= now) {
       months << endCal.time.format("MMM. yyyy")
-      def transactions = Transaction.findAllByDateGreaterThanAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
+      def transactions = Transaction.where {
+        date < endCal.time && date > startCal.time && user == springSecurityService.currentUser
+      }
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
           if (!data."${t.subCategory.category}") {
@@ -75,13 +80,20 @@ class GraphController {
           }
           try {
             data."${t.subCategory.category}"[i] += t.amount
+            if (t.subCategory.category.name == "Food") {
+              //log.debug(i + ": " + t.date)
+            }
           } catch (NullPointerException e) { /* Ignore */
           }
         }
       }
       i++
+      startCal.add(Calendar.MINUTE, 1)
+      endCal.add(Calendar.MINUTE, 1)
       startCal.add(Calendar.MONTH, 1)
       endCal.add(Calendar.MONTH, 1)
+      startCal.add(Calendar.MINUTE, -1)
+      endCal.add(Calendar.MINUTE, -1)
     }
 
     def categories = []
@@ -99,10 +111,13 @@ class GraphController {
     def endCal = Calendar.instance
     startCal.setTime(time)
     startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal.add(Calendar.DAY_OF_YEAR, -1)
-    startCal = setCalendarToMidnight(startCal)
     endCal.setTime(startCal.time)
     endCal.add(Calendar.MONTH, 1)
+
+    startCal = setCalendarToMidnight(startCal)
+    endCal = setCalendarToMidnight(endCal)
+    startCal.add(Calendar.MINUTE, -1)
+    endCal.add(Calendar.MINUTE, -1)
 
     def transactions = Transaction.findAllByDateGreaterThanAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
     def totalTransactionsSum = getSumForDebitTransactions(transactions)
@@ -143,10 +158,10 @@ class GraphController {
   }
 
   private Calendar setCalendarToMidnight(Calendar cal) {
-    cal.set(Calendar.HOUR_OF_DAY, 23)
-    cal.set(Calendar.MINUTE, 59)
-    cal.set(Calendar.SECOND, 59)
-    cal.set(Calendar.MILLISECOND, 59)
+    cal.set(Calendar.HOUR_OF_DAY, 0)
+    cal.set(Calendar.MINUTE, 0)
+    cal.set(Calendar.SECOND, 0)
+    cal.set(Calendar.MILLISECOND, 0)
     return cal
   }
 }

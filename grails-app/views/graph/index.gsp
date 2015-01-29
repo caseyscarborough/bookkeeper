@@ -14,6 +14,8 @@
   <g:render template="spendingByCategory" />
   <hr>
   <g:render template="spendingWithSubcategory" />
+  <hr>
+  <g:render template="monthlySpendingBySubCategory" />
 </div>
 
 </body>

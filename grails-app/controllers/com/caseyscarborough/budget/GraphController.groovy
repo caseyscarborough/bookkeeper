@@ -23,7 +23,7 @@ class GraphController {
       months << [name: startCal.time.format("MMMMM yyyy"), value: startCal.time.format(DATE_FORMAT_FOR_MONTH_SELECTION)]
       startCal.add(Calendar.MONTH, 1)
     }
-    [months: months.reverse()]
+    [months: months.reverse(), categories: Category.all]
   }
 
   def spendingByDay() {
@@ -58,42 +58,29 @@ class GraphController {
     def endCal = Calendar.instance
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE - 1))
     startCal.set(Calendar.DAY_OF_MONTH, 1)
+    startCal = setCalendarToMidnight(startCal)
     endCal.setTime(startCal.time)
     endCal.add(Calendar.MONTH, 1)
-
-    startCal = setCalendarToMidnight(startCal)
-    endCal = setCalendarToMidnight(endCal)
-    startCal.add(Calendar.MINUTE, -1)
-    endCal.add(Calendar.MINUTE, -1)
 
     int i = 0
     def months = []
     while (startCal.time <= now) {
-      months << endCal.time.format("MMM. yyyy")
-      def transactions = Transaction.where {
-        date < endCal.time && date > startCal.time && user == springSecurityService.currentUser
-      }
+      months << startCal.time.format("MMM. yyyy")
+      def transactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
           if (!data."${t.subCategory.category}") {
-            data."${t.subCategory.category}" = [0] * NUMBER_OF_MONTHS_TO_ANALYZE
+            data."${t.subCategory.category}" = [(BigDecimal)0] * NUMBER_OF_MONTHS_TO_ANALYZE
           }
           try {
             data."${t.subCategory.category}"[i] += t.amount
-            if (t.subCategory.category.name == "Food") {
-              //log.debug(i + ": " + t.date)
-            }
           } catch (NullPointerException e) { /* Ignore */
           }
         }
       }
       i++
-      startCal.add(Calendar.MINUTE, 1)
-      endCal.add(Calendar.MINUTE, 1)
       startCal.add(Calendar.MONTH, 1)
       endCal.add(Calendar.MONTH, 1)
-      startCal.add(Calendar.MINUTE, -1)
-      endCal.add(Calendar.MINUTE, -1)
     }
 
     def categories = []
@@ -111,20 +98,15 @@ class GraphController {
     def endCal = Calendar.instance
     startCal.setTime(time)
     startCal.set(Calendar.DAY_OF_MONTH, 1)
+    startCal = setCalendarToMidnight(startCal)
     endCal.setTime(startCal.time)
     endCal.add(Calendar.MONTH, 1)
 
-    startCal = setCalendarToMidnight(startCal)
-    endCal = setCalendarToMidnight(endCal)
-    startCal.add(Calendar.MINUTE, -1)
-    endCal.add(Calendar.MINUTE, -1)
-
-    def transactions = Transaction.findAllByDateGreaterThanAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
+    def transactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
     def totalTransactionsSum = getSumForDebitTransactions(transactions)
-
     Category.all?.eachWithIndex { Category c, i ->
       def categoryTransactions = Transaction.where {
-        date < endCal.time && date > startCal.time && user == springSecurityService.currentUser && subCategory.category == c
+        date < endCal.time && date >= startCal.time && user == springSecurityService.currentUser && subCategory.category == c
       }
       def categoryTransactionsSum = getSumForDebitTransactions(categoryTransactions)
       if (categories.size() != i + 1) {
@@ -135,7 +117,7 @@ class GraphController {
       }
 
       SubCategory.findAllByCategory(c)?.each { SubCategory s ->
-        def subCategoryTransactions = Transaction.findAllByDateGreaterThanAndDateLessThanAndUserAndSubCategory(startCal.time, endCal.time, springSecurityService.currentUser, s)
+        def subCategoryTransactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUserAndSubCategory(startCal.time, endCal.time, springSecurityService.currentUser, s)
         def subCategoryTransactionsSum = getSumForDebitTransactions(subCategoryTransactions)
         if (subCategoryTransactionsSum > 0) {
           if (categoryTransactionsSum > 0) {
@@ -144,7 +126,56 @@ class GraphController {
         }
       }
     }
-    render([month: endCal.time.format("MMMMM yyyy"), categories: categories, drilldown: drilldown] as JSON)
+    render([month: startCal.time.format("MMMMM yyyy"), categories: categories, drilldown: drilldown] as JSON)
+  }
+
+  def monthlySpendingByCategory() {
+    def data = [:]
+    def categories = []
+    def now = new Date()
+    def category = Category.get(params.id)
+    def firstTransaction = Transaction.where {
+      user == springSecurityService.currentUser && subCategory.category == category
+    }?.sort { it.date }?.first()
+
+    def startCal = Calendar.instance
+    startCal.setTime(firstTransaction.date)
+    startCal.set(Calendar.DAY_OF_MONTH, 1)
+    startCal = setCalendarToMidnight(startCal)
+    def endCal = Calendar.instance
+    endCal.setTime(startCal.time)
+    endCal.add(Calendar.MONTH, 1)
+
+    int i = 0
+    while (startCal.time <= now) {
+      def transactions = Transaction.where {
+        user == springSecurityService.currentUser && subCategory.category == category && date >= startCal.time && date < endCal.time
+      }
+
+      category.subcategories?.each { SubCategory s ->
+        if (!data."${s.name}") {
+          data."${s.name}" = []
+        }
+        if (data."${s.name}".size() != i+1) {
+          data."${s.name}" << 0
+        }
+      }
+
+      transactions?.each { Transaction t ->
+        try {
+          data."${t.subCategory.name}"[i] += t.amount
+        } catch (NullPointerException e) {}
+      }
+
+      categories << startCal.format("MMMMM yyyy")
+      startCal.add(Calendar.MONTH, 1)
+      endCal.add(Calendar.MONTH, 1)
+      i++
+    }
+
+    def categoryData = []
+    data.each { k, v -> categoryData << [name: k, data: v] }
+    render([data: categoryData, categories: categories] as JSON)
   }
 
   private BigDecimal getSumForDebitTransactions(transactions) {

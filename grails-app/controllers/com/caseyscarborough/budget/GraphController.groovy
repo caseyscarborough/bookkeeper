@@ -131,7 +131,7 @@ class GraphController {
 
   def monthlySpendingByCategory() {
     def data = [:]
-    def categories = []
+    def months = []
     def now = new Date()
     def category = Category.get(params.id)
     def firstTransaction = Transaction.where {
@@ -167,15 +167,18 @@ class GraphController {
         } catch (NullPointerException e) {}
       }
 
-      categories << startCal.format("MMMMM yyyy")
+      months << startCal.format("MMMMM yyyy")
       startCal.add(Calendar.MONTH, 1)
       endCal.add(Calendar.MONTH, 1)
       i++
     }
 
     def categoryData = []
-    data.each { k, v -> categoryData << [name: k, data: v] }
-    render([data: categoryData, categories: categories] as JSON)
+    data.each { k, v ->
+      if (v != [0] * (i))
+      categoryData << [name: k, data: v]
+    }
+    render([data: categoryData, months: months, category: category.name] as JSON)
   }
 
   private BigDecimal getSumForDebitTransactions(transactions) {

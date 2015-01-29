@@ -7,14 +7,14 @@
             height: 500
           },
           title: {
-            text: 'Monthly Spending By Category',
+            text: 'Monthly Transactions Over Time for ' + data.category,
             x: -20 //center
           },
           subtitle: {
             x: -20
           },
           xAxis: {
-            categories: data.categories
+            categories: data.months
           },
           yAxis: {
             title: {

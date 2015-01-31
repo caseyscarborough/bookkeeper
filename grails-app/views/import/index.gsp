@@ -16,7 +16,7 @@
         </div>
       </g:if>
       <p>Upload a CSV that doesn't have column headers, has 5 columns, and has the following format:</p>
-      <p>
+      <div class="table-responsive">
         <table class="table table-condensed table-hover">
           <tr>
             <th>Date in M/DD/YYYY format</th>
@@ -40,7 +40,7 @@
             <td>Capital One Credit Card</td>
           </tr>
         </table>
-      </p>
+      </div>
       <g:uploadForm action="upload">
         <input type="file" name="file">
         <g:submitButton name="upload" value="Upload" class="btn btn-primary" />

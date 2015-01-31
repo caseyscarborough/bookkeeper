@@ -85,26 +85,28 @@
         </div>
       </g:if>
       <g:if test="${accountListCount > 0}">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Description</th>
-            <th>Balance</th>
-            <th>Type</th>
-            <th>Options</th>
-          </tr>
-          </thead>
-          <tbody>
-          <g:each in="${accountList}" var="account">
-            <tr id="account-${account.id}">
-              <td>${account.description}</td>
-              <td>${account.balanceString}</td>
-              <td>${account.type.name}</td>
-              <td><a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Description</th>
+              <th>Balance</th>
+              <th>Type</th>
+              <th>Options</th>
             </tr>
-          </g:each>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            <g:each in="${accountList}" var="account">
+              <tr id="account-${account.id}">
+                <td>${account.description}</td>
+                <td>${account.balanceString}</td>
+                <td>${account.type.name}</td>
+                <td><a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+              </tr>
+            </g:each>
+            </tbody>
+          </table>
+        </div>
       </g:if>
       <g:else>
         <div class="alert alert-info">

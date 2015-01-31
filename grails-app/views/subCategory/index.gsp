@@ -53,49 +53,51 @@
       <div id="subCategory-error" class="alert alert-danger" style="display:none">
         <div id="subCategory-error-message"></div>
       </div>
-      <table class="table table-condensed table-hover">
-        <thead>
-        <tr>
-          <g:sortableColumn property="name" title="Name" />
-          <g:sortableColumn property="category" title="Parent Category" />
-          <th>Transactions</th>
-          <g:sortableColumn property="type" title="Type" />
-          <th>Options</th>
-        </tr>
-        </thead>
-        <tbody>
+      <div class="table-responsive">
+        <table class="table table-condensed table-hover">
+          <thead>
           <tr>
-            <form id="new-subCategory-form" onsubmit="return false">
-            <td><input type="text" class="form-control domain-property" id="name" placeholder="Name"></td>
-            <td>
-              <select id="category" class="form-control domain-property">
-                <g:each in="${categories}" var="category">
-                  <option value="${category.id}">${category}</option>
-                </g:each>
-              </select>
-            </td>
-            <td><input class="form-control" disabled></td>
-            <td>
-              <select id="type" class="form-control domain-property">
-                <g:each in="${categoryTypes}" var="type">
-                  <option value="${type.name()}">${type.name}</option>
-                </g:each>
-              </select>
-            </td>
-            <td><button type="submit" class="btn btn-primary">New</button></td>
-            </form>
+            <g:sortableColumn property="name" title="Name" />
+            <g:sortableColumn property="category" title="Parent Category" />
+            <th>Transactions</th>
+            <g:sortableColumn property="type" title="Type" />
+            <th>Options</th>
           </tr>
-        <g:each in="${subCategories}" var="subCategory">
-          <tr id="subCategory-${subCategory.id}">
-            <td><g:link controller="transaction" action="index" params="[category: subCategory.id]">${subCategory.name}</g:link></td>
-            <td>${subCategory.category.name}</td>
-            <td>${subCategory.transactions.size()}</td>
-            <td>${subCategory.type}</td>
-            <td><a class="delete-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
-          </tr>
-        </g:each>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <tr>
+              <form id="new-subCategory-form" onsubmit="return false">
+              <td><input type="text" class="form-control domain-property" id="name" placeholder="Name"></td>
+              <td>
+                <select id="category" class="form-control domain-property">
+                  <g:each in="${categories}" var="category">
+                    <option value="${category.id}">${category}</option>
+                  </g:each>
+                </select>
+              </td>
+              <td><input class="form-control" disabled></td>
+              <td>
+                <select id="type" class="form-control domain-property">
+                  <g:each in="${categoryTypes}" var="type">
+                    <option value="${type.name()}">${type.name}</option>
+                  </g:each>
+                </select>
+              </td>
+              <td><button type="submit" class="btn btn-primary">New</button></td>
+              </form>
+            </tr>
+          <g:each in="${subCategories}" var="subCategory">
+            <tr id="subCategory-${subCategory.id}">
+              <td><g:link controller="transaction" action="index" params="[category: subCategory.id]">${subCategory.name}</g:link></td>
+              <td>${subCategory.category.name}</td>
+              <td>${subCategory.transactions.size()}</td>
+              <td>${subCategory.type}</td>
+              <td><a class="delete-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+            </tr>
+          </g:each>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

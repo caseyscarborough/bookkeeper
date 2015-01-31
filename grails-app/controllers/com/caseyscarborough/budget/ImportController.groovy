@@ -36,6 +36,7 @@ class ImportController {
         new Transaction(description: description, date: date, fromAccount: account, amount: amount, subCategory: category, user: springSecurityService.currentUser).save(flush: true)
       }
     }
-    render "complete"
+    flash.message = "Successfully imported transactions."
+    redirect(action: 'index')
   }
 }

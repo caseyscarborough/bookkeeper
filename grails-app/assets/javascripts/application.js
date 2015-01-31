@@ -7,6 +7,7 @@
 //
 //= require jquery/dist/jquery.min
 //= require bootstrap/dist/js/bootstrap.min
+//= require flat-ui/dist/js/flat-ui.min
 //= require devbridge-autocomplete/dist/jquery.autocomplete.min
 //= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require highcharts/highcharts

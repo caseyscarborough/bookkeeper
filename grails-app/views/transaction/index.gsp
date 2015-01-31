@@ -52,7 +52,15 @@
         }
       });
 
-      $("#filter").on('change', function() {
+      $("#filter-account").on('change', function() {
+        if ($(this).val() === 'ALL') {
+          window.location.href = "${createLink()}";
+          return;
+        }
+        window.location.href = "${createLink()}?account=" + $(this).val();
+      });
+
+      $("#filter-category").on('change', function() {
         if ($(this).val() === 'ALL') {
           window.location.href = "${createLink()}";
           return;
@@ -126,7 +134,7 @@
         });
       });
 
-      $("title").html($("#filter option:selected").html() + " Transactions");
+      $("title").html($("#filter-category option:selected").html() + " Transactions");
     });
   </script>
 </head>
@@ -136,12 +144,21 @@
     <div class="col-md-12">
       <div class="pull-left">
         <h1>Transactions</h1>
-        <g:paginate total="${transactionInstanceCount}" params="[category: params.category]"/>
+        <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]"/>
       </div>
       <div class="pull-right">
-        <div class="form-group">
-          <label for="filter">Filter By:</label>
-          <select class="form-control domain-property" id="filter">
+        <div class="form-group pull-left" style="margin-right:10px">
+          <label for="filter-account">Account:</label>
+          <select class="form-control domain-property" id="filter-account">
+            <option value="ALL">ALL</option>
+            <g:each in="${accounts}" var="account">
+              <option value="${account.id}" <g:if test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
+            </g:each>
+          </select>
+        </div>
+        <div class="form-group pull-left">
+          <label for="filter-category">Category:</label>
+          <select class="form-control domain-property" id="filter-category">
             <option value="ALL">ALL</option>
             <g:each in="${categories}" var="category">
               <optgroup label="${category.name}">
@@ -161,12 +178,12 @@
       <table class="table table-condensed table-hover">
         <thead>
         <tr>
-          <g:sortableColumn property="date" title="Date" />
-          <g:sortableColumn property="description" title="Description" />
-          <g:sortableColumn property="amount" title="Amount" />
-          <g:sortableColumn property="fromAccount" title="From Account" />
-          <g:sortableColumn property="subCategory" title="Category" />
-          <g:sortableColumn property="toAccount" title="To Account" />
+          <g:sortableColumn property="date" title="Date" params="[category: params.category, account: params.account]" />
+          <g:sortableColumn property="description" title="Description" params="[category: params.category, account: params.account]" />
+          <g:sortableColumn property="amount" title="Amount" params="[category: params.category, account: params.account]" />
+          <g:sortableColumn property="fromAccount" title="From Account" params="[category: params.category, account: params.account]" />
+          <g:sortableColumn property="subCategory" title="Category" params="[category: params.category, account: params.account]" />
+          <g:sortableColumn property="toAccount" title="To Account" params="[category: params.category, account: params.account]" />
           <th></th>
         </tr>
         </thead>

@@ -19,11 +19,26 @@ class TransactionController {
   def index(Integer max) {
     params.max = Math.min(max ?: 30, 100)
     def category = SubCategory.get(params.category)
-    def transactions = category ? Transaction.findAllByUserAndSubCategory(springSecurityService.currentUser, category, params) :
-        Transaction.findAllByUser(springSecurityService.currentUser, params)
+    def account = Account.get(params.account)
+    def transactions
+    def transactionCount
+
+    // Yeah, this kinda sucks
+    if (account && category) {
+      transactionCount = Transaction.findAllByFromAccountAndSubCategoryAndUser(account, category, springSecurityService.currentUser).size()
+      transactions = Transaction.findAllByFromAccountAndSubCategoryAndUser(account, category, springSecurityService.currentUser, params)
+    } else if (account) {
+      transactionCount = Transaction.findAllByFromAccountAndUser(account, springSecurityService.currentUser).size()
+      transactions = Transaction.findAllByFromAccountAndUser(account, springSecurityService.currentUser, params)
+    } else if (category) {
+      transactionCount = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser).size()
+      transactions = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser, params)
+    } else {
+      transactionCount = Transaction.findAllByUser(springSecurityService.currentUser).size()
+      transactions = Transaction.findAllByUser(springSecurityService.currentUser, params)
+    }
+
     def accounts = Account.findAllByUser(springSecurityService.currentUser)
-    def transactionCount = category ? Transaction.findAllByUserAndSubCategory(springSecurityService.currentUser, category).size() :
-        Transaction.findAllByUser(springSecurityService.currentUser).size()
     [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
   }
 

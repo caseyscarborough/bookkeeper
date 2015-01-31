@@ -175,68 +175,70 @@
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
-      <table class="table table-condensed table-hover">
-        <thead>
-        <tr>
-          <g:sortableColumn property="date" title="Date" params="[category: params.category, account: params.account]" />
-          <g:sortableColumn property="description" title="Description" params="[category: params.category, account: params.account]" />
-          <g:sortableColumn property="amount" title="Amount" params="[category: params.category, account: params.account]" />
-          <g:sortableColumn property="fromAccount" title="From Account" params="[category: params.category, account: params.account]" />
-          <g:sortableColumn property="subCategory" title="Category" params="[category: params.category, account: params.account]" />
-          <g:sortableColumn property="toAccount" title="To Account" params="[category: params.category, account: params.account]" />
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-          <form id="new-transaction-form" onsubmit="return false">
+      <div class="table-responsive">
+        <table class="table table-condensed table-hover">
+          <thead>
           <tr>
-            <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
-            <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
-            <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
-            <td>
-              <select class="form-control domain-property" id="fromAccount">
-                <g:each in="${accounts}" var="account">
-                  <option value="${account.id}">${account.description}</option>
-                </g:each>
-              </select>
-            </td>
-            <td>
-              <select class="form-control domain-property" id="subCategory">
-                <g:each in="${categories}" var="category">
-                  <optgroup label="${category.name}">
-                    <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                      <option data-type="${subcategory.type}" value="${subcategory.id}">${subcategory.name}</option>
-                    </g:each>
-                  </optgroup>
-                </g:each>
-              </select>
-            </td>
-            <td>
-              <select class="form-control domain-property" id="toAccount" disabled="disabled">
-                <g:each in="${accounts}" var="account">
-                  <option value="${account.id}">${account.description}</option>
-                </g:each>
-              </select>
-            </td>
-            <td><button id="submit" class="btn btn-primary">New</button></td>
+            <g:sortableColumn property="date" title="Date" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="description" title="Description" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="amount" title="Amount" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="fromAccount" title="From Account" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="subCategory" title="Category" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="toAccount" title="To Account" params="[category: params.category, account: params.account]" />
+            <th></th>
           </tr>
+          </thead>
+          <tbody>
+          <form id="new-transaction-form" onsubmit="return false">
+            <tr>
+              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
+              <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
+              <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
+              <td>
+                <select class="form-control domain-property" id="fromAccount">
+                  <g:each in="${accounts}" var="account">
+                    <option value="${account.id}">${account.description}</option>
+                  </g:each>
+                </select>
+              </td>
+              <td>
+                <select class="form-control domain-property" id="subCategory">
+                  <g:each in="${categories}" var="category">
+                    <optgroup label="${category.name}">
+                      <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                        <option data-type="${subcategory.type}" value="${subcategory.id}">${subcategory.name}</option>
+                      </g:each>
+                    </optgroup>
+                  </g:each>
+                </select>
+              </td>
+              <td>
+                <select class="form-control domain-property" id="toAccount" disabled="disabled">
+                  <g:each in="${accounts}" var="account">
+                    <option value="${account.id}">${account.description}</option>
+                  </g:each>
+                </select>
+              </td>
+              <td><button id="submit" class="btn btn-primary">New</button></td>
+            </tr>
           </form>
-        <g:each in="${transactions}" var="transaction">
-          <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
-            <td><span id="transaction-${transaction.id}-date">${transaction.date.format("MM/dd/yyyy")}</span></td>
-            <td><span id="transaction-${transaction.id}-description">${transaction.description}</span></td>
-            <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
-            <td><span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span></td>
-            <td><span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span></td>
-            <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
-            <td>
-              <a href="#" class="transaction-edit" data-id="${transaction.id}"><i class="glyphicon glyphicon-pencil"></i></a>
-              <a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a>
-            </td>
-          </tr>
-        </g:each>
-        </tbody>
-      </table>
+          <g:each in="${transactions}" var="transaction">
+            <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
+              <td><span id="transaction-${transaction.id}-date">${transaction.date.format("MM/dd/yyyy")}</span></td>
+              <td><span id="transaction-${transaction.id}-description">${transaction.description}</span></td>
+              <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
+              <td><span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span></td>
+              <td><span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span></td>
+              <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
+              <td>
+                <a href="#" class="transaction-edit" data-id="${transaction.id}"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a>
+              </td>
+            </tr>
+          </g:each>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

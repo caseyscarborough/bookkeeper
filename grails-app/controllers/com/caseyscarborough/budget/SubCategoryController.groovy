@@ -13,7 +13,7 @@ class SubCategoryController {
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-  def index(Integer max) {
+  def index() {
     def subCategories = SubCategory.list(params)
     def categories = Category.all
     [subCategories: subCategories, categories: categories, categoryTypes: CategoryType.findAll()]

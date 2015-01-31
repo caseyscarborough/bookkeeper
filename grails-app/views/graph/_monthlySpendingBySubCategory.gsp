@@ -3,6 +3,7 @@
     function getChartForMonthlySpending(categoryId) {
       $.getJSON("${createLink(controller: 'graph', action: 'monthlySpendingByCategory')}?id=" + categoryId, function(data) {
         $('#monthlySpendingByCategory').highcharts({
+          <g:render template="../shared/highchartsColors" />
           chart: {
             height: 500
           },

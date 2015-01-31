@@ -3,6 +3,7 @@
     function getChart(time, chart) {
       $.getJSON("${createLink(controller: 'graph', action: 'spendingWithSubcategory')}?time=" + time, function(data) {
         $('#spendingWithSubcategory' + chart).highcharts({
+          <g:render template="../shared/highchartsColors" />
           credits: { enabled: false },
           chart: {
             type: 'pie',

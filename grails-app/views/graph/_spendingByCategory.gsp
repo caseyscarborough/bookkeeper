@@ -24,6 +24,7 @@
 
       $.getJSON("${createLink(controller: 'graph', action: 'spendingByCategory')}", function(data) {
         $('#spendingByCategory').highcharts({
+          <g:render template="../shared/highchartsColors" />
           credits: { enabled: false },
           chart: {
             type: 'column',

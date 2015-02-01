@@ -36,10 +36,6 @@ class AccountController {
     }
   }
 
-  def edit(Account accountInstance) {
-    respond accountInstance
-  }
-
   @Transactional
   def delete(Long id) {
     def accountInstance = Account.get(id)

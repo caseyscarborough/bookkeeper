@@ -25,14 +25,14 @@ class TransactionService {
   }
 
   def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date) {
+    // Subtract amount from original account and add to new account,
+    // whether it be the same account or a different one.
+    transaction.fromAccount.receivePayment(transaction.amount)
+    fromAccount.sendPayment(amount)
+
     transaction.description = description
     transaction.amount = amount
-    if (fromAccount != transaction.fromAccount) {
-      transaction.fromAccount.receivePayment(transaction.amount)
-      fromAccount.sendPayment(amount)
-      transaction.fromAccount = fromAccount
-    }
-
+    transaction.fromAccount = fromAccount
     transaction.toAccount = toAccount
     transaction.subCategory = subCategory
     transaction.date = date

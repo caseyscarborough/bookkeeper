@@ -2,6 +2,7 @@
 <html>
 <head>
   <title><g:layoutTitle /></title>
+  <link rel="icon" type="image/png" href="${resource(dir: 'images', file: 'favicon.png')}">
   <asset:javascript src="application.js" />
   <asset:stylesheet src="application.css" />
   <g:layoutHead/>

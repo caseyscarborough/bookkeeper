@@ -1,3 +1,5 @@
+@import "../vendor/flat-ui/less/variables";
+
 h1 {
   font-size: 40px;
 }
@@ -7,15 +9,15 @@ h1 {
 }
 
 .debit {
-  background-color: #ffeef5;
+  background-color: @state-danger-bg;
 }
 
 .credit {
-  background-color: #ecfff0;
+  background-color: @state-success-bg;
 }
 
 .transfer {
-  background-color: #f0f0f0;
+  background-color: @state-info-bg;
 }
 
 .currentStep, .step, .nextLink, .prevLink {
@@ -35,8 +37,6 @@ h1 {
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 
 .table-condensed {
-  font-size: 14px !important;
-
   tbody > tr > td {
     padding: 2px;
   }

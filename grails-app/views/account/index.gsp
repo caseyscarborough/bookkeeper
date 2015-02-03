@@ -46,38 +46,12 @@
 <body>
 <div id="content">
   <div class="row">
-    <div class="col-md-3">
-      <h1>New Account</h1>
-
-      <form id="new-account-form" onsubmit="return false">
-        <div id="account-error" class="alert alert-danger" style="display:none">
-          <div id="account-error-message"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="description">Account Description</label>
-          <input type="text" class="form-control domain-property" id="description" placeholder="Account Description">
-        </div>
-
-        <div class="form-group">
-          <label for="balance">Balance</label>
-          <input type="number" class="form-control domain-property" id="balance" step="0.01" placeholder="Balance">
-        </div>
-
-        <div class="form-group">
-          <label for="type">Account Type</label>
-          <select class="form-control domain-property" id="type">
-            <g:each in="${accountTypes}" var="accountType">
-              <option value="${accountType}">${accountType.name}</option>
-            </g:each>
-          </select>
-        </div>
-        <button id="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-
-    <div class="col-md-9">
+    <div class="col-md-12">
       <h1>Accounts</h1>
+
+      <div id="account-error" class="alert alert-danger" style="display:none">
+        <div id="account-error-message"></div>
+      </div>
 
       <g:if test="${flash.message}">
         <div class="alert alert-info">
@@ -86,26 +60,40 @@
       </g:if>
       <g:if test="${accountListCount > 0}">
         <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th>Description</th>
-              <th>Balance</th>
-              <th>Type</th>
-              <th>Options</th>
-            </tr>
-            </thead>
-            <tbody>
-            <g:each in="${accountList}" var="account">
-              <tr id="account-${account.id}">
-                <td>${account.description}</td>
-                <td>${account.balanceString}</td>
-                <td>${account.type.name}</td>
-                <td><a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+          <form id="new-account-form" onsubmit="return false">
+            <table class="table table-hover table-condensed">
+              <thead>
+              <tr>
+                <th>Description</th>
+                <th>Balance</th>
+                <th>Type</th>
+                <th>Options</th>
               </tr>
-            </g:each>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <tr>
+                <td><input type="text" class="form-control domain-property" id="description" placeholder="Account Description"></td>
+                <td><input type="number" class="form-control domain-property" id="balance" step="0.01" placeholder="Balance"></td>
+                <td>
+                  <select class="form-control domain-property" id="type">
+                    <g:each in="${accountTypes}" var="accountType">
+                      <option value="${accountType}">${accountType.name}</option>
+                    </g:each>
+                  </select>
+                </td>
+                <td><button id="submit" class="btn btn-primary">New</button></td>
+              </tr>
+              <g:each in="${accountList}" var="account">
+                <tr id="account-${account.id}">
+                  <td>${account.description}</td>
+                  <td>${account.balanceString}</td>
+                  <td>${account.type.name}</td>
+                  <td><a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+                </tr>
+              </g:each>
+              </tbody>
+            </table>
+          </form>
         </div>
       </g:if>
       <g:else>

@@ -9,18 +9,21 @@ class GraphController {
   def springSecurityService
 
   private static final String DATE_FORMAT_FOR_MONTH_SELECTION = "yyyyMM"
+  private static final String MONTH_FORMAT = "MMMMM yyyy"
   private static final Integer NUMBER_OF_MONTHS_TO_ANALYZE = 12
 
   def index() {
     def months = []
-    def transactions = Transaction.all?.sort { it.date }
+    def transactions = Transaction.findAllByUser(springSecurityService.currentUser)?.sort { it.date }
     def startCal = Calendar.instance
     startCal.setTime(transactions.first()?.date)
+    startCal.set(Calendar.DAY_OF_MONTH, 1)
+    startCal = setCalendarToMidnight(startCal)
     def endCal = Calendar.instance
     endCal.setTime(transactions.last().date)
 
-    while (startCal.time < endCal.time) {
-      months << [name: startCal.time.format("MMMMM yyyy"), value: startCal.time.format(DATE_FORMAT_FOR_MONTH_SELECTION)]
+    while (startCal.time <= endCal.time) {
+      months << [name: startCal.time.format(MONTH_FORMAT), value: startCal.time.format(DATE_FORMAT_FOR_MONTH_SELECTION)]
       startCal.add(Calendar.MONTH, 1)
     }
     [months: months.reverse(), categories: Category.all]
@@ -65,7 +68,7 @@ class GraphController {
     int i = 0
     def months = []
     while (startCal.time <= now) {
-      months << startCal.time.format("MMM. yyyy")
+      months << startCal.time.format(MONTH_FORMAT)
       def transactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
@@ -111,8 +114,8 @@ class GraphController {
       def categoryTransactionsSum = getSumForDebitTransactions(categoryTransactions)
       if (categories.size() != i + 1) {
         if (categoryTransactionsSum > 0) {
-          categories << [drilldown: "${c.name} - ${startCal.time.format("MMM. yyyy")}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", visible: true, y: ((categoryTransactionsSum / totalTransactionsSum) * 100)]
-          drilldown << [id: "${c.name} - ${startCal.time.format("MMM. yyyy")}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", data: []]
+          categories << [drilldown: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", visible: true, y: ((categoryTransactionsSum / totalTransactionsSum) * 100)]
+          drilldown << [id: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", data: []]
         }
       }
 
@@ -126,7 +129,7 @@ class GraphController {
         }
       }
     }
-    render([month: startCal.time.format("MMMMM yyyy"), categories: categories, drilldown: drilldown] as JSON)
+    render([month: startCal.time.format(MONTH_FORMAT), categories: categories, drilldown: drilldown] as JSON)
   }
 
   def monthlySpendingByCategory() {
@@ -167,7 +170,7 @@ class GraphController {
         } catch (NullPointerException e) {}
       }
 
-      months << startCal.format("MMMMM yyyy")
+      months << startCal.format(MONTH_FORMAT)
       startCal.add(Calendar.MONTH, 1)
       endCal.add(Calendar.MONTH, 1)
       i++

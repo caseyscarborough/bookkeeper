@@ -51,6 +51,10 @@ class TransactionService {
       amount = -amount
     }
 
+    if (transaction.subCategory.type == CategoryType.CREDIT) {
+      amount = -amount
+    }
+
     if (transaction.subCategory.type == CategoryType.TRANSFER) {
       transaction.fromAccount.sendPayment(amount)
       transaction.toAccount.receivePayment(amount)

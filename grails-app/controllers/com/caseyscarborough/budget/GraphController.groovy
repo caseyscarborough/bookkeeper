@@ -3,7 +3,7 @@ package com.caseyscarborough.budget
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('IS_AUTHENTICATED_FULLY')
+@Secured('IS_AUTHENTICATED_REMEMBERED')
 class GraphController {
 
   def springSecurityService

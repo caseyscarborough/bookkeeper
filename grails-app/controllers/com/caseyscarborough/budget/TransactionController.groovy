@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 
 import java.text.ParseException
 
-@Secured('IS_AUTHENTICATED_FULLY')
+@Secured('IS_AUTHENTICATED_REMEMBERED')
 @Transactional(readOnly = true)
 class TransactionController {
 

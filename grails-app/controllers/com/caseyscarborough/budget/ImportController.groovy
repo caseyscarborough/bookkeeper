@@ -2,7 +2,7 @@ package com.caseyscarborough.budget
 
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('IS_AUTHENTICATED_FULLY')
+@Secured('IS_AUTHENTICATED_REMEMBERED')
 class ImportController {
 
   def springSecurityService

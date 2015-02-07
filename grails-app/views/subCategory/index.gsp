@@ -16,6 +16,38 @@
         });
       });
 
+      $(".edit-subCategory").click(function() {
+        var id = $(this).attr("data-id");
+        $("#edit-id").val(id);
+        $("#edit-name").val($("#subCategory-" + id + "-name").html());
+        $("#edit-category option:contains(" + $('#subCategory-' + id + '-category').html() + ")").attr('selected', true);
+        $("#edit-type option:contains(" + $('#subCategory-' + id + '-type').html() + ")").attr('selected', true);
+        $("#edit-subCategory-modal").modal('show');
+      });
+
+      $("#edit-subCategory-form").on('submit', function() {
+        var data = {};
+        $(".modal-domain-property").each(function () {
+          data[$(this).attr("name")] = $(this).val();
+        });
+
+        $.ajax({
+          type: "post",
+          data: data,
+          url: "${createLink(controller: 'subCategory', action: 'update')}",
+          dataType: 'json',
+          success: function () {
+            window.location.reload()
+          },
+          error: function (response) {
+            $("#subCategory-edit-error-message").html(response.responseJSON.message);
+            $(".modal-domain-property").parent().removeClass('has-error');
+            $("#edit-" + response.responseJSON.field).focus().parent().addClass('has-error');
+            $("#subCategory-edit-error").show();
+          }
+        });
+      });
+
       $("#new-subCategory-form").on('submit', function () {
         var data = {};
         $(".domain-property").each(function () {
@@ -88,11 +120,18 @@
             </tr>
           <g:each in="${subCategories}" var="subCategory">
             <tr id="subCategory-${subCategory.id}">
-              <td><g:link controller="transaction" action="index" params="[category: subCategory.id]">${subCategory.name}</g:link></td>
-              <td>${subCategory.category.name}</td>
+              <td>
+                <g:link controller="transaction" action="index" params="[category: subCategory.id]">
+                  <span id="subCategory-${subCategory.id}-name">${subCategory.name}</span>
+                </g:link>
+              </td>
+              <td><span id="subCategory-${subCategory.id}-category">${subCategory.category.name}</span></td>
               <td>${subCategory.transactions.size()}</td>
-              <td>${subCategory.type}</td>
-              <td><a class="delete-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a></td>
+              <td><span id="subCategory-${subCategory.id}-type">${subCategory.type}</span></td>
+              <td>
+                <a class="edit-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a class="delete-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a>
+              </td>
             </tr>
           </g:each>
           </tbody>
@@ -101,5 +140,6 @@
     </div>
   </div>
 </div>
+<g:render template="editSubCategoryModal" />
 </body>
 </html>

@@ -11,7 +11,7 @@ class SubCategoryController {
 
   def messageSource
 
-  static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+  static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
   def index() {
     def subCategories = SubCategory.list(params)
@@ -24,6 +24,24 @@ class SubCategoryController {
     def category = Category.get(params.category)
     def type = CategoryType.valueOf(params.type)
     def subCategory = new SubCategory(name: params.name, category: category, type: type)
+    if (!subCategory.save(flush: true)) {
+      def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render error as JSON
+      return
+    }
+    render subCategory as JSON
+  }
+
+  @Transactional
+  def update() {
+    def subCategory = SubCategory.get(params.id)
+    def category = Category.get(params.category)
+    def type = CategoryType.valueOf(params.type)
+    subCategory.name = params.name
+    subCategory.category = category
+    subCategory.type = type
+
     if (!subCategory.save(flush: true)) {
       def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
       response.status = HttpStatus.BAD_REQUEST.value()

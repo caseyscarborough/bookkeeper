@@ -14,6 +14,7 @@ class SubCategoryController {
   static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
   def index() {
+    params.sort = params.sort ?: "name"
     def subCategories = SubCategory.list(params)
     def categories = Category.all
     [subCategories: subCategories, categories: categories, categoryTypes: CategoryType.findAll()]

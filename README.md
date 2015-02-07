@@ -8,7 +8,7 @@ This is a small Grails app that allows you to track and analyze your spending ov
 
 ## Running the Application
 
-Clone the repository, then run on of the following from the root of the project:
+Clone the repository, then run one of the following from the root of the project:
 
 ```bash
 # Windows

@@ -228,7 +228,11 @@
               <td><span id="transaction-${transaction.id}-description">${transaction.description}</span></td>
               <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
               <td><span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span></td>
-              <td><span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span></td>
+              <td>
+                <g:link controller="transaction" action="index" params="[category: transaction.subCategory.id]">
+                  <span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span>
+                </g:link>
+              </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
               <td>
                 <a href="#" class="transaction-edit" data-id="${transaction.id}"><i class="glyphicon glyphicon-pencil"></i></a>

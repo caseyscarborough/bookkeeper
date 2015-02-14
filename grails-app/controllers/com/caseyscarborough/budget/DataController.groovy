@@ -1,14 +1,8 @@
 package com.caseyscarborough.budget
 
-import grails.plugin.springsecurity.annotation.Secured
+class DataController {
 
-@Secured('IS_AUTHENTICATED_REMEMBERED')
-class ImportController {
-
-  def springSecurityService
-
-  def index() {
-  }
+  def index() {}
 
   def upload() {
     def file = request.getFile('file')

@@ -41,9 +41,9 @@
           </tr>
         </table>
       </div>
-      <g:uploadForm action="upload">
+      <g:uploadForm action="import">
         <input type="file" name="file">
-        <g:submitButton name="upload" value="Upload" class="btn btn-primary" />
+        <g:submitButton name="upload" value="import" class="btn btn-primary" />
       </g:uploadForm>
     </div>
   </div>

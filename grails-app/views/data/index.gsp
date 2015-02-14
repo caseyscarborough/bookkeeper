@@ -51,7 +51,7 @@
   </div>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <h2>Export</h2>
+      <h1>Export</h1>
       <p>Select the format you'd like to export your transactions to:</p>
       <ul>
         <li><g:link action="exportToExcel" target="_blank">Excel</g:link></li>

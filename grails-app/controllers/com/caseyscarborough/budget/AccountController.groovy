@@ -15,10 +15,14 @@ class AccountController {
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
   def index() {
+    def totalNetWorth = 0
     def accountList = Account.findAllByUser(springSecurityService.currentUser)
+    accountList.each { Account account ->
+      totalNetWorth += (account.type.isDebt) ? -account.balance : account.balance
+    }
     [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()?.sort {
       it.name
-    }]
+    }, totalNetWorth: totalNetWorth]
   }
 
   @Transactional

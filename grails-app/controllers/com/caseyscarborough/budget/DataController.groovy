@@ -1,6 +1,12 @@
 package com.caseyscarborough.budget
 
+import grails.plugin.springsecurity.annotation.Secured
+import pl.touk.excel.export.WebXlsxExporter
+
+@Secured('IS_AUTHENTICATED_REMEMBERED')
 class DataController {
+
+  def springSecurityService
 
   def index() {}
 
@@ -32,5 +38,18 @@ class DataController {
     }
     flash.message = "Successfully imported transactions."
     redirect(action: 'index')
+  }
+
+  def exportToExcel() {
+    def transactions = Transaction.findAllByUser(springSecurityService.currentUser)?.sort { it.date }?.reverse()
+    def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type']
+    def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type']
+
+    new WebXlsxExporter().with {
+      setResponseHeaders(response)
+      fillHeader(headers)
+      add(transactions, properties)
+      save(response.outputStream)
+    }
   }
 }

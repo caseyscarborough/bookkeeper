@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="layout" content="main">
-  <title></title>
+  <title>Import/Export</title>
 </head>
 
 <body>
@@ -19,11 +19,11 @@
       <div class="table-responsive">
         <table class="table table-condensed table-hover">
           <tr>
-            <th>Date in M/DD/YYYY format</th>
-            <th>Description of transaction</th>
-            <th>Amount with no dollar sign</th>
-            <th>Category Name (If it doesn't exist, it will be created)</th>
-            <th>Account Name (Must match exactly how it is in the system)</th>
+            <th>Date as M/D/YYYY</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Account Name (Must match the name in the system)</th>
           </tr>
           <tr>
             <td>1/4/2015</td>
@@ -41,10 +41,21 @@
           </tr>
         </table>
       </div>
+
       <g:uploadForm action="import">
-        <input type="file" name="file">
-        <g:submitButton name="upload" value="import" class="btn btn-primary" />
+        <input type="file" name="file"><br>
+        <g:submitButton name="upload" value="Import" class="btn btn-primary" />
       </g:uploadForm>
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h2>Export</h2>
+      <p>Select the format you'd like to export your transactions to:</p>
+      <ul>
+        <li><g:link action="exportToExcel" target="_blank">Excel</g:link></li>
+      </ul>
     </div>
   </div>
 </div>

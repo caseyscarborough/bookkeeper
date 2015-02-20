@@ -106,6 +106,7 @@
         $("#edit-fromAccount option:contains(" + $('#transaction-' + id + '-fromAccount').html() + ")").attr('selected', true);
         $("#edit-subCategory option:contains(" + $('#transaction-' + id + '-subCategory').html() + ")").attr('selected', true);
         $("#edit-transaction-modal").modal('show');
+        updateEditToAccount();
       });
 
       $("#edit-transaction-form").on('submit', function() {

@@ -51,7 +51,7 @@
 
           <div class="form-group">
             <label for="edit-toAccount">To Account</label>
-            <select class="form-control domain-property" id="edit-toAccount" name="toAccount" disabled="disabled">
+            <select class="form-control modal-domain-property" id="edit-toAccount" name="toAccount" disabled="disabled">
               <g:each in="${accounts}" var="account">
                 <option value="${account.id}">${account.description}</option>
               </g:each>

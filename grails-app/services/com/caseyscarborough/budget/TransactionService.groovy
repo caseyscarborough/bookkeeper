@@ -27,9 +27,7 @@ class TransactionService {
   def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date) {
     // Subtract amount from original account and add to new account,
     // whether it be the same account or a different one.
-    transaction.fromAccount.receivePayment(transaction.amount)
-    fromAccount.sendPayment(amount)
-
+    updateAccountBalance(transaction, true)
     transaction.description = description
     transaction.amount = amount
     transaction.fromAccount = fromAccount
@@ -37,6 +35,7 @@ class TransactionService {
     transaction.subCategory = subCategory
     transaction.date = date
     transaction.save(flush: true)
+    updateAccountBalance(transaction, false)
     return transaction
   }
 
@@ -56,7 +55,9 @@ class TransactionService {
     }
 
     if (transaction.subCategory.type == CategoryType.TRANSFER) {
+      log.info("Deducting ${amount} dollars from ${transaction.fromAccount}")
       transaction.fromAccount.sendPayment(amount)
+      log.info("Receiving ${amount} dollars to ${transaction.toAccount}")
       transaction.toAccount.receivePayment(amount)
       transaction.toAccount?.save(flush: true)
       transaction.fromAccount?.save(flush: true)

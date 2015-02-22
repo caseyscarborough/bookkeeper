@@ -2,6 +2,7 @@ package com.caseyscarborough.budget
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.cache.annotation.Cacheable
 
 @Secured('IS_AUTHENTICATED_REMEMBERED')
 class GraphController {
@@ -16,17 +17,21 @@ class GraphController {
   def index() {
     def months = []
     def transactions = Transaction.findAllByUser(springSecurityService.currentUser)?.sort { it.date }
-    def startCal = Calendar.instance
-    startCal.setTime(transactions.first()?.date)
-    startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal = setCalendarToMidnight(startCal)
-    def endCal = Calendar.instance
-    endCal.setTime(transactions.last().date)
 
-    while (startCal.time <= endCal.time) {
-      months << [name: startCal.time.format(MONTH_FORMAT), value: startCal.time.format(DATE_FORMAT_FOR_MONTH_SELECTION)]
-      startCal.add(Calendar.MONTH, 1)
+    if (transactions.size() > 0) {
+      def startCal = Calendar.instance
+      startCal.setTime(transactions.first()?.date)
+      startCal.set(Calendar.DAY_OF_MONTH, 1)
+      startCal = setCalendarToMidnight(startCal)
+      def endCal = Calendar.instance
+      endCal.setTime(transactions.last().date)
+
+      while (startCal.time <= endCal.time) {
+        months << [name: startCal.time.format(MONTH_FORMAT), value: startCal.time.format(DATE_FORMAT_FOR_MONTH_SELECTION)]
+        startCal.add(Calendar.MONTH, 1)
+      }
     }
+
     [months: months.reverse(), categories: Category.all]
   }
 

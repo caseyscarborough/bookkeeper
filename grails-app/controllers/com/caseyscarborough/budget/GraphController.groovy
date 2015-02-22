@@ -137,54 +137,57 @@ class GraphController {
 
   def monthlySpendingByCategory() {
     def data = [:]
+    def categoryData = []
     def months = []
     def now = new Date()
     def category = Category.get(params.id)
     def firstTransaction = Transaction.where {
       user == springSecurityService.currentUser && subCategory.category == category
-    }?.sort { it.date }?.first()
+    }?.sort { it.date }
 
-    def startCal = Calendar.instance
-    startCal.setTime(firstTransaction.date)
-    startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal = setCalendarToMidnight(startCal)
-    def endCal = Calendar.instance
-    endCal.setTime(startCal.time)
-    endCal.add(Calendar.MONTH, 1)
-
-    int i = 0
-    while (startCal.time <= now) {
-      def transactions = Transaction.where {
-        user == springSecurityService.currentUser && subCategory.category == category && date >= startCal.time && date < endCal.time
-      }
-
-      category.subcategories?.each { SubCategory s ->
-        if (!data."${s.name}") {
-          data."${s.name}" = []
-        }
-        if (data."${s.name}".size() != i + 1) {
-          data."${s.name}" << 0
-        }
-      }
-
-      transactions?.each { Transaction t ->
-        try {
-          data."${t.subCategory.name}"[i] += t.amount
-        } catch (NullPointerException e) {
-        }
-      }
-
-      months << startCal.format(MONTH_FORMAT)
-      startCal.add(Calendar.MONTH, 1)
+    if (firstTransaction) {
+      def startCal = Calendar.instance
+      startCal.setTime(firstTransaction.first().date)
+      startCal.set(Calendar.DAY_OF_MONTH, 1)
+      startCal = setCalendarToMidnight(startCal)
+      def endCal = Calendar.instance
+      endCal.setTime(startCal.time)
       endCal.add(Calendar.MONTH, 1)
-      i++
+
+      int i = 0
+      while (startCal.time <= now) {
+        def transactions = Transaction.where {
+          user == springSecurityService.currentUser && subCategory.category == category && date >= startCal.time && date < endCal.time
+        }
+
+        category.subcategories?.each { SubCategory s ->
+          if (!data."${s.name}") {
+            data."${s.name}" = []
+          }
+          if (data."${s.name}".size() != i + 1) {
+            data."${s.name}" << 0
+          }
+        }
+
+        transactions?.each { Transaction t ->
+          try {
+            data."${t.subCategory.name}"[i] += t.amount
+          } catch (NullPointerException e) {
+          }
+        }
+
+        months << startCal.format(MONTH_FORMAT)
+        startCal.add(Calendar.MONTH, 1)
+        endCal.add(Calendar.MONTH, 1)
+        i++
+      }
+
+      data.each { k, v ->
+        if (v != [0] * (i))
+          categoryData << [name: k, data: v]
+      }
     }
 
-    def categoryData = []
-    data.each { k, v ->
-      if (v != [0] * (i))
-        categoryData << [name: k, data: v]
-    }
     render([data: categoryData, months: months, category: category.name] as JSON)
   }
 

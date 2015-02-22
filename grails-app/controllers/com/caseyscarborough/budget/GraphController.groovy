@@ -2,7 +2,6 @@ package com.caseyscarborough.budget
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.springframework.cache.annotation.Cacheable
 
 @Secured('IS_AUTHENTICATED_REMEMBERED')
 class GraphController {

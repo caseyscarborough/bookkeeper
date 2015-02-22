@@ -94,7 +94,7 @@
           </table>
         </form>
       </div>
-      <p>Current Total Balance: $${totalNetWorth}</p>
+      <p>Current Total Balance: ${String.format("\$%.2f", totalNetWorth)}</p>
     </div>
 
   </div>

@@ -11,6 +11,7 @@ class GraphController {
   private static final String DATE_FORMAT_FOR_MONTH_SELECTION = "yyyyMM"
   private static final String MONTH_FORMAT = "MMMMM yyyy"
   private static final Integer NUMBER_OF_MONTHS_TO_ANALYZE = 12
+  private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
   def index() {
     def months = []
@@ -30,28 +31,26 @@ class GraphController {
   }
 
   def spendingByDay() {
-    def data = []
     def now = new Date()
     def startCal = Calendar.instance
-    def endCal = Calendar.instance
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE))
-    endCal.setTime(startCal.time)
-    endCal.add(Calendar.DAY_OF_YEAR, 1)
-    def time = endCal.getTimeInMillis()
+    def time = startCal.getTimeInMillis()
+    def data = [0] * getDaysInPast(startCal.time)
 
-    while (endCal.time <= now) {
-      def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
-      BigDecimal total = 0
-      transactions?.each { Transaction t ->
-        if (t.subCategory.type == CategoryType.DEBIT) {
-          total += t.amount
-        }
+    def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, now, springSecurityService.currentUser)
+    transactions?.each { Transaction t ->
+      if (t.subCategory.type == CategoryType.DEBIT) {
+        data[data.size() - getDaysInPast(t.date)] += t.amount
       }
-      data << total
-      startCal.add(Calendar.DAY_OF_YEAR, 1)
-      endCal.add(Calendar.DAY_OF_YEAR, 1)
     }
+
     render([data: data, time: time] as JSON)
+  }
+
+  private getDaysInPast(Date date) {
+    def now = new Date()
+    def daysInPast = (int) ((now.getTime() - date.getTime()) / DAY_IN_MILLIS)
+    return daysInPast
   }
 
   def spendingByCategory() {
@@ -73,7 +72,7 @@ class GraphController {
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
           if (!data."${t.subCategory.category}") {
-            data."${t.subCategory.category}" = [(BigDecimal)0] * NUMBER_OF_MONTHS_TO_ANALYZE
+            data."${t.subCategory.category}" = [(BigDecimal) 0] * NUMBER_OF_MONTHS_TO_ANALYZE
           }
           try {
             data."${t.subCategory.category}"[i] += t.amount
@@ -159,7 +158,7 @@ class GraphController {
         if (!data."${s.name}") {
           data."${s.name}" = []
         }
-        if (data."${s.name}".size() != i+1) {
+        if (data."${s.name}".size() != i + 1) {
           data."${s.name}" << 0
         }
       }
@@ -167,7 +166,8 @@ class GraphController {
       transactions?.each { Transaction t ->
         try {
           data."${t.subCategory.name}"[i] += t.amount
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+        }
       }
 
       months << startCal.format(MONTH_FORMAT)
@@ -179,7 +179,7 @@ class GraphController {
     def categoryData = []
     data.each { k, v ->
       if (v != [0] * (i))
-      categoryData << [name: k, data: v]
+        categoryData << [name: k, data: v]
     }
     render([data: categoryData, months: months, category: category.name] as JSON)
   }

@@ -5,5 +5,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured('permitAll')
 class HomeController {
 
-  def index() {}
+  def index() {
+    redirect(controller: "transaction", action: "index")
+  }
 }

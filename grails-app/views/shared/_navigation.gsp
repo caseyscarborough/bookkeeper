@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Budget</a>
+      <g:link controller="transaction" action="index" class="navbar-brand">Budget</g:link>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

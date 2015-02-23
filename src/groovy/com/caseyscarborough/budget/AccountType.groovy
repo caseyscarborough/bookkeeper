@@ -6,7 +6,8 @@ enum AccountType {
   CREDIT_CARD("Credit Card", true),
   CHECKING_ACCOUNT("Checking Account", false),
   SAVINGS_ACCOUNT("Savings Account", false),
-  CASH("Cash", false)
+  CASH("Cash", false),
+  RETIREMENT_ACCOUNT("Retirement Account", false)
 
   private final String name
   private final Boolean isDebt

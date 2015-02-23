@@ -44,7 +44,9 @@ class GraphController {
     def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, now, springSecurityService.currentUser)
     transactions?.each { Transaction t ->
       if (t.subCategory.type == CategoryType.DEBIT) {
-        data[data.size() - getDaysInPast(t.date)] += t.amount
+        try {
+          data[data.size() - getDaysInPast(t.date)] += t.amount
+        } catch (NullPointerException e) {}
       }
     }
 

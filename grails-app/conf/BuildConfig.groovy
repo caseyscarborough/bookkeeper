@@ -67,6 +67,10 @@ grails.project.dependency.resolution = {
     runtime ":hibernate4:4.3.6.1" // or ":hibernate:3.6.10.18"
     runtime ":database-migration:1.4.0"
     compile ":spring-security-core:2.0-RC4"
+    runtime ":cors:1.1.6"
+    compile ":spring-security-rest:1.5.0.M1", {
+      excludes ('cors','spring-security-core')
+    }
     compile ":csv:0.3.1"
     compile ":excel-export:0.2.1"
 

@@ -1,3 +1,1 @@
-/**
- * Created by Casey on 2/25/15.
- */
+angular.module('budget', ['ngRoute']);

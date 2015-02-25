@@ -120,6 +120,15 @@ log4j.main = {
       'net.sf.ehcache.hibernate'
 }
 
+grails.assets.excludes = [
+    "bootstrap/less/*.less",
+    "bootstrap/less/mixins/*.less",
+    "bootstrap-datepicker/less/*.less",
+    "flat-ui/less/*.less",
+    "flat-ui/less/modules/*.less",
+    "flat-ui/less/mixins/*.less"
+]
+
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.caseyscarborough.budget.security.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.caseyscarborough.budget.security.UserRole'

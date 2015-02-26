@@ -68,7 +68,7 @@ grails.project.dependency.resolution = {
     runtime ":database-migration:1.4.0"
     compile ":spring-security-core:2.0-RC4"
     runtime ":cors:1.1.6"
-    compile ":spring-security-rest:1.5.0.M1", {
+    compile ":spring-security-rest:1.5.0.M2", {
       excludes ('cors','spring-security-core')
     }
     compile ":csv:0.3.1"

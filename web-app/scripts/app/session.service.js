@@ -74,5 +74,20 @@ function sessionService($http, jwtHelper) {
         sessionStorage.removeItem('token');
     };
 
+    service.isInAnyRole = function(roles) {
+        for (var i = 0; i < roles.length; i++) {
+            console.log("Checking if has role " + roles[i]);
+            if (service.isInRole(roles[i])) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    service.isInRole = function(role) {
+        var roles = service.getRoles();
+        return roles.indexOf(role) !== -1;
+    };
+
     return service;
 }

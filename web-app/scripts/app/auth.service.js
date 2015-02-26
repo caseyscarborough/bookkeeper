@@ -11,7 +11,7 @@ function authService($state, $rootScope, $q, sessionService) {
     service.authorize = function(event) {
         var requiredRoles = $rootScope.toState.data.roles;
 
-        if (requiredRoles && requiredRoles.length > 0 && !isInAnyRole(requiredRoles)) {
+        if (requiredRoles && requiredRoles.length > 0 && !sessionService.isInAnyRole(requiredRoles)) {
             event.preventDefault();
 
             if (sessionService.getIsLoggedIn()) {
@@ -23,21 +23,6 @@ function authService($state, $rootScope, $q, sessionService) {
             }
         }
     };
-
-    function isInAnyRole(roles) {
-        for (var i = 0; i < roles.length; i++) {
-            console.log("Checking if has role " + roles[i]);
-            if (isInRole(roles[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function isInRole(role) {
-        var roles = sessionService.getRoles();
-        return roles.indexOf(role) !== -1;
-    }
 
     return service;
 };

@@ -11,6 +11,6 @@ function NavbarController($scope, sessionService, $state) {
 
     $scope.logout = function() {
         sessionService.logout();
-        $state.go('home');
+        $state.go('login');
     };
 }

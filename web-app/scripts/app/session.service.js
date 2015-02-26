@@ -7,7 +7,7 @@ function sessionService($http, jwtHelper) {
     var service = {};
 
     service.login = function (user, success, error) {
-        $http.post('http://localhost:8080/budget/api/login', user)
+        $http.post('api/login', user)
             .success(function (data, status, headers, config) {
                 if (user.rememberMe) {
                     localStorage.setItem('token', data.access_token);

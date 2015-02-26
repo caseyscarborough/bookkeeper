@@ -137,7 +137,7 @@ grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
 
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     '/'              : ['permitAll'],
-    '/index'         : ['permitAll'],
+    '/index.html'    : ['permitAll'],
     '/index.gsp'     : ['permitAll'],
     '/assets/**'     : ['permitAll'],
     '/**/js/**'      : ['permitAll'],
@@ -145,7 +145,13 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     '/**/images/**'  : ['permitAll'],
     '/**/favicon.ico': ['permitAll'],
     '/api/**'        : ['permitAll'],
-    '/**'            : ['isFullyAuthenticated()']
+    '/**'            : ['permitAll']
+]
+
+grails.plugin.springsecurity.filterChain.chainMap = [
+    '/api/**' : 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter', // Stateless chain
+    '/data/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter', // Stateless chain
+    '/**'     : 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'   // Traditional chain
 ]
 
 grails.plugin.springsecurity.rememberMe.persistent = false

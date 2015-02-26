@@ -3,7 +3,6 @@ package com.caseyscarborough.budget
 import grails.plugin.springsecurity.annotation.Secured
 import pl.touk.excel.export.WebXlsxExporter
 
-@Secured('IS_AUTHENTICATED_REMEMBERED')
 class DataController {
 
   def springSecurityService

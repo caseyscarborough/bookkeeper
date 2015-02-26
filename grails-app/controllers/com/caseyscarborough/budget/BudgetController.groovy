@@ -3,7 +3,6 @@ package com.caseyscarborough.budget
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('IS_AUTHENTICATED_REMEMBERED')
 class BudgetController {
 
   def budgetService

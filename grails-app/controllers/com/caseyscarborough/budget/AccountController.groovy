@@ -5,7 +5,6 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.http.HttpStatus
 
-@Secured('IS_AUTHENTICATED_REMEMBERED')
 @Transactional(readOnly = true)
 class AccountController {
 

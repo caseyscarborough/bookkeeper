@@ -5,7 +5,6 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.http.HttpStatus
 
-@Secured('ROLE_ADMIN')
 @Transactional(readOnly = true)
 class SubCategoryController {
 

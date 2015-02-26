@@ -3,9 +3,9 @@
 angular.module('budgetApp')
     .factory('authService', authService);
 
-authService.$inject = ['$state', '$rootScope', '$q', 'sessionService'];
+authService.$inject = ['$state', '$rootScope', 'sessionService'];
 
-function authService($state, $rootScope, $q, sessionService) {
+function authService($state, $rootScope, sessionService) {
     var service = {};
 
     service.authorize = function(event) {
@@ -15,7 +15,7 @@ function authService($state, $rootScope, $q, sessionService) {
             event.preventDefault();
 
             if (sessionService.getIsLoggedIn()) {
-                // TODO: redirect to access denied
+                $state.go('access-denied');
             } else {
                 $rootScope.returnToState = $rootScope.toState;
                 $rootScope.returnToStateParams = $rootScope.toStateParams;

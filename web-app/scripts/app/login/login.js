@@ -8,7 +8,7 @@ angular.module('budgetApp')
             url: '/login',
             parent: 'site',
             views: {
-                'content': {
+                'content@': {
                     templateUrl: 'scripts/app/login/login.html',
                     controller: 'LoginController'
                 }

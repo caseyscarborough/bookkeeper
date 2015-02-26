@@ -7,5 +7,4 @@ angular.module('budgetApp')
 HomeController.$inject = ['$scope'];
 
 function HomeController($scope) {
-    console.log("Entered HomeController...");
 }

@@ -2,11 +2,14 @@
 
 angular.module('budgetApp')
 
-    .config(function ($stateProvider) {
-        console.log('Setting login state...');
+    .config(['$stateProvider', function ($stateProvider) {
         $stateProvider.state('login', {
             url: '/login',
             parent: 'site',
+            data: {
+                roles: [],
+                pageTitle: 'Login'
+            },
             views: {
                 'content@': {
                     templateUrl: 'scripts/app/login/login.html',
@@ -14,4 +17,4 @@ angular.module('budgetApp')
                 }
             }
         });
-    });
+    }]);

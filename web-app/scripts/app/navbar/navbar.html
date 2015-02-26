@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-inverse">
+<nav class="navbar navbar-default navbar-inverse" ng-switch="isLoggedIn()">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -13,14 +13,14 @@
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
         <li><a ui-sref="account">Accounts</a></li>
-        <li><a ui-sref="transaction">Transactions</a></li>
+        <li><a ui-sref="transactions">Transactions</a></li>
         <li><a ui-sref="graph">Graphs</a></li>
         <li><a ui-sref="data">Import/Export</a></li>
         <li><a ui-sref="subCategory">SubCategory Management</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a ui-sref="login">Login</a></li>
-        <li><a ui-sref="logout">Logout</a></li>
+        <li><a ui-sref="login" ng-switch-when="false">Login</a></li>
+        <li><a href="" ng-click="logout()" ng-switch-when="true">Logout</a></li>
       </ul>
     </div>
   </div>

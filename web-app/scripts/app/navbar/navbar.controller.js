@@ -4,8 +4,13 @@ angular.module('budgetApp')
 
     .controller('NavbarController', NavbarController);
 
-NavbarController.$inject = ['$scope'];
+NavbarController.$inject = ['$scope', 'sessionService', '$state'];
 
-function NavbarController($scope) {
-    console.log('In NavbarController');
+function NavbarController($scope, sessionService, $state) {
+    $scope.isLoggedIn = sessionService.getIsLoggedIn;
+
+    $scope.logout = function() {
+        sessionService.logout();
+        $state.go('home');
+    };
 }

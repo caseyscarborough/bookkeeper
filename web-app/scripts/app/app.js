@@ -1,14 +1,26 @@
 'use strict';
 
-angular.module('budgetApp', ['ui.router'])
-    .run(function () {
-        console.log('App started');
-    })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        console.log('Setting otherwise route...');
+angular.module('budgetApp', ['ui.router', 'angular-jwt'])
+    .run(['$window', '$rootScope', 'authService', function ($window, $rootScope, authService) {
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            $rootScope.toState = toState;
+            $rootScope.toStateParams = toStateParams;
+            authService.authorize(event);
+        });
+
+        $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+            $rootScope.previousStateName = fromState.name;
+            $rootScope.previousStateParams = fromParams;
+
+            if (toState.data.pageTitle) {
+                $window.document.title = toState.data.pageTitle;
+            }
+        });
+    }])
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/');
 
-        console.log('Setting the site state...');
         $stateProvider.state('site', {
             'abstract': true,
             views: {
@@ -18,4 +30,4 @@ angular.module('budgetApp', ['ui.router'])
                 }
             }
         });
-    });
+    }]);

@@ -76,3 +76,8 @@ h1 {
 .checkbox input[type="checkbox"] {
     margin-top: 11px;
 }
+
+.form-error {
+    font-size: 13px;
+    color: red;
+}

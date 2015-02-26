@@ -1,19 +1,77 @@
 angular.module('budgetApp')
     .factory('sessionService', sessionService);
 
-sessionService.$inject = ['$http'];
+sessionService.$inject = ['$http', 'jwtHelper'];
 
-function sessionService($http) {
+function sessionService($http, jwtHelper) {
     var service = {};
 
-    service.login = function (user) {
+    service.login = function (user, success, error) {
         $http.post('http://localhost:8080/budget/api/login', user)
-            .success(function (data) {
-                console.log("Success!");
+            .success(function (data, status, headers, config) {
+                if (user.rememberMe) {
+                    localStorage.setItem('token', data.access_token);
+                } else {
+                    sessionStorage.setItem('token', data.access_token);
+                }
+                if (success && typeof success === "function") {
+                    success();
+                }
             })
-            .error(function (data) {
-                console.log("Error!");
+            .error(function (data, status, headers, config) {
+                localStorage.removeItem('token');
+                sessionStorage.removeItem('token');
+                var message;
+                if (status === 401) {
+                    message = "The username or password you've entered is incorrect.";
+                } else {
+                    message = "An error occurred while trying to log you in. Please try again."
+                }
+                if (error && typeof error === "function") {
+                    error(message);
+                }
             });
+    };
+
+    service.getRoles = function() {
+        var token = service.getToken();
+        if (token !== null) {
+            var tokenPayload = jwtHelper.decodeToken(token);
+            console.log(tokenPayload);
+            return tokenPayload.roles;
+        }
+        return [];
+    };
+
+    service.getUsername = function() {
+        var token = service.getToken();
+        if (token !== null) {
+            var tokenPayload = jwtHelper.decodeToken(token);
+            return tokenPayload.sub;
+        }
+        return null;
+    };
+
+    service.getIsLoggedIn = function() {
+        var token = service.getToken();
+        return token !== null && !jwtHelper.isTokenExpired(token);
+    };
+
+    service.getToken = function() {
+        if (localStorage.getItem('token') !== null) {
+            return localStorage.getItem('token');
+        }
+
+        if (sessionStorage.getItem('token') !== null) {
+            return sessionStorage.getItem('token');
+        }
+
+        return null;
+    };
+
+    service.logout = function() {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
     };
 
     return service;

@@ -133,7 +133,6 @@ grails.assets.excludes = [
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.caseyscarborough.budget.security.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.caseyscarborough.budget.security.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.caseyscarborough.budget.security.Role'
-grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
 
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     '/'              : ['permitAll'],
@@ -150,16 +149,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 
 grails.plugin.springsecurity.filterChain.chainMap = [
     '/api/**' : 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter', // Stateless chain
-    '/data/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter', // Stateless chain
     '/**'     : 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'   // Traditional chain
 ]
 
-grails.plugin.springsecurity.rememberMe.persistent = false
-grails.plugin.springsecurity.rest.login.useJsonCredentials = true
-grails.plugin.springsecurity.rest.login.failureStatusCode = 401
-grails.plugin.springsecurity.rest.token.storage.useGorm = true
-grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'com.caseyscarborough.budget.security.AuthToken'
-grails.plugin.springsecurity.rest.token.storage.gorm.tokenValuePropertyName = 'token'
-grails.plugin.springsecurity.rest.token.storage.gorm.usernamePropertyName = 'username'
-grails.plugin.springsecurity.rest.token.validation.headerName = 'X-Auth-Token'
-grails.plugin.springsecurity.rest.token.validation.useBearerToken = false
+grails.plugin.springsecurity.rememberMe.persistent = true

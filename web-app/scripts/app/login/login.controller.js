@@ -1,8 +1,11 @@
-angular.module('budget.login', [])
-    .controller('LoginCtrl', LoginCtrl);
+'use strict';
 
-LoginCtrl.$inject('$scope');
+angular.module('budgetApp')
+    .controller('LoginController', LoginController);
 
-function LoginCtrl($scope) {
+LoginController.$inject = ['$scope'];
+
+function LoginController($scope) {
+    console.log("In LoginController");
     $scope.user = {};
 }

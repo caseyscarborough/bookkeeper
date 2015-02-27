@@ -37,7 +37,6 @@ function sessionService($http, jwtHelper) {
         var token = service.getToken();
         if (token !== null) {
             var tokenPayload = jwtHelper.decodeToken(token);
-            console.log(tokenPayload);
             return tokenPayload.roles;
         }
         return [];
@@ -54,7 +53,11 @@ function sessionService($http, jwtHelper) {
 
     service.getIsLoggedIn = function() {
         var token = service.getToken();
-        return token !== null && !jwtHelper.isTokenExpired(token);
+        var isLoggedIn = token !== null && !jwtHelper.isTokenExpired(token);
+        if (!isLoggedIn) {
+            service.logout();
+        }
+        return isLoggedIn;
     };
 
     service.getToken = function() {
@@ -76,7 +79,6 @@ function sessionService($http, jwtHelper) {
 
     service.isInAnyRole = function(roles) {
         for (var i = 0; i < roles.length; i++) {
-            console.log("Checking if has role " + roles[i]);
             if (service.isInRole(roles[i])) {
                 return true;
             }

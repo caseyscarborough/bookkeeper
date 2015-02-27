@@ -5,6 +5,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.http.HttpStatus
 
+@Secured('ROLE_USER')
 @Transactional(readOnly = true)
 class AccountController {
 
@@ -14,8 +15,8 @@ class AccountController {
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
   def index() {
-    def accountList = Account.findAllByUser(springSecurityService.currentUser)
-    [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()?.sort {it.name}]
+    def accounts = Account.findAllByUser(springSecurityService.currentUser)
+    render ([total: accounts.size(), accounts: accounts, accountTypes: AccountType.findAll()?.sort {it.name}] as JSON)
   }
 
   @Transactional
@@ -36,8 +37,10 @@ class AccountController {
   @Transactional
   def delete(Long id) {
     def accountInstance = Account.get(id)
-    accountInstance.delete(flush: true)
-    response.status = HttpStatus.NO_CONTENT.value()
-    render([] as JSON)
+    if (accountInstance.user == springSecurityService.currentUser) {
+      accountInstance.delete(flush: true)
+      response.status = HttpStatus.NO_CONTENT.value()
+      render([] as JSON)
+    }
   }
 }

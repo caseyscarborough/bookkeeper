@@ -1,5 +1,4 @@
 package com.caseyscarborough.budget
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
@@ -7,6 +6,7 @@ import org.springframework.http.HttpStatus
 
 import java.text.ParseException
 
+@Secured('ROLE_USER')
 @Transactional(readOnly = true)
 class TransactionController {
 
@@ -37,8 +37,8 @@ class TransactionController {
       transactions = Transaction.findAllByUser(springSecurityService.currentUser, params)
     }
 
-    def accounts = Account.findAllByUser(springSecurityService.currentUser)
-    [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
+    render([total: transactionCount, transactions: transactions, offset: params.offset, max: params.max] as JSON)
+    // [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
   }
 
   @Transactional

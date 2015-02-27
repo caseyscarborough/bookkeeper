@@ -7,24 +7,15 @@ h1 {
 }
 
 .debit {
-    background-color: red;
+    background-color: #f2dede;
 }
 
 .credit {
-    background-color: green;
+    background-color: #dff0d8;
 }
 
 .transfer {
-    background-color: yellow;
-}
-
-.currentStep, .step, .nextLink, .prevLink {
-    padding: 5px;
-}
-
-.currentStep {
-    background-color: #ddd;
-    cursor: not-allowed;
+    background-color: #fcf8e3;
 }
 
 .autocomplete-suggestions {
@@ -59,6 +50,7 @@ h1 {
 
 .table-condensed tbody > tr > td {
     padding: 2px;
+    font-size: 16px;
 }
 
 .graph {
@@ -80,4 +72,11 @@ h1 {
 .form-error {
     font-size: 13px;
     color: red;
+}
+.pagination li > a {
+    line-height: 18px;
+    min-height: 34px;
+    min-width: 34px;
+    outline: none;
+    padding: 8px 8px;
 }

@@ -1,0 +1,127 @@
+<div id="content" ng-switch="isLoaded()">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="pull-left">
+        <h1>Transactions</h1>
+      </div>
+      <div class="pull-right" ng-switch-when="true">
+        <div class="form-group pull-left" style="margin-right:10px">
+          <label for="filter-account">Account:</label>
+          <select class="form-control domain-property" id="filter-account">
+            <option value="ALL">ALL</option>
+            <option ng-repeat="account in accounts" value="{{account.id}}">{{account.description}}</option>
+          </select>
+        </div>
+        <div class="form-group pull-left">
+          <label for="filter-category">Category:</label>
+          <select class="form-control domain-property" id="filter-category">
+            <option value="ALL">ALL</option>
+            <optgroup label="{{category.name}}" ng-repeat="category in categories">
+              <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}" ng-repeat="subcategory in category.subcategories">
+                {{subcategory.name}}
+              </option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <br>
+
+      <div class="spinner" ng-switch-when="false">
+        Loading transactions...
+      </div>
+
+      <div id="transaction-error" class="alert alert-danger" style="display:none">
+        <div id="transaction-error-message"></div>
+      </div>
+
+      <nav class="pagination" ng-switch-when="true">
+        <ul>
+          <li>
+            <a href="" aria-label="Previous" ng-click="getPage(currentPage - 1)">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li ng-repeat="page in pages track by $index" ng-class="{active: $index+1==currentPage}">
+            <a href="" ng-click="getPage($index+1)">{{$index+1}}</a>
+          </li>
+          <li class="disabled">
+            <a href="" aria-label="Next" ng-click="getPage(currentPage + 1)">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="table-responsive">
+        <table class="table table-condensed table-hover" ng-switch-when="true">
+          <thead>
+          <tr>
+            <g:sortableColumn property="date" title="Date"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="description" title="Description"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="amount" title="Amount"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="fromAccount" title="From Account"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="subCategory" title="Category"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="toAccount" title="To Account"
+                              params="[category: params.category, account: params.account]"/>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <form id="new-transaction-form" onsubmit="return false">
+            <tr>
+              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1">
+              </td>
+              <td><input type="text" class="form-control domain-property" id="description"
+                         placeholder="Transaction Description"></td>
+              <td><input type="number" class="form-control domain-property" id="amount" step="0.01"
+                         placeholder="Amount"></td>
+              <td>
+                <select class="form-control domain-property" id="fromAccount">
+                  <option ng-repeat="account in accounts" value="{{account.id}}">{{account.description}}</option>
+                </select>
+              </td>
+              <td>
+                <select class="form-control domain-property" id="subCategory">
+                  <optgroup label="{{category.name}}" ng-repeat="category in categories">
+                    <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}" ng-repeat="subcategory in category.subcategories">
+                      {{subcategory.name}}
+                    </option>
+                  </optgroup>
+                </select>
+              </td>
+              <td>
+                <select class="form-control domain-property" id="toAccount" disabled="disabled">
+                  <option ng-repeat="account in accounts" value="{{account.id}}">{{account.description}}</option>
+                </select>
+              </td>
+              <td>
+                <button id="submit" class="btn btn-primary">New</button>
+              </td>
+            </tr>
+          </form>
+          <tr id="transaction-" class="{{transaction.cssClass}}" ng-repeat="transaction in transactions">
+            <td><span id="transaction-{{transaction.id}}-date">{{transaction.date}}</span></td>
+            <td><span id="transaction-{{transaction.id}}-description">{{transaction.description}}</span></td>
+            <td>$<span id="transaction-{{transaction.id}}-amount">{{transaction.amount}}</span></td>
+            <td><span id="transaction-{{transaction.id}}fromAccount">{{transaction.fromAccount.description}}</span></td>
+            <td><span id="transaction-{{transaction.id}}-subCategory">{{transaction.subCategory.name}}</span></td>
+            <td><span id="transaction-{{transaction.id}}-toAccount">{{transaction.toAccount.description}}</span></td>
+            <td>
+              <a href="#" class="transaction-edit" data-id="${transaction.id}"><i
+                  class="glyphicon glyphicon-pencil"></i></a>
+              <a href="#" class="transaction-delete" data-id="${transaction.id}"><i
+                  class="glyphicon glyphicon-remove"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

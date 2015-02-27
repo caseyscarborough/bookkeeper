@@ -1,13 +1,80 @@
+import com.caseyscarborough.budget.Account
+import com.caseyscarborough.budget.AccountType
 import com.caseyscarborough.budget.Category
 import com.caseyscarborough.budget.CategoryType
 import com.caseyscarborough.budget.SubCategory
+import com.caseyscarborough.budget.Transaction
 import com.caseyscarborough.budget.security.Role
 import com.caseyscarborough.budget.security.User
 import com.caseyscarborough.budget.security.UserRole
+import grails.converters.JSON
 
 class BootStrap {
 
   def init = { servletContext ->
+
+    JSON.registerObjectMarshaller(Transaction) { Transaction t ->
+      return [
+          id: t.id,
+          description: t.description,
+          date: t.date.format("M/d/yyyy"),
+          amount: t.amount,
+          fromAccount: [
+              id: t.fromAccount.description,
+              description: t.fromAccount.description
+          ],
+          toAccount: [
+              id: t.toAccount?.description,
+              description: t.toAccount?.description
+          ],
+          subCategory: [
+              id: t.subCategory.id,
+              name: t.subCategory.name
+          ],
+          cssClass: t.cssClass
+      ]
+    }
+
+    JSON.registerObjectMarshaller(AccountType) { AccountType a ->
+      return [
+          value: a.name(),
+          name: a.name,
+          isDebt: a.isDebt
+      ]
+    }
+
+    JSON.registerObjectMarshaller(CategoryType) { CategoryType c ->
+      return [
+          value: c.name(),
+          name: c.name
+      ]
+    }
+
+    JSON.registerObjectMarshaller(Account) { Account a ->
+      return [
+          id: a.id,
+          description: a.description,
+          balance: a.balance,
+          type: a.type
+      ]
+    }
+
+    JSON.registerObjectMarshaller(SubCategory) { SubCategory s ->
+      return [
+          id: s.id,
+          name: s.name,
+          type: s.type
+      ]
+    }
+
+    JSON.registerObjectMarshaller(Category) { Category c ->
+      return [
+          id: c.id,
+          name: c.name,
+          subcategories: c.subcategories,
+          type: c.type
+      ]
+    }
 
     if (User.count == 0) {
       log.debug("Creating default user...")
@@ -116,6 +183,7 @@ class BootStrap {
       savings.save(flush: true)
 
       def misc = new Category(name: "Miscellaneous", type: CategoryType.DEBIT)
+
     }
   }
   def destroy = {

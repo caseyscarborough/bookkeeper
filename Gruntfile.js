@@ -1,10 +1,5 @@
-// Custom usemin step (from jhipster)
-var useminAutoprefixer = {
-    name: 'autoprefixer',
-    createConfig: require('grunt-usemin/lib/config/cssmin').createConfig
-};
-
 module.exports = function (grunt) {
+    'use strict';
 
     grunt.initConfig({
         config: {
@@ -76,8 +71,8 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'webapp/scripts/app.js',
-                'scripts/app/**/*.js'
+                'web-app/scripts/app/app.js',
+                'web-app/scripts/app/**/*.js'
             ]
         }
     });

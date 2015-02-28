@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('budgetApp', ['ui.router', 'angular-jwt'])
-    .run(['$window', '$rootScope', 'authService', function ($window, $rootScope, authService) {
+    .run(function ($window, $rootScope, authService) {
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;
@@ -17,9 +17,8 @@ angular.module('budgetApp', ['ui.router', 'angular-jwt'])
                 $window.document.title = toState.data.pageTitle;
             }
         });
-    }])
-    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'jwtInterceptorProvider',
-        function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
+    })
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
             $urlRouterProvider.otherwise('/');
 
             $stateProvider.state('site', {
@@ -36,4 +35,4 @@ angular.module('budgetApp', ['ui.router', 'angular-jwt'])
                 return sessionService.getToken();
             }];
             $httpProvider.interceptors.push('jwtInterceptor');
-        }]);
+        });

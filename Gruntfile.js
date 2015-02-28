@@ -100,6 +100,11 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
+    grunt.registerTask('default', [
+        'less:dist',
+        'watch'
+    ]);
+
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');

@@ -69,6 +69,16 @@ module.exports = function (grunt) {
                 files: ['web-app/assets/stylesheets/*.less'],
                 tasks: ['less:dist']
             }
+        },
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: [
+                'Gruntfile.js',
+                'webapp/scripts/app.js',
+                'scripts/app/**/*.js'
+            ]
         }
     });
 
@@ -85,12 +95,13 @@ module.exports = function (grunt) {
     ]);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-rev');
+    grunt.loadNpmTasks('grunt-usemin');
 };

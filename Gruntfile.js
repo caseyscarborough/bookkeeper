@@ -63,6 +63,12 @@ module.exports = function (grunt) {
                     ]
                 }]
             }
+        },
+        watch: {
+            styles: {
+                files: ['web-app/assets/stylesheets/*.less'],
+                tasks: ['less:dist']
+            }
         }
     });
 
@@ -84,6 +90,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-rev');
 };

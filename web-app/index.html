@@ -13,6 +13,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <!-- build:css assets/stylesheets/application.css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="bower_components/flat-ui/dist/css/flat-ui.css" />
     <link rel="stylesheet" href="assets/stylesheets/application.css">
@@ -20,16 +22,15 @@
 </head>
 
 <body ng-app="budgetApp">
-
 <div ui-view="navbar"></div>
 <div ui-view="content"></div>
 
+<!-- build:js scripts/application.js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
-
 
 <script src="scripts/app/app.js"></script>
 <script src="scripts/app/auth/session.service.js"></script>
@@ -45,6 +46,6 @@
 <script src="scripts/app/accounts/accounts.service.js"></script>
 <script src="scripts/app/categories/categories.service.js"></script>
 <script src="scripts/app/error/error.js"></script>
-
+<!-- endbuild -->
 </body>
 </html>

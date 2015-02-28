@@ -2,7 +2,7 @@
 
 angular.module('budgetApp')
 
-    .config(['$stateProvider', function ($stateProvider) {
+    .config(function ($stateProvider) {
         $stateProvider.state('login', {
             url: '/login',
             parent: 'site',
@@ -17,4 +17,4 @@ angular.module('budgetApp')
                 }
             }
         });
-    }]);
+    });

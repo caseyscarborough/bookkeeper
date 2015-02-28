@@ -1,33 +1,31 @@
+'use strict';
+
 angular.module('budgetApp')
-    .factory('sessionService', sessionService);
-
-sessionService.$inject = ['$http', 'jwtHelper'];
-
-function sessionService($http, jwtHelper) {
+    .factory('sessionService', function ($window, $http, jwtHelper) {
     var service = {};
 
     service.login = function (user, success, error) {
         $http.post('api/login', user)
             .success(function (data, status, headers, config) {
                 if (user.rememberMe) {
-                    localStorage.setItem('token', data.access_token);
+                    $window.localStorage.setItem('token', data.access_token);
                 } else {
-                    sessionStorage.setItem('token', data.access_token);
+                    $window.sessionStorage.setItem('token', data.access_token);
                 }
-                if (success && typeof success === "function") {
+                if (success && typeof success === 'function') {
                     success();
                 }
             })
             .error(function (data, status, headers, config) {
-                localStorage.removeItem('token');
-                sessionStorage.removeItem('token');
+                $window.localStorage.removeItem('token');
+                $window.sessionStorage.removeItem('token');
                 var message;
                 if (status === 401) {
-                    message = "The username or password you've entered is incorrect.";
+                    message = 'The username or password you\'ve entered is incorrect.';
                 } else {
-                    message = "An error occurred while trying to log you in. Please try again."
+                    message = 'An error occurred while trying to log you in. Please try again.';
                 }
-                if (error && typeof error === "function") {
+                if (error && typeof error === 'function') {
                     error(message);
                 }
             });
@@ -61,20 +59,20 @@ function sessionService($http, jwtHelper) {
     };
 
     service.getToken = function() {
-        if (localStorage.getItem('token') !== null) {
-            return localStorage.getItem('token');
+        if ($window.localStorage.getItem('token') !== null) {
+            return $window.localStorage.getItem('token');
         }
 
-        if (sessionStorage.getItem('token') !== null) {
-            return sessionStorage.getItem('token');
+        if ($window.sessionStorage.getItem('token') !== null) {
+            return $window.sessionStorage.getItem('token');
         }
 
         return null;
     };
 
     service.logout = function() {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
+        $window.localStorage.removeItem('token');
+        $window.sessionStorage.removeItem('token');
     };
 
     service.isInAnyRole = function(roles) {
@@ -92,4 +90,4 @@ function sessionService($http, jwtHelper) {
     };
 
     return service;
-}
+});

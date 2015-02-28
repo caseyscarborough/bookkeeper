@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('budgetApp')
-  .config(['$stateProvider', function($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider.state('access-denied', {
       url: '/access-denied',
       parent: 'site',
@@ -14,5 +14,5 @@ angular.module('budgetApp')
           templateUrl: 'scripts/app/error/access-denied.html'
         }
       }
-    })
-  }]);
+    });
+  });

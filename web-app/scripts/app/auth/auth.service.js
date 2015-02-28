@@ -1,28 +1,24 @@
 'use strict';
 
 angular.module('budgetApp')
-    .factory('authService', authService);
+    .factory('authService', function ($state, $rootScope, sessionService) {
+        var service = {};
 
-authService.$inject = ['$state', '$rootScope', 'sessionService'];
+        service.authorize = function(event) {
+            var requiredRoles = $rootScope.toState.data.roles;
 
-function authService($state, $rootScope, sessionService) {
-    var service = {};
+            if (requiredRoles && requiredRoles.length > 0 && !sessionService.isInAnyRole(requiredRoles)) {
+                event.preventDefault();
 
-    service.authorize = function(event) {
-        var requiredRoles = $rootScope.toState.data.roles;
-
-        if (requiredRoles && requiredRoles.length > 0 && !sessionService.isInAnyRole(requiredRoles)) {
-            event.preventDefault();
-
-            if (sessionService.getIsLoggedIn()) {
-                $state.go('access-denied');
-            } else {
-                $rootScope.returnToState = $rootScope.toState;
-                $rootScope.returnToStateParams = $rootScope.toStateParams;
-                $state.go('login');
+                if (sessionService.getIsLoggedIn()) {
+                    $state.go('access-denied');
+                } else {
+                    $rootScope.returnToState = $rootScope.toState;
+                    $rootScope.returnToStateParams = $rootScope.toStateParams;
+                    $state.go('login');
+                }
             }
-        }
-    };
+        };
 
-    return service;
-};
+        return service;
+    });

@@ -3,9 +3,6 @@
 angular.module('budgetApp')
     .controller('TransactionController', function ($scope, transactionService, accountsService, categoriesService) {
 
-        $scope.pageChanged = function() {
-            console.log('Page changed to: ' + $scope.currentPage);
-        };
         $scope.maxSize = 10;
         $scope.totalItems = 0;
         $scope.currentPage = 1;
@@ -20,9 +17,11 @@ angular.module('budgetApp')
             setPage($scope.currentPage);
         };
 
+        $scope.$watch('itemsPerPage', function() {
+            setPage($scope.currentPage);
+        });
+
         function setPage(page) {
-            console.log("Setting to page " + page);
-            // TODO: Develop a simpler implementation
             transactionService.getTransactions(page, {max: $scope.itemsPerPage}, function (data) {
                 $scope.pages = new Array(Math.ceil(data.total / data.max));
 

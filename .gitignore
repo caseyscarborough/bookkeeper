@@ -24,3 +24,6 @@ test/
 grails-app/conf/DataSource.groovy
 *.db
 *.old
+
+# Ignore javascript folders
+node_modules

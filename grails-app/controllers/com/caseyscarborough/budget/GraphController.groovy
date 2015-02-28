@@ -193,6 +193,28 @@ class GraphController {
     render([data: categoryData, months: months, category: category.name] as JSON)
   }
 
+  def spendingByPayee() {
+    def data = [:]
+
+    def transactions = Transaction.findAllByUser(springSecurityService.currentUser)
+    transactions?.each { Transaction t ->
+      if (t.subCategory.type == CategoryType.DEBIT) {
+        if (!data."${t.description}") {
+          data."${t.description}" = 0
+        }
+        data."${t.description}" += t.amount
+      }
+    }
+
+    data = data.sort { it.value }
+    def output = []
+    data.each { k, v ->
+      output << [k, v]
+    }
+    output = output.reverse().take(30).reverse()
+    render output as JSON
+  }
+
   private BigDecimal getSumForDebitTransactions(transactions) {
     def sum = 0
     transactions?.each { Transaction t ->

@@ -47,18 +47,12 @@
         <table class="table table-condensed table-hover" ng-switch-when="true">
           <thead>
           <tr>
-            <g:sortableColumn property="date" title="Date"
-                              params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="description" title="Description"
-                              params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="amount" title="Amount"
-                              params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="fromAccount" title="From Account"
-                              params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="subCategory" title="Category"
-                              params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="toAccount" title="To Account"
-                              params="[category: params.category, account: params.account]"/>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>From Account</th>
+            <th>Category</th>
+            <th>To Account</th>
             <th></th>
           </tr>
           </thead>

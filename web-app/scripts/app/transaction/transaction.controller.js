@@ -11,6 +11,7 @@ angular.module('budgetApp')
         $scope.categories = [];
         $scope.pages = [];
         $scope.itemsPerPage = 30;
+        $scope.newTransaction = {};
 
         setPage($scope.currentPage);
         $scope.pageChanged = function () {

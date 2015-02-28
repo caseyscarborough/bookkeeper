@@ -28,31 +28,11 @@
       <div class="clearfix"></div>
       <br>
 
-      <div class="spinner" ng-switch-when="false">
-        Loading transactions...
-      </div>
-
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
 
-      <nav class="pagination" ng-switch-when="true">
-        <ul>
-          <li>
-            <a href="" aria-label="Previous" ng-click="getPage(currentPage - 1)">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li ng-repeat="page in pages track by $index" ng-class="{active: $index+1==currentPage}">
-            <a href="" ng-click="getPage($index+1)">{{$index+1}}</a>
-          </li>
-          <li class="disabled">
-            <a href="" aria-label="Next" ng-click="getPage(currentPage + 1)">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" items-per-page="itemsPerPage" boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()"></pagination>
 
       <div class="table-responsive">
         <table class="table table-condensed table-hover" ng-switch-when="true">

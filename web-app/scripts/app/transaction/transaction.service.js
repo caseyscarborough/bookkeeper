@@ -5,7 +5,7 @@ angular.module('budgetApp')
         var service = {};
 
         service.getTransactions = function (page, params, success) {
-            params.max = params.max || 30;
+            params.max = params.max || 10;
             params.offset = (page - 1) * params.max;
             $http.get('api/transactions', {params: params})
                 .success(function (data) {

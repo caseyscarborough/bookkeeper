@@ -1,0 +1,23 @@
+{
+  "name": "budget",
+  "version": "0.0.0",
+  "description": "A Grails app that allows you to track and analyze your spending over time.",
+  "main": "Gruntfile.js",
+  "private": true,
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caseyscarborough/budget.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caseyscarborough/budget/issues"
+  },
+  "homepage": "https://github.com/caseyscarborough/budget"
+}

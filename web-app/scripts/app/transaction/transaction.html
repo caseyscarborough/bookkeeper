@@ -17,7 +17,8 @@
           <select class="form-control domain-property" id="filter-category">
             <option value="ALL">ALL</option>
             <optgroup label="{{category.name}}" ng-repeat="category in categories">
-              <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}" ng-repeat="subcategory in category.subcategories">
+              <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}"
+                      ng-repeat="subcategory in category.subcategories">
                 {{subcategory.name}}
               </option>
             </optgroup>
@@ -89,7 +90,8 @@
               <td>
                 <select class="form-control domain-property" id="subCategory">
                   <optgroup label="{{category.name}}" ng-repeat="category in categories">
-                    <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}" ng-repeat="subcategory in category.subcategories">
+                    <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}"
+                            ng-repeat="subcategory in category.subcategories">
                       {{subcategory.name}}
                     </option>
                   </optgroup>

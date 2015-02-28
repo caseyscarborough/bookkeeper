@@ -5,9 +5,9 @@ angular.module('budgetApp')
         $scope.user = {};
         $scope.error = '';
 
-        $scope.login = function() {
+        $scope.login = function () {
             if ($scope.form.$valid) {
-                sessionService.login($scope.user, function() {
+                sessionService.login($scope.user, function () {
                     if ($rootScope.returnToState) {
                         $state.go($rootScope.returnToState.name, $rootScope.returnToStateParams);
                         $rootScope.returnToState = null;
@@ -15,7 +15,7 @@ angular.module('budgetApp')
                     } else {
                         $state.go('home');
                     }
-                }, function(error) {
+                }, function (error) {
                     $scope.error = error;
                 });
             } else {

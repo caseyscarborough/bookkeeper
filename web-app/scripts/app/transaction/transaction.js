@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('budgetApp')
-    .config(function($stateProvider) {
+    .config(function ($stateProvider) {
         $stateProvider.state('transactions', {
             url: '/transactions',
             parent: 'site',

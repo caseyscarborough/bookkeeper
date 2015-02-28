@@ -4,7 +4,7 @@ angular.module('budgetApp')
     .factory('authService', function ($state, $rootScope, sessionService) {
         var service = {};
 
-        service.authorize = function(event) {
+        service.authorize = function (event) {
             var requiredRoles = $rootScope.toState.data.roles;
 
             if (requiredRoles && requiredRoles.length > 0 && !sessionService.isInAnyRole(requiredRoles)) {

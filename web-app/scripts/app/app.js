@@ -19,20 +19,20 @@ angular.module('budgetApp', ['ui.router', 'angular-jwt'])
         });
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
-            $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/');
 
-            $stateProvider.state('site', {
-                'abstract': true,
-                views: {
-                    'navbar@': {
-                        templateUrl: 'scripts/app/navbar/navbar.html',
-                        controller: 'NavbarController'
-                    }
+        $stateProvider.state('site', {
+            'abstract': true,
+            views: {
+                'navbar@': {
+                    templateUrl: 'scripts/app/navbar/navbar.html',
+                    controller: 'NavbarController'
                 }
-            });
-
-            jwtInterceptorProvider.tokenGetter = ['sessionService', function(sessionService) {
-                return sessionService.getToken();
-            }];
-            $httpProvider.interceptors.push('jwtInterceptor');
+            }
         });
+
+        jwtInterceptorProvider.tokenGetter = ['sessionService', function (sessionService) {
+            return sessionService.getToken();
+        }];
+        $httpProvider.interceptors.push('jwtInterceptor');
+    });

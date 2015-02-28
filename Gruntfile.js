@@ -74,6 +74,16 @@ module.exports = function (grunt) {
                 'web-app/scripts/app/app.js',
                 'web-app/scripts/app/**/*.js'
             ]
+        },
+        ngAnnotate: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/concat/scripts',
+                    src: '*.js',
+                    dest: '.tmp/concat/scripts'
+                }]
+            }
         }
     });
 
@@ -82,6 +92,7 @@ module.exports = function (grunt) {
         'less:dist',
         'useminPrepare',
         'concat:generated',
+        'ngAnnotate',
         'uglify:generated',
         'cssmin:generated',
         'rev:dist',
@@ -97,6 +108,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-rev');
     grunt.loadNpmTasks('grunt-usemin');
 };

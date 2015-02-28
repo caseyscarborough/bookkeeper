@@ -26,7 +26,8 @@ grails-app/conf/DataSource.groovy
 *.db
 *.old
 
-# Ignore javascript folders
+# Ignore javascript folders and built files
 node_modules
 .tmp
+web-app/assets/stylesheets/application.css
 

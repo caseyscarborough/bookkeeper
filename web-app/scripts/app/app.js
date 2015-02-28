@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('budgetApp', ['budgetApp.services', 'ui.router', 'angular-jwt'])
+angular.module('budgetApp', ['ui.router', 'angular-jwt'])
     .run(['$window', '$rootScope', 'authService', function ($window, $rootScope, authService) {
+        console.log("App started");
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;

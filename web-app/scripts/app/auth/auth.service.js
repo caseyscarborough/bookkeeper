@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('budgetApp.services')
+angular.module('budgetApp')
     .factory('authService', authService);
 
 authService.$inject = ['$state', '$rootScope', 'sessionService'];

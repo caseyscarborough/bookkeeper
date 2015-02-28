@@ -1,4 +1,4 @@
-angular.module('budgetApp.services', [])
+angular.module('budgetApp')
     .factory('sessionService', sessionService);
 
 sessionService.$inject = ['$http', 'jwtHelper'];

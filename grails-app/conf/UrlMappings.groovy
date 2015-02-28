@@ -7,9 +7,15 @@ class UrlMappings {
       }
     }
 
-    "/api/categories"(controller: 'category', action: 'index')
-    "/api/accounts"(controller: 'account', action: 'index')
-    "/api/transactions"(controller: 'transaction', action: 'index')
+    "/api/categories"(controller: 'category', parseRequest: true) {
+      action = [GET: 'index', POST: 'save']
+    }
+    "/api/accounts"(controller: 'account', parseRequest: true) {
+      action = [GET: 'index', POST: 'save']
+    }
+    "/api/transactions"(controller: 'transaction', parseRequest: true) {
+      action = [GET: 'index', POST: 'save']
+    }
     "500"(view: '/error')
   }
 }

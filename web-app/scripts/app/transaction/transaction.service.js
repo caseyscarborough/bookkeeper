@@ -16,5 +16,19 @@ angular.module('budgetApp')
                 });
         };
 
+        service.createTransaction = function (transaction, success, error) {
+            $http.post('api/transactions', transaction)
+                .success(function (data) {
+                    if (success && typeof success === 'function') {
+                        success(data);
+                    }
+                })
+                .error(function (data) {
+                    if (error && typeof error === 'function') {
+                        error(data);
+                    }
+                });
+        };
+
         return service;
     });

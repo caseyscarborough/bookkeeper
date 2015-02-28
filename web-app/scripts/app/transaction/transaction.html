@@ -37,41 +37,44 @@
       <div class="clearfix"></div>
       <br>
 
-      <div id="transaction-error" class="alert alert-danger" style="display:none">
-        <div id="transaction-error-message"></div>
-      </div>
-
       <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" items-per-page="itemsPerPage" boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()"></pagination>
 
+      <div id="transaction-error" class="alert alert-danger" ng-show="errorShown">
+        <div id="transaction-error-message">{{ errorMessage }}</div>
+      </div>
+
       <div class="table-responsive">
+        <form name="form" onsubmit="return false" novalidate="">
         <table class="table table-condensed table-hover" ng-switch-when="true">
           <thead>
           <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>From Account</th>
-            <th>Category</th>
+            <th>Date <span ng-show="form.$submitted && form.date.$error.required" class="form-error">Required</span></th>
+            <th>Description <span ng-show="form.$submitted && form.description.$error.required" class="form-error">Required</span></th>
+            <th>
+              Amount
+              <span ng-show="form.$submitted && form.amount.$error.required" class="form-error">Required</span>
+              <span ng-show="form.$submitted && form.amount.$error.number" class="form-error">Must be a number.</span>
+            </th>
+            <th>From Account <span ng-show="form.$submitted && form.fromAccount.$error.required" class="form-error">Required</span></th>
+            <th>Category <span ng-show="form.$submitted && form.subCategory.$error.required" class="form-error">Required</span></th>
             <th>To Account</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <form id="new-transaction-form" onsubmit="return false">
             <tr>
-              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1">
-              </td>
-              <td><input type="text" class="form-control domain-property" id="description"
-                         placeholder="Transaction Description"></td>
-              <td><input type="number" class="form-control domain-property" id="amount" step="0.01"
-                         placeholder="Amount"></td>
+              <td><input type="date" class="form-control domain-property" id="date" name="date" placeholder="Date" ng-model="newTransaction.date" required></td>
+              <td><input type="text" class="form-control domain-property" id="description" name="description"
+                         placeholder="Transaction Description" ng-model="newTransaction.description" required></td>
+              <td><input type="number" class="form-control domain-property" id="amount" step="0.01" name="amount"
+                         placeholder="Amount" ng-model="newTransaction.amount" required></td>
               <td>
-                <select class="form-control domain-property" id="fromAccount">
+                <select class="form-control domain-property" name="fromAccount" id="fromAccount" ng-model="newTransaction.fromAccount" required>
                   <option ng-repeat="account in accounts" value="{{account.id}}">{{account.description}}</option>
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="subCategory">
+                <select class="form-control domain-property" name="subCategory" id="subCategory" ng-model="newTransaction.subCategory" required>
                   <optgroup label="{{category.name}}" ng-repeat="category in categories">
                     <option data-type="{{subcategory.type.value}}" value="{{subcategory.id}}"
                             ng-repeat="subcategory in category.subcategories">
@@ -81,15 +84,14 @@
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="toAccount" disabled="disabled">
+                <select class="form-control domain-property" id="toAccount" disabled="disabled" ng-model="newTransaction.toAccount">
                   <option ng-repeat="account in accounts" value="{{account.id}}">{{account.description}}</option>
                 </select>
               </td>
               <td>
-                <button id="submit" class="btn btn-primary">New</button>
+                <button id="submit" type="submit" class="btn btn-primary" ng-click="createTransaction()">New</button>
               </td>
             </tr>
-          </form>
           <tr id="transaction-" class="{{transaction.cssClass}}" ng-repeat="transaction in transactions">
             <td><span id="transaction-{{transaction.id}}-date">{{transaction.date}}</span></td>
             <td><span id="transaction-{{transaction.id}}-description">{{transaction.description}}</span></td>
@@ -106,6 +108,7 @@
           </tr>
           </tbody>
         </table>
+        </form>
       </div>
     </div>
   </div>

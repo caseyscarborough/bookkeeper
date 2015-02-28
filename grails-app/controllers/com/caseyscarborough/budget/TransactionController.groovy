@@ -45,7 +45,7 @@ class TransactionController {
   def save() {
     try {
       def transaction = transactionService.createTransaction(
-          params.description, new BigDecimal(params.amount), Account.get(params.fromAccount), Account.get(params.toAccount), SubCategory.get(params.subCategory), Date.parse("MM/dd/yyyy", params.date), springSecurityService.currentUser)
+          request.JSON?.description, new BigDecimal((String)(request.JSON?.amount ?: "")), Account.get(request.JSON?.fromAccount), Account.get(request.JSON?.toAccount), SubCategory.get(request.JSON?.subCategory), Date.parse("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", request.JSON?.date), springSecurityService.currentUser)
       response.status = HttpStatus.CREATED.value()
       render transaction as JSON
     } catch (TransactionException e) {
@@ -56,7 +56,10 @@ class TransactionController {
       render([message: "Please enter a valid amount for the transaction.", field: "amount"] as JSON)
     } catch (ParseException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render([message: "Please enter a valid date in the format DD/MM/YYYY.", field: "date"] as JSON)
+      render([message: "Please enter a valid date in the format MM/DD/YYYY.", field: "date"] as JSON)
+    } catch (NullPointerException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: "One or more required fields are missing."] as JSON)
     }
   }
 

@@ -201,7 +201,7 @@
                   </g:each>
                 </select>
               </td>
-              <td><input type="file" id="receipt" style="width: 90px"></td>
+              <td style="vertical-align: middle; width: 95px"><input type="file" id="receipt" style="width: 100%"></td>
               <td><button id="submit" class="btn btn-primary">New</button></td>
             </tr>
           </form>

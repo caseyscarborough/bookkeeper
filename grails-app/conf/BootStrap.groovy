@@ -20,6 +20,7 @@ class BootStrap {
       user.save(flush: true)
 
       UserRole.create(me, admin, true)
+      UserRole.create(me, user, true)
     }
 
     if (Category.count == 0) {

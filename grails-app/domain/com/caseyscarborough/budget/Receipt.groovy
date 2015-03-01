@@ -7,8 +7,12 @@ class Receipt {
   Long size
   String contentType
 
-  static belongsTo = [receipt: Receipt]
+  static belongsTo = [transaction: Transaction]
 
   static constraints = {
+  }
+
+  String getPath() {
+    "${location}/${filename}"
   }
 }

@@ -90,6 +90,12 @@
         $("#edit-transaction-modal").modal('show');
         updateEditToAccount();
       });
+
+      $(".view-receipt").click(function() {
+        var url = $(this).attr("data-url");
+        $("#current-receipt").attr("src", url);
+        $("#view-receipt-modal").modal('show');
+      });
     });
   </script>
 </head>
@@ -207,7 +213,11 @@
                 </g:link>
               </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
-              <td></td>
+              <td>
+                <g:if test="${transaction.receipt}">
+                  <a class="view-receipt cursor" data-url="${createLink(controller: 'receipt', action: 'download', id: transaction.receipt.id)}">View</a>
+                </g:if>
+              </td>
               <td>
                 <a href="#" class="transaction-edit" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-pencil"></i></a>
@@ -223,5 +233,6 @@
   </div>
 </div>
 <g:render template="editTransactionModal"/>
+<g:render template="viewReceiptModal"/>
 </body>
 </html>

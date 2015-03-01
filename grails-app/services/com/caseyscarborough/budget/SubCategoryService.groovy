@@ -46,7 +46,7 @@ class SubCategoryService {
     try {
       subCategory.delete(flush: true)
     } catch (Exception e) {
-      throw new SubCategoryException(message: e.message, subCategory: subCategory)
+      throw new SubCategoryException(message: "Could not delete subcategory due to relationship with other entities.", subCategory: subCategory)
     }
   }
 }

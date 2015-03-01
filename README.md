@@ -39,3 +39,9 @@ grailsw.bat run-app
 ```
 
 For development, receipts are uploaded to the `/tmp` directory. If you want to use this application in production, you'll need to update your receipt storage location in [Config.groovy](https://github.com/caseyscarborough/budget/blob/master/grails-app/conf/Config.groovy#L154).
+
+## Example Screenshots
+
+![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-1.png)
+
+![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-2.png)

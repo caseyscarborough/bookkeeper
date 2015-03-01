@@ -25,3 +25,11 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+function showErrorMessage(selector, message, field) {
+	$(selector + "-message").html(message);
+	$(".domain-property").parent().removeClass('has-error');
+	$(".modal-domain-property").parent().removeClass('has-error');
+	$("#" + field).focus().parent().addClass('has-error');
+	$(selector).show();
+}

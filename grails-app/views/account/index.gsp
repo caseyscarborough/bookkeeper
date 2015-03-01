@@ -34,14 +34,11 @@
           data: data,
           url: "${createLink(controller: 'account', action: 'save')}",
           dataType: 'json',
-          success: function (response) {
+          success: function () {
             window.location.reload()
           },
           error: function (response) {
-            $("#account-error-message").html(response.responseJSON.message);
-            $(".domain-property").parent().removeClass('has-error');
-            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#account-error").show();
+            showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });
@@ -56,10 +53,7 @@
             $("#account-error").hide();
           },
           error: function(response) {
-            $("#account-error-message").html(response.responseJSON.message);
-            $(".domain-property").parent().removeClass('has-error');
-            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#account-error").show();
+            showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });

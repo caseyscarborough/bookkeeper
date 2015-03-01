@@ -24,11 +24,8 @@
             window.location.reload()
           },
           error: function (response) {
-            $("#transaction-error-message").html(response.responseJSON.message);
-            $(".domain-property").parent().removeClass('has-error');
-            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#transaction-error").show();
-          }
+            showErrorMessage("#transaction-error", response.responseJSON.message, response.responseJSON.field);
+         }
         });
       });
 
@@ -132,10 +129,7 @@
             window.location.reload()
           },
           error: function (response) {
-            $("#transaction-edit-error-message").html(response.responseJSON.message);
-            $(".modal-domain-property").parent().removeClass('has-error');
-            $("#edit-" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#transaction-edit-error").show();
+            showErrorMessage("#transaction-edit-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });

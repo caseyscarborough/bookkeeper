@@ -13,10 +13,7 @@
           success: function() {
             $("#subCategory-" + id).fadeOut();
           }, error: function(response) {
-            $("#subCategory-error-message").html(response.responseJSON.message);
-            $(".domain-property").parent().removeClass('has-error');
-            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#subCategory-error").show();
+            showErrorMessage("#subCategory-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });
@@ -45,10 +42,7 @@
             window.location.reload()
           },
           error: function (response) {
-            $("#subCategory-edit-error-message").html(response.responseJSON.message);
-            $(".modal-domain-property").parent().removeClass('has-error');
-            $("#edit-" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#subCategory-edit-error").show();
+            showErrorMessage("#subCategory-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });
@@ -71,10 +65,7 @@
             window.location.reload()
           },
           error: function (response) {
-            $("#subCategory-error-message").html(response.responseJSON.message);
-            $(".domain-property").parent().removeClass('has-error');
-            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
-            $("#subCategory-error").show();
+            showErrorMessage("#subCategory-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });

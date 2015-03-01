@@ -30,7 +30,7 @@ class TransactionService {
     return transaction
   }
 
-  def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date) {
+  def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, CommonsMultipartFile receipt) {
     // Subtract amount from original account and add to new account,
     // whether it be the same account or a different one.
     updateAccountBalance(transaction, true)
@@ -42,6 +42,10 @@ class TransactionService {
     transaction.date = date
     transaction.save(flush: true)
     updateAccountBalance(transaction, false)
+
+    if (receipt) {
+      receiptService.createReceipt(receipt, transaction)
+    }
     return transaction
   }
 

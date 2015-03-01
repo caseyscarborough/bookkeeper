@@ -66,7 +66,7 @@ class TransactionController {
     try {
       def transaction = Transaction.get(params.id)
       transaction = transactionService.updateTransaction(
-          transaction, params.description, new BigDecimal(params.amount), Account.get(params.fromAccount), Account.get(params.toAccount), SubCategory.get(params.subCategory), Date.parse("MM/dd/yyyy", params.date)
+          transaction, params.description, new BigDecimal(params.amount as String), Account.get(params.fromAccount), Account.get(params.toAccount), SubCategory.get(params.subCategory), Date.parse("MM/dd/yyyy", params.date), params.receipt
       )
       response.status = HttpStatus.OK.value()
       render transaction as JSON

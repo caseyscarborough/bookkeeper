@@ -24,6 +24,10 @@
 
       $("#edit-transaction-form").on('submit', function () {
         var data = getData(".modal-domain-property");
+        var fileData = $("#edit-receipt").prop('files')[0];
+        if (fileData) {
+          data.receipt = fileData;
+        }
         updateTransaction(data, function () {
           window.location.reload();
         }, function (response) {

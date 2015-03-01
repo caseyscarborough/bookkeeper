@@ -57,6 +57,11 @@
               </g:each>
             </select>
           </div>
+
+          <div class="form-group">
+            <label for="edit-receipt">Receipt</label>
+            <input type="file" id="edit-receipt">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

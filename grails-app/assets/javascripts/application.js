@@ -52,11 +52,17 @@ function deleteTransaction(id, success, error) {
 }
 
 function updateTransaction(data, success, error) {
+	var formData = new FormData();
+	$.each(data, function (k, v) {
+		formData.append(k, v);
+	});
 	$.ajax({
 		type: "post",
-		data: data,
+		data: formData,
 		url: TRANSACTION_UPDATE_URL,
 		dataType: 'json',
+		processData: false,
+		contentType: false,
 		success: function(response) {
 			if (success && typeof success === 'function') {
 				success(response)

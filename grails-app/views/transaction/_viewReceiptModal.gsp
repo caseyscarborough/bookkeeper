@@ -7,7 +7,7 @@
           <h4 class="modal-title" id="view-receipt-modal-label">View Receipt</h4>
         </div>
         <div class="modal-body">
-          <img id="current-receipt" src="">
+          <img class="receipt" id="current-receipt" src="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -11,7 +11,7 @@ class BootStrap {
 
     if (User.count == 0) {
       log.debug("Creating default user...")
-      def me = new User(firstName: "Casey", lastName: "Scarborough", username: "casey", email: "caseyscarborough@gmail.com", password: "123")
+      def me = new User(firstName: "Initial", lastName: "User", username: "user", email: "user@example.com", password: "123")
       me.save(flush: true)
 
       def admin = new Role(authority: "ROLE_ADMIN")

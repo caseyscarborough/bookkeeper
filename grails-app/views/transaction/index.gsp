@@ -3,40 +3,35 @@
 <head>
   <meta name="layout" content="main">
   <title>Transactions</title>
-
   <script>
     $(function () {
-      $("#new-transaction-form").on('submit', function () {
-        var data = {};
-        $(".domain-property").each(function () {
-          if ($(this).attr("disabled") === "disabled") {
-          } else {
-            data[$(this).attr("id")] = $(this).val();
-          }
-        });
+      $("#date").datepicker();
+      $("#edit-date").datepicker();
+      $("title").html($("#filter-category option:selected").html() + " Transactions");
 
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'transaction', action: 'save')}",
-          dataType: 'json',
-          success: function (response) {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#transaction-error", response.responseJSON.message, response.responseJSON.field);
-         }
+      $("#new-transaction-form").on('submit', function () {
+        var data = getData(".domain-property");
+        createTransaction(data, function () {
+          window.location.reload();
+        }, function (response) {
+          showErrorMessage("#transaction-error", response.responseJSON.message, response.responseJSON.field);
         });
       });
 
-      $(".transaction-delete").on('click', function() {
+      $("#edit-transaction-form").on('submit', function () {
+        var data = getData(".modal-domain-property");
+        updateTransaction(data, function () {
+          window.location.reload();
+        }, function (response) {
+          showErrorMessage("#transaction-edit-error", response.responseJSON.message, response.responseJSON.field);
+        });
+      });
+
+      $(".transaction-delete").on('click', function () {
         var id = $(this).attr("data-id");
-        $.ajax({
-          type: "delete",
-          url: "${createLink(controller: 'transaction', action: 'delete')}/" + id,
-          success: function() {
-            $("#transaction-" + id).fadeOut();
-          }
+        deleteTransaction(id, function () {
+          $("#transaction-" + id).fadeOut();
+        }, function () {
         });
       });
 
@@ -47,14 +42,14 @@
         formatResult: function (suggestion, currentValue) {
           return suggestion.value + " (" + suggestion.data.category.name + ")";
         },
-        onSelect: function(suggestion) {
+        onSelect: function (suggestion) {
           $("#description").val(suggestion.data.description);
           $("#subCategory").val(suggestion.data.id);
           updateToAccount();
         }
       });
 
-      $("#filter-account").on('change', function() {
+      $("#filter-account").on('change', function () {
         if ($(this).val() === 'ALL') {
           window.location.href = "${createLink()}";
           return;
@@ -62,7 +57,7 @@
         window.location.href = "${createLink()}?account=" + $(this).val();
       });
 
-      $("#filter-category").on('change', function() {
+      $("#filter-category").on('change', function () {
         if ($(this).val() === 'ALL') {
           window.location.href = "${createLink()}";
           return;
@@ -70,36 +65,17 @@
         window.location.href = "${createLink()}?category=" + $(this).val();
       });
 
-
-      function updateToAccount() {
-        if ($("#subCategory option:selected").attr("data-type") === "Transfer") {
-          $("#toAccount").removeAttr("disabled");
-        } else {
-          $("#toAccount").attr("disabled", "disabled");
-        }
-      }
       updateToAccount();
-      $("#subCategory").on('change', function() {
+      $("#subCategory").on('change', function () {
         updateToAccount();
       });
 
-
-      function updateEditToAccount() {
-        if ($("#edit-subCategory option:selected").attr("data-type") === "Transfer") {
-          $("#edit-toAccount").removeAttr("disabled");
-        } else {
-          $("#edit-toAccount").attr("disabled", "disabled");
-        }
-      }
       updateEditToAccount();
-      $("#edit-subCategory").on('change', function() {
+      $("#edit-subCategory").on('change', function () {
         updateEditToAccount();
       });
 
-      $("#date").datepicker();
-      $("#edit-date").datepicker();
-
-      $(".transaction-edit").click(function() {
+      $(".transaction-edit").click(function () {
         var id = $(this).attr("data-id");
         $("#edit-id").val(id);
         $("#edit-date").val($("#transaction-" + id + "-date").html());
@@ -110,34 +86,10 @@
         $("#edit-transaction-modal").modal('show');
         updateEditToAccount();
       });
-
-      $("#edit-transaction-form").on('submit', function() {
-        var data = {};
-        $(".modal-domain-property").each(function () {
-          if ($(this).attr("disabled") === "disabled") {
-          } else {
-            data[$(this).attr("name")] = $(this).val();
-          }
-        });
-
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'transaction', action: 'update')}",
-          dataType: 'json',
-          success: function (response) {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#transaction-edit-error", response.responseJSON.message, response.responseJSON.field);
-          }
-        });
-      });
-
-      $("title").html($("#filter-category option:selected").html() + " Transactions");
     });
   </script>
 </head>
+
 <body>
 <div id="content">
   <div class="row">
@@ -146,16 +98,19 @@
         <h1>Transactions</h1>
         <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]"/>
       </div>
+
       <div class="pull-right">
         <div class="form-group pull-left" style="margin-right:10px">
           <label for="filter-account">Account:</label>
           <select class="form-control domain-property" id="filter-account">
             <option value="ALL">ALL</option>
             <g:each in="${accounts}" var="account">
-              <option value="${account.id}" <g:if test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
+              <option value="${account.id}" <g:if
+                  test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
             </g:each>
           </select>
         </div>
+
         <div class="form-group pull-left">
           <label for="filter-category">Category:</label>
           <select class="form-control domain-property" id="filter-category">
@@ -163,46 +118,58 @@
             <g:each in="${categories}" var="category">
               <optgroup label="${category.name}">
                 <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
+                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if
+                      test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
                 </g:each>
               </optgroup>
             </g:each>
           </select>
         </div>
       </div>
+
       <div class="clearfix"></div><br>
 
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
+
       <div class="table-responsive">
         <table class="table table-condensed table-hover">
           <thead>
           <tr>
-            <g:sortableColumn property="date" title="Date" params="[category: params.category, account: params.account]" />
-            <g:sortableColumn property="description" title="Description" params="[category: params.category, account: params.account]" />
-            <g:sortableColumn property="amount" title="Amount" params="[category: params.category, account: params.account]" />
-            <g:sortableColumn property="fromAccount" title="From Account" params="[category: params.category, account: params.account]" />
-            <g:sortableColumn property="subCategory" title="Category" params="[category: params.category, account: params.account]" />
-            <g:sortableColumn property="toAccount" title="To Account" params="[category: params.category, account: params.account]" />
+            <g:sortableColumn property="date" title="Date"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="description" title="Description"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="amount" title="Amount"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="fromAccount" title="From Account"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="subCategory" title="Category"
+                              params="[category: params.category, account: params.account]"/>
+            <g:sortableColumn property="toAccount" title="To Account"
+                              params="[category: params.category, account: params.account]"/>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <form id="new-transaction-form" onsubmit="return false">
             <tr>
-              <td><input type="text" class="form-control domain-property" id="date" placeholder="Date" tabindex="1"></td>
-              <td><input type="text" class="form-control domain-property" id="description" placeholder="Transaction Description"></td>
-              <td><input type="number" class="form-control domain-property" id="amount" step="0.01" placeholder="Amount"></td>
+              <td><input type="text" class="form-control domain-property" id="date" name="date" placeholder="Date" tabindex="1">
+              </td>
+              <td><input type="text" class="form-control domain-property" id="description" name="description"
+                         placeholder="Transaction Description"></td>
+              <td><input type="number" class="form-control domain-property" id="amount" name="amount" step="0.01"
+                         placeholder="Amount"></td>
               <td>
-                <select class="form-control domain-property" id="fromAccount">
+                <select class="form-control domain-property" id="fromAccount" name="fromAccount">
                   <g:each in="${accounts}" var="account">
                     <option value="${account.id}">${account.description}</option>
                   </g:each>
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="subCategory">
+                <select class="form-control domain-property" id="subCategory" name="subCategory">
                   <g:each in="${categories}" var="category">
                     <optgroup label="${category.name}">
                       <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
@@ -213,7 +180,7 @@
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="toAccount" disabled="disabled">
+                <select class="form-control domain-property" id="toAccount" name="toAccount" disabled="disabled">
                   <g:each in="${accounts}" var="account">
                     <option value="${account.id}">${account.description}</option>
                   </g:each>
@@ -235,8 +202,10 @@
               </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
               <td>
-                <a href="#" class="transaction-edit" data-id="${transaction.id}"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a href="#" class="transaction-delete" data-id="${transaction.id}"><i class="glyphicon glyphicon-remove"></i></a>
+                <a href="#" class="transaction-edit" data-id="${transaction.id}"><i
+                    class="glyphicon glyphicon-pencil"></i></a>
+                <a href="#" class="transaction-delete" data-id="${transaction.id}"><i
+                    class="glyphicon glyphicon-remove"></i></a>
               </td>
             </tr>
           </g:each>

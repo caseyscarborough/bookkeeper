@@ -13,7 +13,7 @@
 //= require highcharts/highcharts
 //= require highcharts/modules/drilldown
 //= require spin.js/spin.js
-//= require_tree .
+//= require urls
 //= require_self
 
 if (typeof jQuery !== 'undefined') {
@@ -32,4 +32,87 @@ function showErrorMessage(selector, message, field) {
 	$(".modal-domain-property").parent().removeClass('has-error');
 	$("#" + field).focus().parent().addClass('has-error');
 	$(selector).show();
+}
+
+function deleteTransaction(id, success, error) {
+	$.ajax({
+		type: "delete",
+		url: TRANSACTION_DELETE_URL + "/" + id,
+		success: function(response) {
+			if (success && typeof success === 'function') {
+				success(response)
+			}
+		},
+		error: function(response) {
+			if (error && typeof error === 'function') {
+				error(response)
+			}
+		}
+	});
+}
+
+function updateTransaction(data, success, error) {
+	$.ajax({
+		type: "post",
+		data: data,
+		url: TRANSACTION_UPDATE_URL,
+		dataType: 'json',
+		success: function(response) {
+			if (success && typeof success === 'function') {
+				success(response)
+			}
+		},
+		error: function(response) {
+			if (error && typeof error === 'function') {
+				error(response)
+			}
+		}
+	});
+}
+
+function createTransaction(data, success, error) {
+	$.ajax({
+		type: "post",
+		data: data,
+		url: TRANSACTION_CREATE_URL,
+		dataType: 'json',
+		success: function(response) {
+			if (success && typeof success === 'function') {
+				success(response)
+			}
+		},
+		error: function(response) {
+			if (error && typeof error === 'function') {
+				error(response)
+			}
+		}
+	});
+}
+
+function getData(selector) {
+	var data = {};
+	$(selector).each(function () {
+		if ($(this).attr("disabled") === "disabled") {
+		} else {
+			data[$(this).attr("name")] = $(this).val();
+		}
+	});
+	return data;
+}
+
+// TODO: Refactor the following two functions
+function updateToAccount() {
+	if ($("#subCategory option:selected").attr("data-type") === "Transfer") {
+		$("#toAccount").removeAttr("disabled");
+	} else {
+		$("#toAccount").attr("disabled", "disabled");
+	}
+}
+
+function updateEditToAccount() {
+	if ($("#edit-subCategory option:selected").attr("data-type") === "Transfer") {
+		$("#edit-toAccount").removeAttr("disabled");
+	} else {
+		$("#edit-toAccount").attr("disabled", "disabled");
+	}
 }

@@ -41,6 +41,7 @@ class TransactionService {
     transaction.subCategory = subCategory
     transaction.date = date
     transaction.save(flush: true)
+    receiptService.updateReceipt(transaction)
     updateAccountBalance(transaction, false)
 
     if (receipt) {

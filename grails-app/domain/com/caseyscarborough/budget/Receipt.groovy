@@ -15,4 +15,8 @@ class Receipt {
   String getPath() {
     "${location}/${filename}"
   }
+
+  File getFile() {
+    new File(path)
+  }
 }

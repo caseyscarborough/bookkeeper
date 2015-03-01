@@ -32,6 +32,8 @@ class Transaction {
     sb.append(date.format('yyyy-MM-dd'))
     sb.append('-')
     sb.append(description.toLowerCase().replaceAll("[ .]", '-').replaceAll("[&^%\$#@!*']", ''))
+    sb.append('-')
+    sb.append(new Date().toTimestamp().time)
     sb.toString()
   }
 

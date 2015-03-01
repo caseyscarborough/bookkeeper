@@ -23,4 +23,17 @@ class ReceiptService {
     }
     receipt
   }
+
+  void updateReceipt(Transaction transaction) {
+    if (transaction.receipt) {
+      def file = transaction.receipt.file
+      def newFileExtension = transaction.receipt.filename.split("\\.").last()
+      def newFilename = "${transaction.filenameDescription}.${newFileExtension}"
+      def newFilePath = grailsApplication.config.budget.receiptStorageLocation + "/" + newFilename
+      file.renameTo(new File(newFilePath as String))
+      transaction.receipt.filename = newFilename
+      transaction.receipt.location = grailsApplication.config.budget.receiptStorageLocation
+      transaction.receipt.save(flush: true)
+    }
+  }
 }

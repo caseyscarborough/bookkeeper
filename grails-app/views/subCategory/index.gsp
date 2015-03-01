@@ -12,6 +12,11 @@
           url: "${createLink(controller: 'subCategory', action: 'delete')}/" + id,
           success: function() {
             $("#subCategory-" + id).fadeOut();
+          }, error: function(response) {
+            $("#subCategory-error-message").html(response.responseJSON.message);
+            $(".domain-property").parent().removeClass('has-error');
+            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
+            $("#subCategory-error").show();
           }
         });
       });

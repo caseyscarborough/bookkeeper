@@ -15,7 +15,7 @@ class SubCategoryService {
   SubCategory createSubCategory(String name, Category category, CategoryType type) {
     def subCategory = new SubCategory(name: name, category: category, type: type)
     if (!subCategory.save(flush: true)) {
-      def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
+      def error = messageSource.getMessage(subCategory.errors.fieldError, Locale.default)
       throw new SubCategoryException(message: error, subCategory: subCategory)
     }
     return subCategory
@@ -31,7 +31,7 @@ class SubCategoryService {
     subCategory.category = category
     subCategory.type = type
     if (!subCategory.save(flush: true)) {
-      def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
+      def error = messageSource.getMessage(subCategory.errors.fieldError, Locale.default)
       throw new SubCategoryException(message: error, subCategory: subCategory)
     }
     return subCategory

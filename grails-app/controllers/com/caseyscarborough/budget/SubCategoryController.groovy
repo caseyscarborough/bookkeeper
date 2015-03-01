@@ -29,7 +29,7 @@ class SubCategoryController {
       render subCategory as JSON
     } catch (SubCategoryException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render([message: e.message] as JSON)
+      render([message: e.message, field: e.subCategory.errors.fieldError.field] as JSON)
     }
   }
 
@@ -42,7 +42,7 @@ class SubCategoryController {
       render subCategory as JSON
     } catch (SubCategoryException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render([message: e.message] as JSON)
+      render([message: e.message, field: e.subCategory.errors.fieldError.field] as JSON)
     }
   }
 

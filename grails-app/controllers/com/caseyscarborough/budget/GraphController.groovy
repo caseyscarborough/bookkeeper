@@ -11,6 +11,7 @@ class GraphController {
   private static final String DATE_FORMAT_FOR_MONTH_SELECTION = "yyyyMM"
   private static final String MONTH_FORMAT = "MMMMM yyyy"
   private static final Integer NUMBER_OF_MONTHS_TO_ANALYZE = 12
+  private static final Integer SPENDING_BY_PAYEE_COUNT = 40
   private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
   def index() {
@@ -211,7 +212,7 @@ class GraphController {
     data.each { k, v ->
       output << [k, v]
     }
-    output = output.reverse().take(30).reverse()
+    output = output.reverse().take(SPENDING_BY_PAYEE_COUNT).reverse()
     render output as JSON
   }
 

@@ -34,9 +34,9 @@
         xAxis: {
           type: 'category',
           labels: {
-            rotation: -45,
+            rotation: -60,
             style: {
-              fontSize: '12px'
+              fontSize: '10px'
             }
           }
         },
@@ -50,7 +50,7 @@
           enabled: false
         },
         tooltip: {
-          pointFormat: '<b>$ {point.y:.2f}</b>'
+          pointFormat: '<b>$' + '{point.y:.2f}</b>'
         },
         series: [{
           name: 'Population',
@@ -58,11 +58,11 @@
           dataLabels: {
             enabled: true,
             color: '#000',
-            align: 'right',
-            format: '{point.y:.2f}', // one decimal
+            align: 'center',
+            format: '$' + '{point.y:.2f}', // one decimal
             y: 0, // 10 pixels down from the top
             style: {
-              fontSize: '10px'
+              fontSize: '9px'
             }
           }
         }]

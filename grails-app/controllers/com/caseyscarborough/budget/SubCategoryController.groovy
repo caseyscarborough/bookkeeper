@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus
 @Transactional(readOnly = true)
 class SubCategoryController {
 
-  def messageSource
+  def subCategoryService
 
   static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
@@ -24,39 +24,37 @@ class SubCategoryController {
   def save() {
     def category = Category.get(params.category)
     def type = CategoryType.valueOf(params.type)
-    def subCategory = new SubCategory(name: params.name, category: category, type: type)
-    if (!subCategory.save(flush: true)) {
-      def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
+    try {
+      def subCategory = subCategoryService.createSubCategory(params.name, category, type)
+      render subCategory as JSON
+    } catch (SubCategoryException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render error as JSON
-      return
+      render([message: e.message] as JSON)
     }
-    render subCategory as JSON
   }
 
   @Transactional
   def update() {
-    def subCategory = SubCategory.get(params.id)
     def category = Category.get(params.category)
     def type = CategoryType.valueOf(params.type)
-    subCategory.name = params.name
-    subCategory.category = category
-    subCategory.type = type
-
-    if (!subCategory.save(flush: true)) {
-      def error = [message: messageSource.getMessage(subCategory.errors.fieldError, Locale.default), field: subCategory.errors.fieldError.field]
+    try {
+      def subCategory = subCategoryService.updateSubCategory(params.id as Long, params.name, category, type)
+      render subCategory as JSON
+    } catch (SubCategoryException e) {
       response.status = HttpStatus.BAD_REQUEST.value()
-      render error as JSON
-      return
+      render([message: e.message] as JSON)
     }
-    render subCategory as JSON
   }
 
   @Transactional
   def delete(Long id) {
-    def subCategory = SubCategory.get(id)
-    subCategory.delete(flush: true)
-    response.status = HttpStatus.NO_CONTENT.value()
-    render ""
+    try {
+      subCategoryService.deleteSubCategory(id)
+      response.status = HttpStatus.NO_CONTENT.value()
+      render ""
+    } catch (SubCategoryException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: e.message] as JSON)
+    }
   }
 }

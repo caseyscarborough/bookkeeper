@@ -95,7 +95,7 @@ class TransactionController {
     def transactions = Transaction.findAllByUserAndDescriptionIlike(springSecurityService.currentUser, params.query + "%")
     def output = []
     transactions.each { t ->
-      output << [value: t.description, data: t.subCategory.id]
+      output << [value: t.description, data: [id: t.subCategory.id, category: t.subCategory, description: t.description]]
     }
     output = output.unique()
     render([suggestions: output] as JSON)

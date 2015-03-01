@@ -46,8 +46,13 @@
       $("#description").autocomplete({
         serviceUrl: "${createLink(controller: 'transaction', action: 'queryDescription')}",
         minChars: 3,
+        autoSelectFirst: true,
+        formatResult: function (suggestion, currentValue) {
+          return suggestion.value + " (" + suggestion.data.category.name + ")";
+        },
         onSelect: function(suggestion) {
-          $("#subCategory").val(suggestion.data);
+          $("#description").val(suggestion.data.description);
+          $("#subCategory").val(suggestion.data.id);
           updateToAccount();
         }
       });

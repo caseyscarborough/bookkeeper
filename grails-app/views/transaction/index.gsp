@@ -11,6 +11,10 @@
 
       $("#new-transaction-form").on('submit', function () {
         var data = getData(".domain-property");
+        var fileData = $("#receipt").prop('files')[0];
+        if (fileData) {
+          data.receipt = fileData;
+        }
         createTransaction(data, function () {
           window.location.reload();
         }, function (response) {
@@ -149,6 +153,7 @@
                               params="[category: params.category, account: params.account]"/>
             <g:sortableColumn property="toAccount" title="To Account"
                               params="[category: params.category, account: params.account]"/>
+            <th>Receipt</th>
             <th></th>
           </tr>
           </thead>
@@ -186,6 +191,7 @@
                   </g:each>
                 </select>
               </td>
+              <td><input type="file" id="receipt" style="width: 90px"></td>
               <td><button id="submit" class="btn btn-primary">New</button></td>
             </tr>
           </form>
@@ -201,6 +207,7 @@
                 </g:link>
               </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
+              <td></td>
               <td>
                 <a href="#" class="transaction-edit" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-pencil"></i></a>

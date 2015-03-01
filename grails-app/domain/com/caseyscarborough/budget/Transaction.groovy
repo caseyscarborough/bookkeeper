@@ -20,10 +20,19 @@ class Transaction {
 
   static mapping = {
     sort date: "desc"
+    receipt cascade: 'all-delete-orphan'
   }
 
   String getAmountString() {
     String.format("%.2f", amount)
+  }
+
+  String getFilenameDescription() {
+    def sb = new StringBuilder()
+    sb.append(date.format('yyyy-MM-dd'))
+    sb.append('-')
+    sb.append(description.toLowerCase().replaceAll("[ .]", '-').replaceAll("[&^%\$#@!*']", ''))
+    sb.toString()
   }
 
   String getCssClass() {

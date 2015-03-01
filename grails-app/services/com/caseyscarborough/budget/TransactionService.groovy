@@ -2,6 +2,7 @@ package com.caseyscarborough.budget
 
 import com.caseyscarborough.budget.security.User
 import grails.transaction.Transactional
+import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class TransactionException extends RuntimeException {
   String message
@@ -11,8 +12,9 @@ class TransactionException extends RuntimeException {
 @Transactional
 class TransactionService {
   def messageSource
+  def receiptService
 
-  def createTransaction(String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, User user) {
+  def createTransaction(String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, User user, CommonsMultipartFile receipt) {
     def transaction = new Transaction(description: description, amount: amount, fromAccount: fromAccount, toAccount: toAccount, subCategory: subCategory, date: date, user: user)
 
     if (!transaction.save(flush: true)) {
@@ -21,6 +23,10 @@ class TransactionService {
     }
 
     updateAccountBalance(transaction, false)
+
+    if (receipt) {
+      receiptService.createReceipt(receipt, transaction)
+    }
     return transaction
   }
 
@@ -40,6 +46,11 @@ class TransactionService {
   }
 
   def deleteTransaction(Transaction transaction) {
+    if (transaction.receipt) {
+      def receipt = transaction.receipt
+      transaction.receipt = null
+      receipt.delete(flush: true)
+    }
     transaction.delete(flush: true)
     updateAccountBalance(transaction, true)
   }

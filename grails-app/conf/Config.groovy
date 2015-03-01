@@ -145,3 +145,5 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 ]
 
 grails.plugin.springsecurity.logout.postOnly = false
+
+budget.receiptStorageLocation = "/Users/Casey/Dropbox/Receipts"

@@ -7,7 +7,7 @@ class Receipt {
   Long size
   String contentType
 
-  Transaction transaction
+  static belongsTo = [receipt: Receipt]
 
   static constraints = {
   }

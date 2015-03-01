@@ -24,3 +24,8 @@ test/
 grails-app/conf/DataSource.groovy
 *.db
 *.old
+
+.tmp/
+node_modules/
+web-app/assets/
+web-app/dist/

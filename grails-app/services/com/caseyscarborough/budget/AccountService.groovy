@@ -23,4 +23,18 @@ class AccountService {
 
     return account
   }
+
+  void deleteAccount(Long id) {
+    def accountInstance = Account.get(id)
+
+    if (!accountInstance) {
+      throw new AccountException(message: "Could not find account with ID: ${id}")
+    }
+
+    try {
+      accountInstance.delete(flush: true)
+    } catch (Exception e) {
+      throw new AccountException(message: "Can't delete account due to relationship with other entities.")
+    }
+  }
 }

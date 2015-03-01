@@ -36,9 +36,13 @@ class AccountController {
 
   @Transactional
   def delete(Long id) {
-    def accountInstance = Account.get(id)
-    accountInstance.delete(flush: true)
-    response.status = HttpStatus.NO_CONTENT.value()
-    render([] as JSON)
+    try {
+      accountService.deleteAccount(id)
+      response.status = HttpStatus.NO_CONTENT.value()
+      render ""
+    } catch (AccountException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: e.message, field: e.account?.errors?.fieldError?.field] as JSON)
+    }
   }
 }

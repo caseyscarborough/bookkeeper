@@ -53,6 +53,13 @@
           url: "${createLink(controller: 'account', action: 'delete')}/" + id,
           success: function() {
             $("#account-" + id).fadeOut();
+            $("#account-error").hide();
+          },
+          error: function(response) {
+            $("#account-error-message").html(response.responseJSON.message);
+            $(".domain-property").parent().removeClass('has-error');
+            $("#" + response.responseJSON.field).focus().parent().addClass('has-error');
+            $("#account-error").show();
           }
         });
       });

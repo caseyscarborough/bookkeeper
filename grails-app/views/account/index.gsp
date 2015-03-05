@@ -49,7 +49,7 @@
           type: "delete",
           url: "${createLink(controller: 'account', action: 'delete')}/" + id,
           success: function () {
-            $("#account-" + id).fadeOut();
+            $(".account-" + id).fadeOut();
             $("#account-error").hide();
           },
           error: function (response) {
@@ -120,7 +120,7 @@
               <td><button id="submit" class="btn btn-primary">New</button></td>
             </tr>
             <g:each in="${accountList}" var="account">
-              <tr id="account-${account.id}">
+              <tr class="account-${account.id}">
                 <td id="account-${account.id}-description">${account.description}</td>
                 <td>${account.balanceString}<span id="account-${account.id}-balance" data-id="${account.id}"
                                                   data-is-debt="${account.type.isDebt}" class="account-balance"
@@ -143,16 +143,18 @@
       <!-- Mobile Layout -->
       <div id="accounts-list" class="visible-xs">
         <g:each in="${accountList}" var="account">
+          <div class="account-${account.id}">
             <div class="mobile-account">
               <h3>${account.description}</h3>
               <p>Balance: ${account.balanceString}</p>
               <p>Type: ${account.type.name}</p>
               <p>
-                <a href="#" class="account-edit" data-id="${account.id}">Edit</a> &middot;
-                <a href="#" class="account-delete" data-id="${account.id}">Delete</a>
+                <a class="account-edit" data-id="${account.id}">Edit</a> &middot;
+                <a class="account-delete" data-id="${account.id}">Delete</a>
               </p>
             </div>
           <br>
+          </div>
         </g:each>
       </div>
 

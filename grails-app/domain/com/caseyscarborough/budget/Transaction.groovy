@@ -19,7 +19,7 @@ class Transaction {
   }
 
   static mapping = {
-    sort date: "desc"
+    sort([date: "desc", description: "asc", amount: "asc"])
     receipt cascade: 'all-delete-orphan'
   }
 

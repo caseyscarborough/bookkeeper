@@ -4,9 +4,30 @@
   <meta name="layout" content="main">
   <title>Transactions</title>
   <script>
+
+    function setupAutocomplete(descriptionSelector, subcategorySelector) {
+      $(descriptionSelector).autocomplete({
+        serviceUrl: "${createLink(controller: 'transaction', action: 'queryDescription')}",
+        minChars: 3,
+        autoSelectFirst: true,
+        formatResult: function (suggestion, currentValue) {
+          return suggestion.value + " (" + suggestion.data.category.name + ")";
+        },
+        onSelect: function (suggestion) {
+          $(descriptionSelector).val(suggestion.data.description);
+          $(subcategorySelector).val(suggestion.data.id);
+          updateToAccount();
+        }
+      });
+    }
     $(function () {
+      setupAutocomplete("#description", "#subCategory");
+      setupAutocomplete("#edit-description", "#edit-subCategory");
+      setupAutocomplete("#mobile-description", "#mobile-subCategory");
+
       $("#date").datepicker();
       $("#edit-date").datepicker();
+      $("#mobile-date").datepicker();
       $("title").html($("#filter-category option:selected").html() + " Transactions");
 
       $("#show-new-mobile-transaction").click(function() {
@@ -62,20 +83,6 @@
           $(".transaction-" + id).fadeOut();
         }, function () {
         });
-      });
-
-      $("#description").autocomplete({
-        serviceUrl: "${createLink(controller: 'transaction', action: 'queryDescription')}",
-        minChars: 3,
-        autoSelectFirst: true,
-        formatResult: function (suggestion, currentValue) {
-          return suggestion.value + " (" + suggestion.data.category.name + ")";
-        },
-        onSelect: function (suggestion) {
-          $("#description").val(suggestion.data.description);
-          $("#subCategory").val(suggestion.data.id);
-          updateToAccount();
-        }
       });
 
       $("#filter-account").on('change', function () {
@@ -274,7 +281,7 @@
         <form id="mobile-new-transaction-form" onsubmit="return false" style="display:none">
           <div class="form-group">
             <label for="mobile-date">Date</label>
-            <input type="text" class="form-control mobile-domain-property" id="mobile-date" name="date" placeholder="Date">
+            <input type="text" class="form-control mobile-domain-property" id="mobile-date" name="date" placeholder="mm/dd/yyyy">
           </div>
           <div class="form-group">
             <label for="mobile-description">Description</label>

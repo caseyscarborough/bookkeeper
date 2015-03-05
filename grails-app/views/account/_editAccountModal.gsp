@@ -24,7 +24,7 @@
 
           <div class="form-group">
             <label for="edit-account-balance">Balance</label>
-            <input type="number" placeholder="Balance" name="balance" class="form-control modal-domain-property"
+            <input type="number" placeholder="Balance" name="balance" step="0.01" class="form-control modal-domain-property"
                    id="edit-account-balance">
           </div>
         </div>

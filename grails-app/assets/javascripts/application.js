@@ -26,6 +26,10 @@ if (typeof jQuery !== 'undefined') {
 	})(jQuery);
 }
 
+$(function() {
+	$(".tooltip-link").tooltip();
+});
+
 function showErrorMessage(selector, message, field) {
 	$(selector + "-message").html(message);
 	$(".domain-property").parent().removeClass('has-error');

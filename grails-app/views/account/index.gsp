@@ -128,10 +128,8 @@
                 <td id="account-${account.id}-type">${account.type.name}</td>
                 <td>
                   <input type="checkbox" class="include-in-total" data-id="${account.id}" checked>
-                  <a href="#" class="account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i>
-                  </a>
-                  <a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i>
-                  </a>
+                  <a title="Edit" class="tooltip-link account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i></a>
+                  <a title="Delete" class="tooltip-link account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
               </tr>
             </g:each>

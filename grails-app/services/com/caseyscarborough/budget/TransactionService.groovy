@@ -13,6 +13,7 @@ class TransactionException extends RuntimeException {
 class TransactionService {
   def messageSource
   def receiptService
+  def springSecurityService
 
   def createTransaction(String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, User user, CommonsMultipartFile receipt) {
     def transaction = new Transaction(description: description, amount: amount, fromAccount: fromAccount, toAccount: toAccount, subCategory: subCategory, date: date, user: user)
@@ -30,7 +31,16 @@ class TransactionService {
     return transaction
   }
 
-  def updateTransaction(Transaction transaction, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, CommonsMultipartFile receipt) {
+  def updateTransaction(Long id, String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, CommonsMultipartFile receipt) {
+    def transaction = Transaction.get(id)
+
+    if (!transaction) {
+      throw new TransactionException(message: "Could not find transaction with ID: ${id}")
+    }
+
+    if (transaction.user != springSecurityService.currentUser) {
+      throw new TransactionException(message: "Unauthorized")
+    }
     // Subtract amount from original account and add to new account,
     // whether it be the same account or a different one.
     updateAccountBalance(transaction, true)
@@ -50,7 +60,17 @@ class TransactionService {
     return transaction
   }
 
-  def deleteTransaction(Transaction transaction) {
+  def deleteTransaction(Long id) {
+    def transaction = Transaction.get(id)
+
+    if (!transaction) {
+      throw new TransactionException(message: "Could not find transaction with ID: ${id}")
+    }
+
+    if (transaction.user != springSecurityService.currentUser) {
+      throw new TransactionException(message: "Unauthorized")
+    }
+
     if (transaction.receipt) {
       def receipt = transaction.receipt
       transaction.receipt = null

@@ -6,7 +6,7 @@
   <script>
     function calculateCurrentTotal() {
       var total = 0;
-      $(".include-in-total").each(function() {
+      $(".include-in-total").each(function () {
         if ($(this).prop("checked")) {
           var balance = $("#account-" + $(this).attr("data-id") + "-balance");
           var isDebt = balance.attr("data-is-debt");
@@ -19,7 +19,7 @@
 
     $(function () {
       calculateCurrentTotal();
-      $(".include-in-total").change(function() {
+      $(".include-in-total").change(function () {
         calculateCurrentTotal();
       });
 
@@ -43,22 +43,22 @@
         });
       });
 
-      $(".account-delete").on('click', function() {
+      $(".account-delete").on('click', function () {
         var id = $(this).attr("data-id");
         $.ajax({
           type: "delete",
           url: "${createLink(controller: 'account', action: 'delete')}/" + id,
-          success: function() {
+          success: function () {
             $("#account-" + id).fadeOut();
             $("#account-error").hide();
           },
-          error: function(response) {
+          error: function (response) {
             showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
           }
         });
       });
 
-      $(".account-edit").on('click', function() {
+      $(".account-edit").on('click', function () {
         var id = $(this).attr("data-id");
         $("#edit-account-description").val($("#account-" + id + "-description").html());
         $("#edit-account-id").val(id);
@@ -66,11 +66,11 @@
         $("#edit-account-modal").modal('show');
       });
 
-      $("#edit-account-form").on('submit', function() {
+      $("#edit-account-form").on('submit', function () {
         var data = getData('.modal-domain-property');
-        updateAccount(data, function() {
+        updateAccount(data, function () {
           window.location.reload();
-        }, function(response) {
+        }, function (response) {
           showErrorMessage("#account-edit-error", response.responseJSON.message, "edit-account-" + response.responseJSON.field);
         })
       });
@@ -93,7 +93,7 @@
           ${flash.message}
         </div>
       </g:if>
-      <div class="table-responsive">
+      <div id="accounts-table" class="table-responsive">
         <form id="new-account-form" onsubmit="return false">
           <table class="table table-hover table-condensed">
             <thead>
@@ -105,9 +105,11 @@
             </tr>
             </thead>
             <tbody>
-              <tr>
-              <td><input type="text" class="form-control domain-property" id="description" placeholder="Account Description"></td>
-              <td><input type="number" class="form-control domain-property" id="balance" step="0.01" placeholder="Balance"></td>
+            <tr>
+              <td><input type="text" class="form-control domain-property" id="description"
+                         placeholder="Account Description"></td>
+              <td><input type="number" class="form-control domain-property" id="balance" step="0.01"
+                         placeholder="Balance"></td>
               <td>
                 <select class="form-control domain-property" id="type">
                   <g:each in="${accountTypes}" var="accountType">
@@ -120,12 +122,16 @@
             <g:each in="${accountList}" var="account">
               <tr id="account-${account.id}">
                 <td id="account-${account.id}-description">${account.description}</td>
-                <td>${account.balanceString}<span id="account-${account.id}-balance" data-id="${account.id}" data-is-debt="${account.type.isDebt}" class="account-balance" style="display:none">${account.balance}</span></td>
+                <td>${account.balanceString}<span id="account-${account.id}-balance" data-id="${account.id}"
+                                                  data-is-debt="${account.type.isDebt}" class="account-balance"
+                                                  style="display:none">${account.balance}</span></td>
                 <td id="account-${account.id}-type">${account.type.name}</td>
                 <td>
                   <input type="checkbox" class="include-in-total" data-id="${account.id}" checked>
-                  <a href="#" class="account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i></a>
-                  <a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a>
+                  <a href="#" class="account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i>
+                  </a>
+                  <a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i>
+                  </a>
                 </td>
               </tr>
             </g:each>
@@ -133,11 +139,33 @@
           </table>
         </form>
       </div>
-      <p>Current Total Balance: $<span id="total-balance"></span></p>
+
+      <!-- Mobile Layout -->
+      <div id="accounts-list">
+        <g:each in="${accountList}" var="account">
+          <div class="row">
+            <div class="col-md-12 mobile-account">
+              <h3>${account.description}</h3>
+
+              <p>Balance: ${account.balanceString}</p>
+
+              <p>Type: ${account.type.name}</p>
+
+              <p>
+                <a href="#" class="account-edit" data-id="${account.id}">Edit</a> &middot;
+                <a href="#" class="account-delete" data-id="${account.id}">Delete</a>
+              </p>
+            </div>
+          </div>
+          <br>
+        </g:each>
+      </div>
+
+      <h3>Current Total Balance: $<span id="total-balance"></span></h3>
     </div>
 
   </div>
 </div>
-<g:render template="editAccountModal" />
+<g:render template="editAccountModal"/>
 </body>
 </html>

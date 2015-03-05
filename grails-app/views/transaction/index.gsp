@@ -136,7 +136,12 @@
     <div class="col-md-12">
       <div class="pull-left">
         <h1>Transactions</h1>
-        <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]"/>
+        <div class="hidden-xs">
+          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]" maxsteps="20" />
+        </div>
+        <div class="visible-xs">
+          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]" maxsteps="5"/>
+        </div>
       </div>
 
       <div class="pull-right hidden-xs">

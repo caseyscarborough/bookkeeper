@@ -133,6 +133,16 @@
         $("#current-receipt").attr("src", url);
         $("#view-receipt-modal").modal('show');
       });
+
+      $("#synchronize").click(function() {
+        $(this).button('loading');
+        $.ajax({
+          url: "${createLink(controller: 'transaction', action: 'synchronize')}",
+          success: function () {
+            window.location.reload();
+          }
+        });
+      })
     });
   </script>
 </head>
@@ -201,6 +211,7 @@
                               params="[category: params.category, account: params.account]"/>
             <g:sortableColumn property="toAccount" title="To Account"
                               params="[category: params.category, account: params.account]"/>
+            <th>Balance</th>
             <th>Receipt</th>
             <th></th>
           </tr>
@@ -239,6 +250,7 @@
                   </g:each>
                 </select>
               </td>
+              <td></td>
               <td style="vertical-align: middle; width: 95px"><input type="file" id="receipt" style="width: 100%" tabindex="7"></td>
               <td><button id="submit" class="btn btn-primary" tabindex="8">New</button></td>
             </tr>
@@ -255,6 +267,7 @@
                 </g:link>
               </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
+              <td>${transaction.accountBalance}</td>
               <td>
                 <g:if test="${transaction.receipt}">
                   <a class="view-receipt cursor" data-url="${createLink(controller: 'receipt', action: 'download', id: transaction.receipt.id)}">View</a>
@@ -338,6 +351,8 @@
           </div>
         </g:each>
       </div>
+
+      <button class="btn btn-primary" id="synchronize" data-loading-text="Synchronizing... This may take some time...">Synchronize Balances</button>
     </div>
   </div>
 </div>

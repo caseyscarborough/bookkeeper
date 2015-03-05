@@ -103,4 +103,9 @@ class TransactionController {
     output = output.unique()
     render([suggestions: output] as JSON)
   }
+
+  def synchronize() {
+    transactionService.synchronizeBalances()
+    render ""
+  }
 }

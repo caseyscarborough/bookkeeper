@@ -80,6 +80,35 @@ class TransactionService {
     updateAccountBalance(transaction, true)
   }
 
+  public synchronizeBalances() {
+    Account.findAllByUser(springSecurityService.currentUser).each { Account a ->
+      log.info("Processing transactions for account ${a}")
+      def amount = a.balance
+      def transactions = Transaction.findAllByFromAccountOrToAccount(a, a)
+
+      if (transactions.size() > 0) {
+        transactions.each { Transaction t ->
+          if (t.subCategory.type == CategoryType.TRANSFER) {
+            if (t.fromAccount == a) {
+              t.accountBalance = amount
+              amount += a.type.isDebt ? -t.amount : t.amount
+            } else if (t.toAccount == a) {
+              amount -= a.type.isDebt ? -t.amount : t.amount
+            }
+          } else if (t.subCategory.type == CategoryType.CREDIT) {
+            t.accountBalance = amount
+            amount -= a.type.isDebt ? -t.amount : t.amount
+          } else if (t.subCategory.type == CategoryType.DEBIT) {
+            t.accountBalance = amount
+            amount += a.type.isDebt ? -t.amount : t.amount
+          }
+          t.save(flush: true)
+        }
+      }
+    }
+    log.info("Complete.")
+  }
+
   private void updateAccountBalance(Transaction transaction, Boolean deletion) {
     def amount = transaction.amount
     if (deletion) {

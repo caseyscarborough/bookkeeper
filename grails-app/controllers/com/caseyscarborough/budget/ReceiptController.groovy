@@ -9,13 +9,11 @@ class ReceiptController {
 
   def download(Long id) {
     def receipt = Receipt.get(id)
-    if (receipt.transaction.user == springSecurityService.currentUser) {
+    if (receipt && receipt.transaction.user == springSecurityService.currentUser) {
       def file = new File(receipt.path)
       log.info("Downloading file '${receipt.filename}'")
       response.contentType = receipt.contentType
-      response.setHeader("Content-disposition", "attachment;filename=${receipt.filename}")
-      response.outputStream << file.bytes
-      response.outputStream.flush()
+      render file: file, contentType: receipt.contentType
     }
   }
 }

@@ -15,22 +15,25 @@ grails.project.groupId = appName // change this to alter the default package nam
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
-grails.mime.types = [html         : ['text/html', 'application/xhtml+xml'],
-                     xml          : ['text/xml', 'application/xml'],
-                     text         : 'text-plain',
-                     js           : 'text/javascript',
-                     rss          : 'application/rss+xml',
-                     atom         : 'application/atom+xml',
-                     css          : 'text/css',
-                     csv          : 'text/csv',
-                     pdf          : 'application/pdf',
-                     rtf          : 'application/rtf',
-                     excel        : 'application/vnd.ms-excel',
-                     ods          : 'application/vnd.oasis.opendocument.spreadsheet',
-                     all          : '*/*',
-                     json         : ['application/json', 'text/json'],
-                     form         : 'application/x-www-form-urlencoded',
-                     multipartForm: 'multipart/form-data'
+grails.mime.types = [
+    html: ['text/html', 'application/xhtml+xml'],
+    xml: ['text/xml', 'application/xml'],
+    png: 'image/png',
+    jpg: ['image/jpeg', 'image/jpg'],
+    text: 'text-plain',
+    js: 'text/javascript',
+    rss: 'application/rss+xml',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    pdf: 'application/pdf',
+    rtf: 'application/rtf',
+    excel: 'application/vnd.ms-excel',
+    ods: 'application/vnd.oasis.opendocument.spreadsheet',
+    all: '*/*',
+    json: ['application/json', 'text/json'],
+    form: 'application/x-www-form-urlencoded',
+    multipartForm: 'multipart/form-data'
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -134,13 +137,13 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.caseyscarboro
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.caseyscarborough.budget.security.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.caseyscarborough.budget.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-    '/'              : ['permitAll'],
-    '/index'         : ['permitAll'],
-    '/index.gsp'     : ['permitAll'],
-    '/assets/**'     : ['permitAll'],
-    '/**/js/**'      : ['permitAll'],
-    '/**/css/**'     : ['permitAll'],
-    '/**/images/**'  : ['permitAll'],
+    '/': ['permitAll'],
+    '/index': ['permitAll'],
+    '/index.gsp': ['permitAll'],
+    '/assets/**': ['permitAll'],
+    '/**/js/**': ['permitAll'],
+    '/**/css/**': ['permitAll'],
+    '/**/images/**': ['permitAll'],
     '/**/favicon.ico': ['permitAll']
 ]
 

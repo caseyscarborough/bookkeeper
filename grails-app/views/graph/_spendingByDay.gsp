@@ -29,7 +29,11 @@
       $('#spendingByDay').highcharts({
         <g:render template="../shared/highchartsColors" />
         credits: { enabled: false },
-        chart: { zoomType: 'x', height: 500 },
+        chart: {
+          zoomType: 'x',
+          height: 500,
+          <g:render template="../shared/highchartsFonts" />
+        },
         title: { text: 'Spending By Day' },
         subtitle: {
           text: document.ontouchstart === undefined ?

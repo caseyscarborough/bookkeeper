@@ -7,7 +7,8 @@
           credits: { enabled: false },
           chart: {
             type: 'pie',
-            height: 600
+            height: 600,
+            <g:render template="../shared/highchartsFonts" />
           },
           title: {
             text: 'Spending with SubCategory for ' + data.month

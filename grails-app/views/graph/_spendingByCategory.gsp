@@ -28,7 +28,8 @@
           credits: { enabled: false },
           chart: {
             type: 'column',
-            height: 500
+            height: 500,
+            <g:render template="../shared/highchartsFonts" />
           },
           title: {
             text: 'Spending By Category'

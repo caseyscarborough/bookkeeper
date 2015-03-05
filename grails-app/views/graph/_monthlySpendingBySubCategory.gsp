@@ -5,7 +5,8 @@
         $('#monthlySpendingByCategory').highcharts({
           <g:render template="../shared/highchartsColors" />
           chart: {
-            height: 500
+            height: 500,
+            <g:render template="../shared/highchartsFonts" />
           },
           title: {
             text: 'Monthly Transactions Over Time for ' + data.category,

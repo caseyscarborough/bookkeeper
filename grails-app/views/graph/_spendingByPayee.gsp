@@ -26,7 +26,8 @@
       $('#spendingByPayee').highcharts({
         chart: {
           type: 'column',
-          height: 600
+          height: 600,
+          <g:render template="../shared/highchartsFonts" />
         },
         title: {
           text: 'Spending By Payee'

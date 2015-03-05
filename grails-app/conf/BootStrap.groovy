@@ -1,6 +1,4 @@
-import com.caseyscarborough.budget.Category
-import com.caseyscarborough.budget.CategoryType
-import com.caseyscarborough.budget.SubCategory
+import com.caseyscarborough.budget.*
 import com.caseyscarborough.budget.security.Role
 import com.caseyscarborough.budget.security.User
 import com.caseyscarborough.budget.security.UserRole
@@ -117,6 +115,7 @@ class BootStrap {
       savings.save(flush: true)
 
       def misc = new Category(name: "Miscellaneous", type: CategoryType.DEBIT)
+      misc.save(flush: true)
     }
   }
   def destroy = {

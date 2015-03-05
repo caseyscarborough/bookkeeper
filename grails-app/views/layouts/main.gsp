@@ -2,6 +2,7 @@
 <html>
 <head>
   <title><g:layoutTitle /></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="icon" type="image/png" href="${resource(dir: 'images', file: 'favicon.png')}">
   <asset:javascript src="application.js" />
   <asset:stylesheet src="application.css" />

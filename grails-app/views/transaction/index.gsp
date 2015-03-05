@@ -38,7 +38,7 @@
       $(".transaction-delete").on('click', function () {
         var id = $(this).attr("data-id");
         deleteTransaction(id, function () {
-          $("#transaction-" + id).fadeOut();
+          $(".transaction-" + id).fadeOut();
         }, function () {
         });
       });
@@ -113,7 +113,7 @@
         <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]"/>
       </div>
 
-      <div class="pull-right">
+      <div class="pull-right hidden-xs">
         <div class="form-group pull-left" style="margin-right:10px">
           <label for="filter-account">Account:</label>
           <select class="form-control domain-property" id="filter-account">
@@ -125,7 +125,7 @@
           </select>
         </div>
 
-        <div class="form-group pull-left">
+        <div class="form-group pull-left hidden-xs">
           <label for="filter-category">Category:</label>
           <select class="form-control domain-property" id="filter-category">
             <option value="ALL">ALL</option>
@@ -147,7 +147,7 @@
         <div id="transaction-error-message"></div>
       </div>
 
-      <div class="table-responsive">
+      <div class="table-responsive hidden-xs">
         <table class="table table-condensed table-hover">
           <thead>
           <tr>
@@ -206,7 +206,7 @@
             </tr>
           </form>
           <g:each in="${transactions}" var="transaction">
-            <tr id="transaction-${transaction.id}" class="${transaction.cssClass}">
+            <tr class="${transaction.cssClass} transaction-${transaction.id}">
               <td><span id="transaction-${transaction.id}-date">${transaction.date.format("MM/dd/yyyy")}</span></td>
               <td><span id="transaction-${transaction.id}-description">${transaction.description}</span></td>
               <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
@@ -232,6 +232,21 @@
           </g:each>
           </tbody>
         </table>
+      </div>
+
+      <div class="visible-xs">
+        <g:each in="${transactions}" var="transaction">
+          <div class="transaction-${transaction.id}">
+            <div class="mobile-transaction">
+              <strong>${transaction.description}</strong> - ${transaction.date.format("MM/dd/yyyy")}<br>
+              Amount: $${transaction.amountString}<br>
+              From Account: ${transaction.fromAccount}<br>
+              Category: ${transaction.subCategory}<br>
+              <a href="#" class="transaction-edit" data-id="${transaction.id}">Edit</a> &middot;
+              <a href="#" class="transaction-delete" data-id="${transaction.id}">Delete</a>
+            </div><br>
+          </div>
+        </g:each>
       </div>
     </div>
   </div>

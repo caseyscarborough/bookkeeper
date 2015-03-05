@@ -93,7 +93,7 @@
           ${flash.message}
         </div>
       </g:if>
-      <div id="accounts-table" class="table-responsive">
+      <div id="accounts-table" class="table-responsive hidden-xs">
         <form id="new-account-form" onsubmit="return false">
           <table class="table table-hover table-condensed">
             <thead>
@@ -141,7 +141,7 @@
       </div>
 
       <!-- Mobile Layout -->
-      <div id="accounts-list">
+      <div id="accounts-list" class="visible-xs">
         <g:each in="${accountList}" var="account">
           <div class="row">
             <div class="col-md-12 mobile-account">

@@ -57,6 +57,23 @@
           }
         });
       });
+
+      $(".account-edit").on('click', function() {
+        var id = $(this).attr("data-id");
+        $("#edit-account-description").val($("#account-" + id + "-description").html());
+        $("#edit-account-id").val(id);
+        $("#edit-account-balance").val($("#account-" + id + "-balance").html());
+        $("#edit-account-modal").modal('show');
+      });
+
+      $("#edit-account-form").on('submit', function() {
+        var data = getData('.modal-domain-property');
+        updateAccount(data, function() {
+          window.location.reload();
+        }, function(response) {
+          showErrorMessage("#account-edit-error", response.responseJSON.message, "edit-account-" + response.responseJSON.field);
+        })
+      });
     });
   </script>
 </head>
@@ -102,11 +119,12 @@
             </tr>
             <g:each in="${accountList}" var="account">
               <tr id="account-${account.id}">
-                <td>${account.description}</td>
+                <td id="account-${account.id}-description">${account.description}</td>
                 <td>${account.balanceString}<span id="account-${account.id}-balance" data-id="${account.id}" data-is-debt="${account.type.isDebt}" class="account-balance" style="display:none">${account.balance}</span></td>
-                <td>${account.type.name}</td>
+                <td id="account-${account.id}-type">${account.type.name}</td>
                 <td>
                   <input type="checkbox" class="include-in-total" data-id="${account.id}" checked>
+                  <a href="#" class="account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i></a>
                   <a href="#" class="account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
               </tr>
@@ -120,5 +138,6 @@
 
   </div>
 </div>
+<g:render template="editAccountModal" />
 </body>
 </html>

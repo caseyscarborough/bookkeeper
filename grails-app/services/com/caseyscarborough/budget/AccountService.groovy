@@ -12,6 +12,7 @@ class AccountException extends RuntimeException {
 class AccountService {
 
   def messageSource
+  def springSecurityService
 
   Account createAccount(String description, BigDecimal balance, AccountType type, User user) {
     def account = new Account(description: description, balance: balance, type: type, user: user)
@@ -24,15 +25,42 @@ class AccountService {
     return account
   }
 
-  void deleteAccount(Long id) {
-    def accountInstance = Account.get(id)
+  Account updateAccount(Long id, String description, BigDecimal balance) {
+    def account = Account.get(id)
 
-    if (!accountInstance) {
+    if (!account) {
       throw new AccountException(message: "Could not find account with ID: ${id}")
     }
 
+    if (account.user != springSecurityService.currentUser) {
+      throw new AccountException(message: "Unauthorized")
+    }
+
+    account.description = description
+    account.balance = balance
+
+    if (!account.save(flush: true)) {
+      def message = messageSource.getMessage(account.errors.fieldError, Locale.default)
+      log.debug("Account has errors: ${message}")
+      throw new AccountException(message: message, account: account)
+    }
+
+    return account
+  }
+
+  void deleteAccount(Long id) {
+    def account = Account.get(id)
+
+    if (!account) {
+      throw new AccountException(message: "Could not find account with ID: ${id}")
+    }
+
+    if (account.user != springSecurityService.currentUser) {
+      throw new AccountException(message: "Unauthorized")
+    }
+
     try {
-      accountInstance.delete(flush: true)
+      account.delete(flush: true)
     } catch (Exception e) {
       throw new AccountException(message: "Can't delete account due to relationship with other entities.")
     }

@@ -112,6 +112,25 @@ function getData(selector) {
 	return data;
 }
 
+function updateAccount(data, success, error) {
+	$.ajax({
+		type: "post",
+		data: data,
+		url: ACCOUNT_UPDATE_URL,
+		dataType: 'json',
+		success: function(response) {
+			if (success && typeof success === 'function') {
+				success(response)
+			}
+		},
+		error: function(response) {
+			if (error && typeof error === 'function') {
+				error(response)
+			}
+		}
+	});
+}
+
 // TODO: Refactor the following two functions
 function updateToAccount() {
 	if ($("#subCategory option:selected").attr("data-type") === "Transfer") {

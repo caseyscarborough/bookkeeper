@@ -143,20 +143,15 @@
       <!-- Mobile Layout -->
       <div id="accounts-list" class="visible-xs">
         <g:each in="${accountList}" var="account">
-          <div class="row">
-            <div class="col-md-12 mobile-account">
+            <div class="mobile-account">
               <h3>${account.description}</h3>
-
               <p>Balance: ${account.balanceString}</p>
-
               <p>Type: ${account.type.name}</p>
-
               <p>
                 <a href="#" class="account-edit" data-id="${account.id}">Edit</a> &middot;
                 <a href="#" class="account-delete" data-id="${account.id}">Delete</a>
               </p>
             </div>
-          </div>
           <br>
         </g:each>
       </div>

@@ -211,18 +211,18 @@
               <td><input type="text" class="form-control domain-property" id="date" name="date" placeholder="Date" tabindex="1">
               </td>
               <td><input type="text" class="form-control domain-property" id="description" name="description"
-                         placeholder="Transaction Description"></td>
+                         placeholder="Transaction Description" tabindex="2"></td>
               <td><input type="number" class="form-control domain-property" id="amount" name="amount" step="0.01"
-                         placeholder="Amount"></td>
+                         placeholder="Amount" tabindex="3"></td>
               <td>
-                <select class="form-control domain-property" id="fromAccount" name="fromAccount">
+                <select class="form-control domain-property" id="fromAccount" name="fromAccount" tabindex="4">
                   <g:each in="${accounts}" var="account">
                     <option value="${account.id}">${account.description}</option>
                   </g:each>
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="subCategory" name="subCategory">
+                <select class="form-control domain-property" id="subCategory" name="subCategory" tabindex="5">
                   <g:each in="${categories}" var="category">
                     <optgroup label="${category.name}">
                       <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
@@ -233,14 +233,14 @@
                 </select>
               </td>
               <td>
-                <select class="form-control domain-property" id="toAccount" name="toAccount" disabled="disabled">
+                <select class="form-control domain-property" id="toAccount" name="toAccount" disabled="disabled" tabindex="6">
                   <g:each in="${accounts}" var="account">
                     <option value="${account.id}">${account.description}</option>
                   </g:each>
                 </select>
               </td>
-              <td style="vertical-align: middle; width: 95px"><input type="file" id="receipt" style="width: 100%"></td>
-              <td><button id="submit" class="btn btn-primary">New</button></td>
+              <td style="vertical-align: middle; width: 95px"><input type="file" id="receipt" style="width: 100%" tabindex="7"></td>
+              <td><button id="submit" class="btn btn-primary" tabindex="8">New</button></td>
             </tr>
           </form>
           <g:each in="${transactions}" var="transaction">

@@ -62,7 +62,7 @@ class AccountService {
     try {
       account.delete(flush: true)
     } catch (Exception e) {
-      throw new AccountException(message: "Can't delete account due to relationship with other entities.")
+      throw new AccountException(message: "Unable to delete account because it has transactions associated with it.")
     }
   }
 }

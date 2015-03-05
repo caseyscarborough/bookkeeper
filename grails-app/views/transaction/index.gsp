@@ -254,9 +254,9 @@
                 </g:if>
               </td>
               <td>
-                <a href="#" class="transaction-edit" data-id="${transaction.id}"><i
+                <a title="Edit" class="tooltip-link transaction-edit" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-pencil"></i></a>
-                <a href="#" class="transaction-delete" data-id="${transaction.id}"><i
+                <a title="Delete" class="tooltip-link transaction-delete" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-remove"></i></a>
               </td>
             </tr>

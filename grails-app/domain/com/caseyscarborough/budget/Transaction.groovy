@@ -12,10 +12,12 @@ class Transaction {
   Account toAccount
   User user
   Receipt receipt
+  BigDecimal accountBalance
 
   static constraints = {
     toAccount nullable: true
     receipt nullable: true
+    accountBalance nullable: true
   }
 
   static mapping = {

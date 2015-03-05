@@ -94,7 +94,7 @@ class TransactionService {
       log.info("Deducting ${amount} dollars from ${transaction.fromAccount}")
       transaction.fromAccount.sendPayment(amount)
       log.info("Receiving ${amount} dollars to ${transaction.toAccount}")
-      transaction.toAccount.receivePayment(amount)
+      transaction.toAccount?.receivePayment(amount)
       transaction.toAccount?.save(flush: true)
       transaction.fromAccount?.save(flush: true)
     } else {

@@ -131,7 +131,7 @@ function updateAccount(data, success, error) {
 	});
 }
 
-// TODO: Refactor the following two functions
+// TODO: Refactor the following three functions
 function updateToAccount() {
 	if ($("#subCategory option:selected").attr("data-type") === "Transfer") {
 		$("#toAccount").removeAttr("disabled");
@@ -145,5 +145,13 @@ function updateEditToAccount() {
 		$("#edit-toAccount").removeAttr("disabled");
 	} else {
 		$("#edit-toAccount").attr("disabled", "disabled");
+	}
+}
+
+function updateMobileToAccount() {
+	if ($("#mobile-subCategory option:selected").attr("data-type") === "Transfer") {
+		$("#mobile-toAccount").removeAttr("disabled");
+	} else {
+		$("#mobile-toAccount").attr("disabled", "disabled");
 	}
 }

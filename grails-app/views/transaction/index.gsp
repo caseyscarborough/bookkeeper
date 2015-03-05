@@ -9,6 +9,18 @@
       $("#edit-date").datepicker();
       $("title").html($("#filter-category option:selected").html() + " Transactions");
 
+      $("#show-new-mobile-transaction").click(function() {
+        $("#mobile-new-transaction-form").show();
+        $(this).hide();
+        $("#hide-new-mobile-transaction").show();
+      });
+
+      $("#hide-new-mobile-transaction").click(function() {
+        $("#show-new-mobile-transaction").show();
+        $("#mobile-new-transaction-form").hide();
+        $(this).hide();
+      });
+
       $("#new-transaction-form").on('submit', function () {
         var data = getData(".domain-property");
         var fileData = $("#receipt").prop('files')[0];
@@ -19,6 +31,15 @@
           window.location.reload();
         }, function (response) {
           showErrorMessage("#transaction-error", response.responseJSON.message, response.responseJSON.field);
+        });
+      });
+
+      $("#mobile-new-transaction-form").on('submit', function() {
+        var data = getData(".mobile-domain-property");
+        createTransaction(data, function() {
+          window.location.reload();
+        }, function (response) {
+          showErrorMessage("#transaction-error", response.responseJSON.message, "mobile-" + response.responseJSON.field);
         });
       });
 
@@ -81,6 +102,11 @@
       updateEditToAccount();
       $("#edit-subCategory").on('change', function () {
         updateEditToAccount();
+      });
+
+      updateMobileToAccount();
+      $("#mobile-subCategory").on('change', function () {
+        updateMobileToAccount();
       });
 
       $(".transaction-edit").click(function () {
@@ -235,6 +261,58 @@
       </div>
 
       <div class="visible-xs">
+
+        <button id="show-new-mobile-transaction" class="btn btn-primary">New Transaction</button>
+        <button id="hide-new-mobile-transaction" class="btn btn-primary" style="display:none">Hide Form</button>
+        <br><br>
+
+        <form id="mobile-new-transaction-form" onsubmit="return false" style="display:none">
+          <div class="form-group">
+            <label for="mobile-date">Date</label>
+            <input type="text" class="form-control mobile-domain-property" id="mobile-date" name="date" placeholder="Date">
+          </div>
+          <div class="form-group">
+            <label for="mobile-description">Description</label>
+            <input type="text" class="form-control mobile-domain-property" id="mobile-description" name="description" placeholder="Description">
+          </div>
+          <div class="form-group">
+            <label for="mobile-amount">Amount</label>
+            <input type="number" class="form-control mobile-domain-property" id="mobile-amount" name="amount" step="0.01" placeholder="Amount">
+          </div>
+
+          <div class="form-group">
+            <label for="mobile-fromAccount">From Account</label>
+            <select class="form-control mobile-domain-property" id="mobile-fromAccount" name="fromAccount">
+              <g:each in="${accounts}" var="account">
+                <option value="${account.id}">${account.description}</option>
+              </g:each>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile-subCategory">Category</label>
+            <select class="form-control mobile-domain-property" id="mobile-subCategory" name="subCategory">
+              <g:each in="${categories}" var="category">
+                <optgroup label="${category.name}">
+                  <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                    <option data-type="${subcategory.type}" value="${subcategory.id}">${subcategory.name}</option>
+                  </g:each>
+                </optgroup>
+              </g:each>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile-toAccount">To Account</label>
+            <select class="form-control mobile-domain-property" id="mobile-toAccount" name="toAccount" disabled="disabled">
+              <g:each in="${accounts}" var="account">
+                <option value="${account.id}">${account.description}</option>
+              </g:each>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">New</button>
+        </form>
+
         <g:each in="${transactions}" var="transaction">
           <div class="transaction-${transaction.id}">
             <div class="mobile-transaction">

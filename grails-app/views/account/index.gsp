@@ -121,7 +121,11 @@
             </tr>
             <g:each in="${accountList}" var="account">
               <tr class="account-${account.id}">
-                <td id="account-${account.id}-description">${account.description}</td>
+                <td>
+                  <g:link class="tooltip-link" title="View Transactions for ${account}" controller="transaction" action="index" params="[account: account.id]">
+                    <span id="account-${account.id}-description">${account.description}</span>
+                  </g:link>
+                </td>
                 <td>${account.balanceString}<span id="account-${account.id}-balance" data-id="${account.id}"
                                                   data-is-debt="${account.type.isDebt}" class="account-balance"
                                                   style="display:none">${account.balance}</span></td>

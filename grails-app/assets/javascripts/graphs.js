@@ -7,6 +7,14 @@ Highcharts.theme = {
         height: 500,
         zoomType: 'x'
     },
+    legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
     credits: { enabled: false }
 };
 
@@ -39,10 +47,11 @@ function getMonthlySpendingBySubCategory(data) {
     $('#monthlySpendingByCategory').highcharts({
         title: {
             text: 'Monthly Transactions Over Time for ' + data.category,
-            x: -20 //center
         },
         subtitle: {
-            x: -20
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Pinch the chart to zoom in'
         },
         xAxis: {
             categories: data.months
@@ -60,12 +69,6 @@ function getMonthlySpendingBySubCategory(data) {
         tooltip: {
             valueSuffix: '',
             valuePrefix: "$"
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
         },
         series: data.data
     });
@@ -112,6 +115,11 @@ function getSpendingByPayee(data) {
         },
         title: {
             text: 'Spending By Payee'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Pinch the chart to zoom in'
         },
         xAxis: {
             type: 'category',
@@ -209,6 +217,11 @@ function getSpendingByCategory(data) {
         chart: {
             type: 'column'
         },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Pinch the chart to zoom in'
+        },
         title: {
             text: 'Spending By Category'
         },
@@ -227,17 +240,6 @@ function getSpendingByCategory(data) {
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                 }
             }
-        },
-        legend: {
-            align: 'right',
-            x: -30,
-            verticalAlign: 'top',
-            y: 25,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-            borderColor: '#CCC',
-            borderWidth: 1,
-            shadow: false
         },
         tooltip: {
             formatter: function () {
@@ -266,10 +268,11 @@ function getAccountBalancesOverTime(data) {
     $('#accountBalancesOverTime').highcharts({
         title: {
             text: 'Account Balances Over Time',
-            x: -20
         },
         subtitle: {
-            x: -20
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Pinch the chart to zoom in'
         },
         xAxis: {
             categories: data.days,
@@ -288,12 +291,6 @@ function getAccountBalancesOverTime(data) {
         tooltip: {
             valueSuffix: '',
             valuePrefix: "$"
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
         },
         plotOptions: {
             line: {

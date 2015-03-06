@@ -204,11 +204,11 @@
           <thead>
           <tr>
             <g:sortableColumn property="date" title="Date"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account]" width="7%"/>
             <g:sortableColumn property="description" title="Description"
                               params="[category: params.category, account: params.account]"/>
             <g:sortableColumn property="amount" title="Amount"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account]" width="8%"/>
             <g:sortableColumn property="fromAccount" title="From Account"
                               params="[category: params.category, account: params.account]"/>
             <g:sortableColumn property="subCategory" title="Category"
@@ -267,7 +267,7 @@
               <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
               <td><span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span></td>
               <td>
-                <g:link controller="transaction" action="index" params="[category: transaction.subCategory.id]">
+                <g:link controller="transaction" action="index" params="[category: transaction.subCategory.id]" class="tooltip-link" title="View Transactions for ${transaction.subCategory}">
                   <span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span>
                 </g:link>
               </td>
@@ -275,7 +275,7 @@
               <td>${transaction.accountBalance}</td>
               <td>
                 <g:if test="${transaction.receipt}">
-                  <a class="view-receipt cursor" data-url="${createLink(controller: 'receipt', action: 'download', id: transaction.receipt.id)}">View</a>
+                  <a class="view-receipt cursor tooltip-link" title="View Receipt" data-url="${createLink(controller: 'receipt', action: 'download', id: transaction.receipt.id)}">View</a>
                 </g:if>
               </td>
               <td>

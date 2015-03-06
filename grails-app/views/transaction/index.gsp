@@ -5,7 +5,7 @@
   <title>Transactions</title>
   <script>
 
-    function setupAutocomplete(descriptionSelector, subcategorySelector) {
+    function setupAutocomplete(descriptionSelector, subcategorySelector, toAccountSelector) {
       $(descriptionSelector).autocomplete({
         serviceUrl: "${createLink(controller: 'transaction', action: 'queryDescription')}",
         minChars: 3,
@@ -16,14 +16,17 @@
         onSelect: function (suggestion) {
           $(descriptionSelector).val(suggestion.data.description);
           $(subcategorySelector).val(suggestion.data.id);
+          if (suggestion.data.toAccount !== null) {
+            $(toAccountSelector).val(suggestion.data.toAccount);
+          }
           updateToAccount();
         }
       });
     }
     $(function () {
-      setupAutocomplete("#description", "#subCategory");
-      setupAutocomplete("#edit-description", "#edit-subCategory");
-      setupAutocomplete("#mobile-description", "#mobile-subCategory");
+      setupAutocomplete("#description", "#subCategory", "#toAccount");
+      setupAutocomplete("#edit-description", "#edit-subCategory", "#edit-toAccount");
+      setupAutocomplete("#mobile-description", "#mobile-subCategory", "#mobile-toAccount");
 
       $("#date").datepicker();
       $("#edit-date").datepicker();

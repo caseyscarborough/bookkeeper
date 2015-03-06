@@ -216,10 +216,6 @@ class GraphController {
 
       int i = 0
       while (startCal.time <= now) {
-        def transactions = Transaction.where {
-          user == springSecurityService.currentUser && date >= startCal.time && date < endCal.time
-        }
-
         accounts?.each { Account a ->
           if (!data."${a.description}") {
             data."${a.description}" = []
@@ -233,13 +229,19 @@ class GraphController {
               data."${a.description}" << data."${a.description}"[size-1]
             }
           }
-        }
 
-        try {
-          def t = transactions?.first()
-          data."${t.fromAccount.description}"[i] = t.accountBalance
-        } catch (NullPointerException e) {}
-        catch (NoSuchElementException e) {}
+          def transactions = Transaction.findAllByUserAndDateGreaterThanEqualsAndDateLessThanAndFromAccount(springSecurityService.currentUser, startCal.time, endCal.time, a)
+          try {
+            def t = transactions?.first()
+            data."${t.fromAccount.description}"[i] = t.accountBalance
+            log.info("Set balance for ${t.fromAccount} to ${t.accountBalance} for ${startCal.time.format('MM/dd/yyyy')}")
+          } catch (NullPointerException e) {
+            log.error("Caught NullPointerException for ${startCal.time.format('MM/dd/yyyy')}")
+          }
+          catch (NoSuchElementException e) {
+            log.error("Caught NoSuchElementException for ${startCal.time.format('MM/dd/yyyy')}")
+          }
+        }
 
         days << startCal.format(DAY_FORMAT)
         startCal.add(Calendar.DAY_OF_YEAR, 1)

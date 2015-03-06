@@ -61,6 +61,13 @@
             verticalAlign: 'middle',
             borderWidth: 0
           },
+          plotOptions: {
+            line: {
+              marker: {
+                enabled: false
+              }
+            }
+          },
           series: data.data
         });
       });

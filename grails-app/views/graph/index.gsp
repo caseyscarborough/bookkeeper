@@ -17,6 +17,8 @@
   <hr>
   <g:render template="monthlySpendingBySubCategory" />
   <hr>
+  <g:render template="accountBalancesOverTime" />
+  <hr>
   <g:render template="spendingByPayee" />
 </div>
 

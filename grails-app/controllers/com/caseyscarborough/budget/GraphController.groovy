@@ -1,5 +1,6 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -10,6 +11,7 @@ class GraphController {
 
   private static final String DATE_FORMAT_FOR_MONTH_SELECTION = "yyyyMM"
   private static final String MONTH_FORMAT = "MMMMM yyyy"
+  private static final String DAY_FORMAT = "MM/dd/yy"
   private static final Integer NUMBER_OF_MONTHS_TO_ANALYZE = 12
   private static final Integer SPENDING_BY_PAYEE_COUNT = 40
   private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
@@ -192,6 +194,66 @@ class GraphController {
     }
 
     render([data: categoryData, months: months, category: category.name] as JSON)
+  }
+
+  def accountBalancesOverTime() {
+    def data = [:]
+    def accountData = []
+    def days = []
+    def now = new Date()
+    def accounts = Account.findAllByUser(springSecurityService.currentUser as User)
+    def firstTransaction = Transaction.where {
+      user == springSecurityService.currentUser
+    }?.sort { it.date }
+
+    if (firstTransaction) {
+      def startCal = Calendar.instance
+      startCal.setTime(firstTransaction.first().date)
+      startCal = setCalendarToMidnight(startCal)
+      def endCal = Calendar.instance
+      endCal.setTime(startCal.time)
+      endCal.add(Calendar.DAY_OF_YEAR, 1)
+
+      int i = 0
+      while (startCal.time <= now) {
+        def transactions = Transaction.where {
+          user == springSecurityService.currentUser && date >= startCal.time && date < endCal.time
+        }
+
+        accounts?.each { Account a ->
+          if (!data."${a.description}") {
+            data."${a.description}" = []
+          }
+
+          def size = data."${a.description}".size()
+          if (size != i + 1) {
+            if (size == 0) {
+              data."${a.description}" << 0
+            } else {
+              data."${a.description}" << data."${a.description}"[size-1]
+            }
+          }
+        }
+
+        try {
+          def t = transactions?.first()
+          data."${t.fromAccount.description}"[i] = t.accountBalance
+        } catch (NullPointerException e) {}
+        catch (NoSuchElementException e) {}
+
+        days << startCal.format(DAY_FORMAT)
+        startCal.add(Calendar.DAY_OF_YEAR, 1)
+        endCal.add(Calendar.DAY_OF_YEAR, 1)
+        i++
+      }
+
+      data.each { k, v ->
+        if (v != [0] * (i))
+          accountData << [name: k, data: v]
+      }
+    }
+
+    render([data: accountData, days: days] as JSON)
   }
 
   def spendingByPayee() {

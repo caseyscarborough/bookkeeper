@@ -272,7 +272,7 @@
                 </g:link>
               </td>
               <td><span id="transaction-${transaction.id}-toAccount">${transaction.toAccount}</span></td>
-              <td>${transaction.accountBalance}</td>
+              <td>${transaction.accountBalanceString}</td>
               <td>
                 <g:if test="${transaction.receipt}">
                   <a class="view-receipt cursor tooltip-link" title="View Receipt" data-url="${createLink(controller: 'receipt', action: 'download', id: transaction.receipt.id)}">View</a>

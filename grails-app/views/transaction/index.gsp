@@ -223,7 +223,7 @@
           <tbody>
           <form id="new-transaction-form" onsubmit="return false">
             <tr>
-              <td><input type="text" class="form-control domain-property" id="date" name="date" placeholder="Date" tabindex="1">
+              <td><input type="text" class="form-control domain-property" id="date" name="date" placeholder="mm/dd/yyyy" value="${new Date().format('MM/dd/yyyy')}" tabindex="1">
               </td>
               <td><input type="text" class="form-control domain-property" id="description" name="description"
                          placeholder="Transaction Description" tabindex="2"></td>

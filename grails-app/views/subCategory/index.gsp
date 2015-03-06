@@ -125,8 +125,8 @@
               <td>${subCategory.transactions.size()}</td>
               <td><span id="subCategory-${subCategory.id}-type">${subCategory.type}</span></td>
               <td>
-                <a class="edit-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a class="delete-subCategory" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a>
+                <a class="edit-subCategory tooltip-link" title="Edit" data-id="${subCategory.id}"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a class="delete-subCategory tooltip-link" title="Delete" data-id="${subCategory.id}"><i class="glyphicon glyphicon-remove"></i></a>
               </td>
             </tr>
           </g:each>

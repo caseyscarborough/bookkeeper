@@ -42,8 +42,8 @@ class DataController {
 
   def exportToExcel() {
     def transactions = Transaction.findAllByUser(springSecurityService.currentUser)?.sort { it.date }?.reverse()
-    def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type']
-    def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type']
+    def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type', 'Account Balance']
+    def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type', 'accountBalance']
 
     new WebXlsxExporter().with {
       setResponseHeaders(response)

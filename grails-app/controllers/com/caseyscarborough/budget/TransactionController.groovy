@@ -24,12 +24,12 @@ class TransactionController {
     def transactionCount
 
     // Yeah, this kinda sucks
-    if (account && category) {
-      transactionCount = Transaction.findAllByFromAccountAndSubCategoryAndUser(account, category, springSecurityService.currentUser).size()
-      transactions = Transaction.findAllByFromAccountAndSubCategoryAndUser(account, category, springSecurityService.currentUser, params)
-    } else if (account) {
-      transactionCount = Transaction.findAllByFromAccountAndUser(account, springSecurityService.currentUser).size()
-      transactions = Transaction.findAllByFromAccountAndUser(account, springSecurityService.currentUser, params)
+    if (account) {
+      def total = Transaction.findAllByFromAccountOrToAccount(account, account)
+      total.removeAll { it.user != springSecurityService.currentUser }
+      transactionCount = total.size()
+      transactions = Transaction.findAllByFromAccountOrToAccount(account, account, params)
+      transactions.removeAll { it.user != springSecurityService.currentUser }
     } else if (category) {
       transactionCount = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser).size()
       transactions = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser, params)

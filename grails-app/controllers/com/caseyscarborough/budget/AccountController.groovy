@@ -15,7 +15,7 @@ class AccountController {
   static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
   def index() {
-    def accountList = Account.findAllByUser(springSecurityService.currentUser)
+    def accountList = Account.findAllByUser(springSecurityService.currentUser, params)
     [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()?.sort {it.name}]
   }
 

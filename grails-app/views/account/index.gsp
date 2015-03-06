@@ -98,9 +98,9 @@
           <table class="table table-hover table-condensed">
             <thead>
             <tr>
-              <th>Description</th>
-              <th>Balance</th>
-              <th>Type</th>
+              <g:sortableColumn property="description" title="Description" />
+              <g:sortableColumn property="balance" title="Balance" />
+              <g:sortableColumn property="type" title="Type" />
               <th>Options</th>
             </tr>
             </thead>

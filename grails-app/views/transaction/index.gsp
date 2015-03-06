@@ -211,7 +211,7 @@
                               params="[category: params.category, account: params.account]"/>
             <g:sortableColumn property="toAccount" title="To Account"
                               params="[category: params.category, account: params.account]"/>
-            <g:sortableColumn property="balance" title="Balance"
+            <g:sortableColumn property="accountBalance" title="Balance"
                               params="[category: params.category, account: params.account]"/>
             <th>Receipt</th>
             <th></th>

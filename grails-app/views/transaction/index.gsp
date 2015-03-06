@@ -23,6 +23,7 @@
         }
       });
     }
+
     $(function () {
       setupAutocomplete("#description", "#subCategory", "#toAccount");
       setupAutocomplete("#edit-description", "#edit-subCategory", "#edit-toAccount");

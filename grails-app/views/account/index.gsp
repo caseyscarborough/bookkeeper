@@ -63,6 +63,13 @@
         $("#edit-account-description").val($("#account-" + id + "-description").html());
         $("#edit-account-id").val(id);
         $("#edit-account-balance").val($("#account-" + id + "-balance").html());
+        if ($("#account-" + id + "-active").html() === "true") {
+          console.log("Checked!");
+          $("#edit-account-active").prop('checked', true);
+        } else {
+          console.log("Not checked!");
+          $("#edit-account-active").prop('checked', false);
+        }
         $("#edit-account-modal").modal('show');
       });
 
@@ -101,6 +108,7 @@
               <g:sortableColumn property="description" title="Description" />
               <g:sortableColumn property="balance" title="Balance" />
               <g:sortableColumn property="type" title="Type" />
+              <th>Active?</th>
               <th>Options</th>
             </tr>
             </thead>
@@ -117,10 +125,11 @@
                   </g:each>
                 </select>
               </td>
+              <td></td>
               <td><button id="submit" class="btn btn-primary">New</button></td>
             </tr>
             <g:each in="${accountList}" var="account">
-              <tr class="account-${account.id}">
+              <tr class="account-${account.id} ${!account.active ? 'inactive' : ''}">
                 <td>
                   <g:link class="tooltip-link" title="View Transactions for ${account}" controller="transaction" action="index" params="[account: account.id]">
                     <span id="account-${account.id}-description">${account.description}</span>
@@ -130,8 +139,9 @@
                                                   data-is-debt="${account.type.isDebt}" class="account-balance"
                                                   style="display:none">${account.balance}</span></td>
                 <td id="account-${account.id}-type">${account.type.name}</td>
+                <td><span id="account-${account.id}-active" style="display:none">${account.active}</span>${account.active ? "Yes" : "No"}</td>
                 <td>
-                  <input type="checkbox" class="include-in-total" data-id="${account.id}" checked>
+                  <input type="checkbox" class="include-in-total tooltip-link" title="Include in Current Total Balance?" data-id="${account.id}" ${account.active ? "checked" : ""}>
                   <a title="Edit" class="tooltip-link account-edit" data-id="${account.id}"><i class="glyphicon glyphicon-pencil"></i></a>
                   <a title="Delete" class="tooltip-link account-delete" data-id="${account.id}"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>

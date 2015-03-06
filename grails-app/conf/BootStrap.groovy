@@ -7,6 +7,13 @@ class BootStrap {
 
   def init = { servletContext ->
 
+    Account.all.each {
+      if (it.active == null) {
+        it.active = true
+        it.save(flush: true)
+      }
+    }
+
     if (User.count == 0) {
       log.debug("Creating default user...")
       def me = new User(firstName: "Initial", lastName: "User", username: "user", email: "user@example.com", password: "123")

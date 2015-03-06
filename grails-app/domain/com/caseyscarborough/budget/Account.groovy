@@ -8,8 +8,10 @@ class Account {
   AccountType type
   BigDecimal balance
   User user
+  Boolean active = true
 
   static constraints = {
+    active nullable: true
   }
 
   static mapping = {

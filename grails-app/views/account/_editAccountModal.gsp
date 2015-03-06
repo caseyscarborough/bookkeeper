@@ -27,6 +27,10 @@
             <input type="number" placeholder="Balance" name="balance" step="0.01" class="form-control modal-domain-property"
                    id="edit-account-balance">
           </div>
+
+          <div class="checkbox">
+            <label><input type="checkbox" id="edit-account-active" class="modal-domain-property" name="active"> Active?</label>
+          </div>
         </div>
 
         <div class="modal-footer">

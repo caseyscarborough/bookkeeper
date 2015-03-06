@@ -1,5 +1,6 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
@@ -15,7 +16,7 @@ class AccountController {
   static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
   def index() {
-    def accountList = Account.findAllByUser(springSecurityService.currentUser, params)
+    def accountList = Account.findAllByUser(springSecurityService.currentUser as User, params)
     [accountList: accountList, accountListCount: accountList.size(), accountTypes: AccountType.findAll()?.sort {it.name}]
   }
 
@@ -36,8 +37,9 @@ class AccountController {
 
   @Transactional
   def update() {
+    log.info(params)
     try {
-      def account = accountService.updateAccount(params.id as Long, params.description as String, new BigDecimal(params.balance as String))
+      def account = accountService.updateAccount(params.id as Long, params.description as String, new BigDecimal(params.balance as String), params.active == "true")
       render account as JSON
     } catch (AccountException e) {
       response.status = HttpStatus.BAD_REQUEST.value()

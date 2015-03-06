@@ -112,6 +112,8 @@ function getData(selector) {
 	var data = {};
 	$(selector).each(function () {
 		if ($(this).attr("disabled") === "disabled") {
+		} else if ($(this).attr("type") === "checkbox") {
+			data[$(this).attr("name")] = $(this).is(':checked');
 		} else {
 			data[$(this).attr("name")] = $(this).val();
 		}

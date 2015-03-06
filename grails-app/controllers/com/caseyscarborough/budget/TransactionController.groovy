@@ -1,5 +1,6 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
@@ -31,14 +32,14 @@ class TransactionController {
       transactions = Transaction.findAllByFromAccountOrToAccount(account, account, params)
       transactions.removeAll { it.user != springSecurityService.currentUser }
     } else if (category) {
-      transactionCount = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser).size()
-      transactions = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser, params)
+      transactionCount = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser as User).size()
+      transactions = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser as User, params)
     } else {
-      transactionCount = Transaction.findAllByUser(springSecurityService.currentUser).size()
-      transactions = Transaction.findAllByUser(springSecurityService.currentUser, params)
+      transactionCount = Transaction.findAllByUser(springSecurityService.currentUser as User).size()
+      transactions = Transaction.findAllByUser(springSecurityService.currentUser as User, params)
     }
 
-    def accounts = Account.findAllByUser(springSecurityService.currentUser)
+    def accounts = Account.findAllByUserAndActive(springSecurityService.currentUser as User, true)
     [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
   }
 
@@ -95,10 +96,11 @@ class TransactionController {
   }
 
   def queryDescription() {
-    def transactions = Transaction.findAllByUserAndDescriptionIlike(springSecurityService.currentUser, params.query + "%")
+    def transactions = Transaction.findAllByUserAndDescriptionIlike(springSecurityService.currentUser as User, params.query + "%")
     def output = []
     transactions.each { t ->
-      output << [value: t.description, data: [id: t.subCategory.id, category: t.subCategory, description: t.description, toAccount: t.toAccount?.id ?: null]]
+      if (t.fromAccount.active)
+        output << [value: t.description, data: [id: t.subCategory.id, category: t.subCategory, description: t.description, toAccount: t.toAccount?.id ?: null]]
     }
     output = output.unique()
     render([suggestions: output] as JSON)

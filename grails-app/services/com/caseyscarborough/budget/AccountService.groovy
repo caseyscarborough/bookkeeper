@@ -25,7 +25,7 @@ class AccountService {
     return account
   }
 
-  Account updateAccount(Long id, String description, BigDecimal balance) {
+  Account updateAccount(Long id, String description, BigDecimal balance, Boolean active) {
     def account = Account.get(id)
 
     if (!account) {
@@ -38,6 +38,7 @@ class AccountService {
 
     account.description = description
     account.balance = balance
+    account.active = active
 
     if (!account.save(flush: true)) {
       def message = messageSource.getMessage(account.errors.fieldError, Locale.default)

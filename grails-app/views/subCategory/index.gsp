@@ -117,7 +117,7 @@
           <g:each in="${subCategories}" var="subCategory">
             <tr id="subCategory-${subCategory.id}">
               <td>
-                <g:link controller="transaction" action="index" params="[category: subCategory.id]">
+                <g:link controller="transaction" action="index" params="[category: subCategory.id]" class="tooltip-link" title="View Transactions for ${subCategory}">
                   <span id="subCategory-${subCategory.id}-name">${subCategory.name}</span>
                 </g:link>
               </td>

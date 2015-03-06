@@ -345,7 +345,7 @@
 
         <g:each in="${transactions}" var="transaction">
           <div class="transaction-${transaction.id}">
-            <div class="mobile-transaction">
+            <div class="mobile-transaction ${transaction.cssClass}">
               <strong>${transaction.description}</strong> - ${transaction.date.format("MM/dd/yyyy")}<br>
               Amount: $${transaction.amountString}<br>
               From Account: ${transaction.fromAccount}<br>

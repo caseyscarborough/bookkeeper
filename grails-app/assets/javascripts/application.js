@@ -28,6 +28,9 @@ if (typeof jQuery !== 'undefined') {
 
 $(function() {
 	$(".tooltip-link").tooltip();
+
+	$(".sorted.asc").append('&nbsp;<small class="glyphicon glyphicon-triangle-bottom"></small>');
+	$(".sorted.desc").append('&nbsp;<small class="glyphicon glyphicon-triangle-top"></small>');
 });
 
 function showErrorMessage(selector, message, field) {

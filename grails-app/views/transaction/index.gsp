@@ -350,6 +350,7 @@
               Amount: $${transaction.amountString}<br>
               From Account: ${transaction.fromAccount}<br>
               Category: ${transaction.subCategory}<br>
+              Account Balance: ${transaction.accountBalanceString}<br>
               <a href="#" class="transaction-edit" data-id="${transaction.id}">Edit</a> &middot;
               <a href="#" class="transaction-delete" data-id="${transaction.id}">Delete</a>
             </div><br>

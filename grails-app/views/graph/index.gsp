@@ -3,23 +3,21 @@
 <head>
   <meta name="layout" content="main">
   <title>Graphs</title>
-  <script>
-
-  </script>
 </head>
+
 <body>
 <div id="content">
-  <g:render template="spendingByDay" />
+  <g:render template="spendingByDay"/>
   <hr>
-  <g:render template="spendingByCategory" />
+  <g:render template="spendingByCategory"/>
   <hr>
-  <g:render template="spendingWithSubcategory" />
+  <g:render template="spendingWithSubcategory"/>
   <hr>
-  <g:render template="monthlySpendingBySubCategory" />
+  <g:render template="monthlySpendingBySubCategory"/>
   <hr>
-  <g:render template="accountBalancesOverTime" />
+  <g:render template="accountBalancesOverTime"/>
   <hr>
-  <g:render template="spendingByPayee" />
+  <g:render template="spendingByPayee"/>
 </div>
 
 </body>

@@ -14,6 +14,7 @@
 //= require highcharts/modules/drilldown
 //= require spin.js/spin.js
 //= require urls
+//= require graphs
 //= require_self
 
 if (typeof jQuery !== 'undefined') {

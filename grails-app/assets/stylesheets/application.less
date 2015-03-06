@@ -24,6 +24,12 @@ h1 {
   font-size: 40px;
 }
 
+a {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .cursor {
   cursor: pointer;
 }
@@ -106,4 +112,17 @@ th {
 
 tr.inactive {
   background-color: #eee;
+  color: #999;
+
+  a {
+    color: #666;
+  }
+}
+
+.mobile-account.inactive {
+  color: #999;
+
+  a {
+    color: #666;
+  }
 }

@@ -156,13 +156,13 @@
       <div id="accounts-list" class="visible-xs">
         <g:each in="${accountList}" var="account">
           <div class="account-${account.id}">
-            <div class="mobile-account">
+            <div class="mobile-account ${!account.active ? "inactive" : ""}">
               <h3>${account.description}</h3>
               <p>Balance: ${account.balanceString}</p>
               <p>Type: ${account.type.name}</p>
               <p>
-                <a class="account-edit" data-id="${account.id}">Edit</a> &middot;
-                <a class="account-delete" data-id="${account.id}">Delete</a>
+                <a class="account-edit cursor" data-id="${account.id}">Edit</a> &middot;
+                <a class="account-delete cursor" data-id="${account.id}">Delete</a>
               </p>
             </div>
           <br>

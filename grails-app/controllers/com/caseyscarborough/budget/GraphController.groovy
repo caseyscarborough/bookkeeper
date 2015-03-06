@@ -3,6 +3,7 @@ package com.caseyscarborough.budget
 import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.util.StopWatch
 
 @Secured('IS_AUTHENTICATED_REMEMBERED')
 class GraphController {
@@ -197,6 +198,8 @@ class GraphController {
   }
 
   def accountBalancesOverTime() {
+    def sw = new StopWatch()
+    sw.start()
     def data = [:]
     def accountData = []
     def days = []
@@ -214,44 +217,38 @@ class GraphController {
       endCal.setTime(startCal.time)
       endCal.add(Calendar.DAY_OF_YEAR, 1)
 
-      int i = 0
-      while (startCal.time <= now) {
-        accounts?.each { Account a ->
-          if (!data."${a.description}") {
-            data."${a.description}" = []
-          }
-
-          def size = data."${a.description}".size()
-          if (size != i + 1) {
-            if (size == 0) {
-              data."${a.description}" << 0
-            } else {
-              data."${a.description}" << data."${a.description}"[size-1]
-            }
-          }
-
-          def transactions = Transaction.findAllByUserAndDateGreaterThanEqualsAndDateLessThanAndFromAccount(springSecurityService.currentUser, startCal.time, endCal.time, a)
-          try {
-            def t = transactions?.first()
-            data."${t.fromAccount.description}"[i] = t.accountBalance
-            log.info("Set balance for ${t.fromAccount} to ${t.accountBalance} for ${startCal.time.format('MM/dd/yyyy')}")
-          } catch (NullPointerException e) {
-            log.error("Caught NullPointerException for ${startCal.time.format('MM/dd/yyyy')}")
-          }
-          catch (NoSuchElementException e) {
-            log.error("Caught NoSuchElementException for ${startCal.time.format('MM/dd/yyyy')}")
-          }
-        }
-
-        days << startCal.format(DAY_FORMAT)
-        startCal.add(Calendar.DAY_OF_YEAR, 1)
-        endCal.add(Calendar.DAY_OF_YEAR, 1)
-        i++
+      // Setup accounts arrays
+      def daysInPast = getDaysInPast(startCal.time)
+      accounts?.each { Account a ->
+        data."${a.description}" = [0] * daysInPast
       }
 
+      // Get the array of days for the X-Axis of the graph
+      while (startCal.time <= now) {
+        days << startCal.format(DAY_FORMAT)
+        startCal.add(Calendar.DAY_OF_YEAR, 1)
+      }
+
+      // Loop through the transactions and set the account balance by day.
+      def transactions = Transaction.findAllByUser(springSecurityService.currentUser as User)
+      transactions.each { Transaction t ->
+        def arrayIndex = daysInPast - getDaysInPast(t.date) - 1
+        if (data."${t.fromAccount.description}"[arrayIndex] == 0) {
+          data."${t.fromAccount.description}"[arrayIndex] = t.accountBalance
+        }
+      }
+
+      // Remove all zeroes from original data.
       data.each { k, v ->
-        if (v != [0] * (i))
-          accountData << [name: k, data: v]
+        v.eachWithIndex { BigDecimal value, int j ->
+          if (value == 0) {
+            try {
+              v[j] = v[j - 1]
+            } catch (ArrayIndexOutOfBoundsException e){
+            }
+          }
+        }
+        accountData << [name: k, data: v]
       }
     }
 

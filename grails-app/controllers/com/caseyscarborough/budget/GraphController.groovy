@@ -204,7 +204,7 @@ class GraphController {
     def accountData = []
     def days = []
     def now = new Date()
-    def accounts = Account.findAllByUser(springSecurityService.currentUser as User)
+    def accounts = Account.findAllByUserAndActive(springSecurityService.currentUser as User, true)
     def firstTransaction = Transaction.where {
       user == springSecurityService.currentUser
     }?.sort { it.date }

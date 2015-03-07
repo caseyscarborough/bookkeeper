@@ -114,6 +114,7 @@
         var category = $("#filter-category").val();
         var account = $("#filter-account").val();
         var description = $("#filter-description").val();
+        var max = $("#filter-max").val();
 
         if (category !== null) {
           currentUrl += queryChar + 'category=' + category;
@@ -130,7 +131,11 @@
           queryChar = '&';
         }
 
-        if (queryChar === '&') {
+        if (max !== null) {
+          currentUrl += queryChar + 'max=' + max;
+        }
+
+        if (queryChar === '&' || max != ${params.max}) {
           window.location.href = currentUrl;
         }
       });
@@ -184,7 +189,7 @@
       <div id="search-area" class="hidden-xs pull-right">
         <div class="form-group pull-left" style="margin-right:5px">
           <select class="form-control domain-property" id="filter-account">
-            <option value="Account" selected disabled>Account</option>
+            <option selected disabled>Select an Account</option>
             <g:each in="${accounts}" var="account">
               <option value="${account.id}" <g:if
                   test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
@@ -194,7 +199,7 @@
 
         <div class="form-group pull-left" style="margin-right:5px">
           <select class="form-control domain-property" id="filter-category">
-            <option value="Category" selected disabled>Category</option>
+            <option selected disabled>Select a Category</option>
             <g:each in="${categories}" var="category">
               <optgroup label="${category.name}">
                 <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
@@ -207,7 +212,16 @@
         </div>
 
         <div class="form-group pull-left" style="margin-right:5px;">
-          <input type="text" class="form-control" id="filter-description" placeholder="Description">
+          <input type="text" class="form-control" id="filter-description" placeholder="Description" value="${params.description}">
+        </div>
+
+        <div class="form-group pull-left" style="margin-right:5px">
+          <select class="form-control domain-property" id="filter-max">
+            <option value="Per Page" selected disabled>Per Page</option>
+            <g:each in="[10, 30, 50, 100]" var="number">
+              <option value="${number}" <g:if test="${number == params.max}">selected</g:if>>${number}</option>
+            </g:each>
+          </select>
         </div>
 
         <button id="search" class="btn btn-primary">Search</button>
@@ -360,6 +374,7 @@
               </g:each>
             </select>
           </div>
+
           <button type="submit" class="btn btn-primary">New</button>
         </form>
 

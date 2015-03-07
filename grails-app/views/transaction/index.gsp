@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.caseyscarborough.budget.Transaction" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <meta name="layout" content="main">
@@ -179,10 +179,10 @@
         <h1>Transactions</h1>
         <p>There ${transactionInstanceCount == 1 ? 'is' : 'are'} a total of ${transactionInstanceCount} transaction${transactionInstanceCount == 1 ? '' : 's'}<g:if test="${params.category || params.account || params.description}"> for this search</g:if>.</p>
         <div class="hidden-xs">
-          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]" maxsteps="20" />
+          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account, description: params.description]" maxsteps="20" />
         </div>
         <div class="visible-xs">
-          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]" maxsteps="5"/>
+          <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account, description: params.description]" maxsteps="5"/>
         </div>
       </div>
 
@@ -238,19 +238,19 @@
           <thead>
           <tr>
             <g:sortableColumn property="date" title="Date"
-                              params="[category: params.category, account: params.account]" width="7%"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="7%"/>
             <g:sortableColumn property="description" title="Description"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account, description: params.description]"/>
             <g:sortableColumn property="amount" title="Amount"
-                              params="[category: params.category, account: params.account]" width="8%"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="8%"/>
             <g:sortableColumn property="fromAccount" title="From Account"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account, description: params.description]"/>
             <g:sortableColumn property="subCategory" title="Category"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account, description: params.description]"/>
             <g:sortableColumn property="toAccount" title="To Account"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account, description: params.description]"/>
             <g:sortableColumn property="accountBalance" title="Balance"
-                              params="[category: params.category, account: params.account]"/>
+                              params="[category: params.category, account: params.account, description: params.description]"/>
             <th>Receipt</th>
             <th></th>
           </tr>
@@ -294,12 +294,20 @@
               <td><button id="submit" class="btn btn-primary" tabindex="8">New</button></td>
             </tr>
           </form>
-          <g:each in="${transactions}" var="transaction">
+          <g:each in="${transactions as List<com.caseyscarborough.budget.Transaction>}" var="transaction">
             <tr class="${transaction.cssClass} transaction-${transaction.id}">
               <td><span id="transaction-${transaction.id}-date">${transaction.date.format("MM/dd/yyyy")}</span></td>
-              <td><span id="transaction-${transaction.id}-description">${transaction.description}</span></td>
+              <td>
+                <a href="${createLink()}?description=${transaction.description}" class="tooltip-link" title="View Transactions for ${transaction.description}">
+                  <span id="transaction-${transaction.id}-description">${transaction.description}</span>
+                </a>
+              </td>
               <td>$<span id="transaction-${transaction.id}-amount">${transaction.amountString}</span></td>
-              <td><span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span></td>
+              <td>
+                <a href="${createLink()}?account=${transaction.fromAccount.id}" class="tooltip-link" title="View Transactions for ${transaction.fromAccount}">
+                  <span id="transaction-${transaction.id}-fromAccount">${transaction.fromAccount}</span>
+                </a>
+              </td>
               <td>
                 <g:link controller="transaction" action="index" params="[category: transaction.subCategory.id]" class="tooltip-link" title="View Transactions for ${transaction.subCategory}">
                   <span id="transaction-${transaction.id}-subCategory">${transaction.subCategory}</span>

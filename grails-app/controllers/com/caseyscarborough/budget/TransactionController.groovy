@@ -19,28 +19,23 @@ class TransactionController {
 
   def index(Integer max) {
     params.max = Math.min(max ?: 30, 100)
-    def category = SubCategory.get(params.category)
-    def account = Account.get(params.account)
-    def transactions
-    def transactionCount
+    params.offset = params.offset ?: 0
 
-    // Yeah, this kinda sucks
-    if (account) {
-      def total = Transaction.findAllByFromAccountOrToAccount(account, account)
-      total.removeAll { it.user != springSecurityService.currentUser }
-      transactionCount = total.size()
-      transactions = Transaction.findAllByFromAccountOrToAccount(account, account, params)
-      transactions.removeAll { it.user != springSecurityService.currentUser }
-    } else if (category) {
-      transactionCount = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser as User).size()
-      transactions = Transaction.findAllBySubCategoryAndUser(category, springSecurityService.currentUser as User, params)
-    } else {
-      transactionCount = Transaction.findAllByUser(springSecurityService.currentUser as User).size()
-      transactions = Transaction.findAllByUser(springSecurityService.currentUser as User, params)
+    def c = Transaction.createCriteria()
+    def results = c.list(max: params.max, offset: params.offset) {
+      if (params.account) {
+        fromAccount { eq('id', params.account as Long) }
+      }
+      if (params.category) {
+        subCategory { eq('id', params.category as Long) }
+      }
+      if (params.description) {
+        like('description', "%${params.description}%")
+      }
     }
 
     def accounts = Account.findAllByUserAndActive(springSecurityService.currentUser as User, true)
-    [transactions: transactions, transactionInstanceCount: transactionCount, accounts: accounts, categories: Category.all]
+    [transactions: results, transactionInstanceCount: results.totalCount, accounts: accounts, categories: Category.all]
   }
 
   @Transactional

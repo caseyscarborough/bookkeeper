@@ -232,9 +232,11 @@ class GraphController {
       // Loop through the transactions and set the account balance by day.
       def transactions = Transaction.findAllByUser(springSecurityService.currentUser as User)
       transactions.each { Transaction t ->
-        def arrayIndex = daysInPast - getDaysInPast(t.date) - 1
-        if (data."${t.fromAccount.description}"[arrayIndex] == 0) {
-          data."${t.fromAccount.description}"[arrayIndex] = t.accountBalance
+        if (t.fromAccount in accounts) {
+          def arrayIndex = daysInPast - getDaysInPast(t.date) - 1
+          if (data."${t.fromAccount.description}"[arrayIndex] == 0) {
+            data."${t.fromAccount.description}"[arrayIndex] = t.accountBalance
+          }
         }
       }
 

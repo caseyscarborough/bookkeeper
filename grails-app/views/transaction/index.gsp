@@ -172,6 +172,7 @@
     <div class="col-md-12">
       <div class="pull-left">
         <h1>Transactions</h1>
+        <p>There ${transactionInstanceCount == 1 ? 'is' : 'are'} a total of ${transactionInstanceCount} transaction${transactionInstanceCount == 1 ? '' : 's'}<g:if test="${params.category || params.account || params.description}"> for this search</g:if>.</p>
         <div class="hidden-xs">
           <g:paginate total="${transactionInstanceCount}" params="[category: params.category, account: params.account]" maxsteps="20" />
         </div>
@@ -217,8 +218,6 @@
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
-
-
 
       <div class="table-responsive hidden-xs">
         <table class="table table-condensed table-hover">

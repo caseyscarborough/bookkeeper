@@ -89,22 +89,6 @@
         });
       });
 
-      $("#filter-account").on('change', function () {
-        if ($(this).val() === 'ALL') {
-          window.location.href = "${createLink()}";
-          return;
-        }
-        window.location.href = "${createLink()}?account=" + $(this).val();
-      });
-
-      $("#filter-category").on('change', function () {
-        if ($(this).val() === 'ALL') {
-          window.location.href = "${createLink()}";
-          return;
-        }
-        window.location.href = "${createLink()}?category=" + $(this).val();
-      });
-
       updateToAccount();
       $("#subCategory").on('change', function () {
         updateToAccount();
@@ -118,6 +102,37 @@
       updateMobileToAccount();
       $("#mobile-subCategory").on('change', function () {
         updateMobileToAccount();
+      });
+
+      $("#reset").click(function() {
+        window.location.href = location.protocol + '//' + location.host + location.pathname
+      });
+
+      $("#search").click(function() {
+        var currentUrl = location.protocol + '//' + location.host + location.pathname;
+        var queryChar = '?';
+        var category = $("#filter-category").val();
+        var account = $("#filter-account").val();
+        var description = $("#filter-description").val();
+
+        if (category !== null) {
+          currentUrl += queryChar + 'category=' + category;
+          queryChar = '&';
+        }
+
+        if (account !== null) {
+          currentUrl += queryChar + 'account=' + account;
+          queryChar = '&';
+        }
+
+        if (description !== "") {
+          currentUrl += queryChar + 'description=' + description;
+          queryChar = '&';
+        }
+
+        if (queryChar === '&') {
+          window.location.href = currentUrl;
+        }
       });
 
       $(".transaction-edit").click(function () {
@@ -165,11 +180,10 @@
         </div>
       </div>
 
-      <div class="pull-right hidden-xs">
-        <div class="form-group pull-left" style="margin-right:10px">
-          <label for="filter-account">Account:</label>
+      <div id="search-area" class="hidden-xs pull-right">
+        <div class="form-group pull-left" style="margin-right:5px">
           <select class="form-control domain-property" id="filter-account">
-            <option value="ALL">ALL</option>
+            <option value="Account" selected disabled>Account</option>
             <g:each in="${accounts}" var="account">
               <option value="${account.id}" <g:if
                   test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
@@ -177,10 +191,9 @@
           </select>
         </div>
 
-        <div class="form-group pull-left hidden-xs">
-          <label for="filter-category">Category:</label>
+        <div class="form-group pull-left" style="margin-right:5px">
           <select class="form-control domain-property" id="filter-category">
-            <option value="ALL">ALL</option>
+            <option value="Category" selected disabled>Category</option>
             <g:each in="${categories}" var="category">
               <optgroup label="${category.name}">
                 <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
@@ -191,13 +204,21 @@
             </g:each>
           </select>
         </div>
-      </div>
 
-      <div class="clearfix"></div><br>
+        <div class="form-group pull-left" style="margin-right:5px;">
+          <input type="text" class="form-control" id="filter-description" placeholder="Description">
+        </div>
+
+        <button id="search" class="btn btn-primary">Search</button>
+        <button id="reset" class="btn btn-warning">Reset</button>
+      </div>
+      <div class="clearfix"></div>
 
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>
+
+
 
       <div class="table-responsive hidden-xs">
         <table class="table table-condensed table-hover">

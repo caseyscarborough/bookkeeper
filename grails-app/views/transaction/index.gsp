@@ -32,7 +32,6 @@
       $("#date").datepicker();
       $("#edit-date").datepicker();
       $("#mobile-date").datepicker();
-      $("title").html($("#filter-category option:selected").html() + " Transactions");
 
       $("#show-new-mobile-transaction").click(function() {
         $("#mobile-new-transaction-form").show();

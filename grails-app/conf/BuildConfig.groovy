@@ -46,5 +46,6 @@ grails.project.dependency.resolution = {
     compile ":csv:0.3.1"
     compile ":excel-export:0.2.1"
     compile ":less-asset-pipeline:2.0.8"
+    compile ":codenarc:0.23"
   }
 }

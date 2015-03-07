@@ -1,6 +1,8 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.security.User
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.util.StopWatch
 import pl.touk.excel.export.WebXlsxExporter
 
 @Secured('IS_AUTHENTICATED_REMEMBERED')
@@ -41,7 +43,7 @@ class DataController {
   }
 
   def exportToExcel() {
-    def transactions = Transaction.findAllByUser(springSecurityService.currentUser)?.sort { it.date }?.reverse()
+    def transactions = Transaction.findAllByUser(springSecurityService.currentUser as User)
     def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type', 'Account Balance']
     def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type', 'accountBalance']
 

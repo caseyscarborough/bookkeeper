@@ -1,5 +1,7 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.highcharts.DateUtils
+import com.caseyscarborough.budget.highcharts.TimeSeries
 import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -39,28 +41,17 @@ class GraphController {
   }
 
   def spendingByDay() {
-    def now = new Date()
-    def startCal = Calendar.instance
+    def startCal = DateUtils.calendarAtMidnight
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE))
-    def time = startCal.getTimeInMillis()
-    def data = [0] * getDaysInPast(startCal.time)
+    def timeSeries = new TimeSeries('USD', 24 * 3600 * 1000, startCal.time)
 
-    def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, now, springSecurityService.currentUser)
+    def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, new Date(), springSecurityService.currentUser as User)
     transactions?.each { Transaction t ->
       if (t.subCategory.type == CategoryType.DEBIT) {
-        try {
-          data[data.size() - getDaysInPast(t.date)] += t.amount
-        } catch (NullPointerException e) {}
+        timeSeries.addToDataForDate(t.amount, t.date)
       }
     }
-
-    render([data: data, time: time] as JSON)
-  }
-
-  private getDaysInPast(Date date) {
-    def now = new Date()
-    def daysInPast = (int) ((now.getTime() - date.getTime()) / DAY_IN_MILLIS)
-    return daysInPast
+    render timeSeries as JSON
   }
 
   def spendingByCategory() {
@@ -218,7 +209,7 @@ class GraphController {
       endCal.add(Calendar.DAY_OF_YEAR, 1)
 
       // Setup accounts arrays
-      def daysInPast = getDaysInPast(startCal.time)
+      def daysInPast = DateUtils.getDaysInPast(startCal.time)
       accounts?.each { Account a ->
         data."${a.description}" = [0] * daysInPast
       }
@@ -233,7 +224,7 @@ class GraphController {
       def transactions = Transaction.findAllByUser(springSecurityService.currentUser as User)
       transactions.each { Transaction t ->
         if (t.fromAccount in accounts) {
-          def arrayIndex = daysInPast - getDaysInPast(t.date) - 1
+          def arrayIndex = daysInPast - DateUtils.getDaysInPast(t.date) - 1
           if (data."${t.fromAccount.description}"[arrayIndex] == 0) {
             data."${t.fromAccount.description}"[arrayIndex] = t.accountBalance
           }

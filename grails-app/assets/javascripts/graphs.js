@@ -160,9 +160,6 @@ function getSpendingByPayee(data) {
 }
 
 function getSpendingByDay(data) {
-    var time = new Date(data.time);
-    time.setHours(0, 0, 0, 0);
-    time = time.getTime();
     $('#spendingByDay').highcharts({
         title: { text: 'Spending By Day' },
         subtitle: {
@@ -202,13 +199,7 @@ function getSpendingByDay(data) {
                 threshold: null
             }
         },
-        series: [{
-            type: 'area',
-            name: 'USD',
-            pointInterval: 24 * 3600 * 1000,
-            pointStart: time,
-            data: data.data
-        }]
+        series: [data]
     });
 }
 

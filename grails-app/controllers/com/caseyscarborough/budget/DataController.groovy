@@ -1,8 +1,6 @@
 package com.caseyscarborough.budget
-
 import com.caseyscarborough.budget.security.User
 import grails.plugin.springsecurity.annotation.Secured
-import org.springframework.util.StopWatch
 import pl.touk.excel.export.WebXlsxExporter
 
 @Secured('IS_AUTHENTICATED_REMEMBERED')

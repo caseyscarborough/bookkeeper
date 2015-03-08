@@ -1,6 +1,5 @@
 package com.caseyscarborough.budget.highcharts
 
-
 abstract class HighChart {
 
   String title

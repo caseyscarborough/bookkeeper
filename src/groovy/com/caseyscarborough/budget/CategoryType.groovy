@@ -1,6 +1,5 @@
 package com.caseyscarborough.budget
 
-
 enum CategoryType {
 
   CREDIT("Credit"),

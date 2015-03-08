@@ -11,6 +11,7 @@ enum AccountType {
 
   private final String name
   private final Boolean isDebt
+
   private AccountType(String name, Boolean isDebt) {
     this.name = name
     this.isDebt = isDebt

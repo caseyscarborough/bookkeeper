@@ -1,6 +1,5 @@
 package com.caseyscarborough.budget.highcharts
 
-
 class DateUtils {
 
   private final static long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;

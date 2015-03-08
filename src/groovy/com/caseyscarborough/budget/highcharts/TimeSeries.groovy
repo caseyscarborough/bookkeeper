@@ -18,7 +18,7 @@ class TimeSeries extends HighChart {
     this.name = name
     this.pointInterval = pointInterval
     this.pointStart = startDate.time
-    this.data = [(BigDecimal)0] * DateUtils.getDaysInPast(startDate)
+    this.data = [(BigDecimal) 0] * DateUtils.getDaysInPast(startDate)
   }
 
   public void addToDataForDate(BigDecimal amount, Date date) {

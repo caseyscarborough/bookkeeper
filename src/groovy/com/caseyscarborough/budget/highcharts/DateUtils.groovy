@@ -19,4 +19,10 @@ class DateUtils {
     cal.set(Calendar.MILLISECOND, 0)
     return cal
   }
+
+  static Calendar getCalendarFromCalendar(Calendar cal1) {
+    def cal2 = Calendar.instance
+    cal2.setTime(cal1.time)
+    return cal2
+  }
 }

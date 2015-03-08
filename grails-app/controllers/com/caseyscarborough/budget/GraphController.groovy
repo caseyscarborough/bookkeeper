@@ -1,6 +1,7 @@
 package com.caseyscarborough.budget
 
 import com.caseyscarborough.budget.highcharts.DateUtils
+import com.caseyscarborough.budget.highcharts.StackedColumn
 import com.caseyscarborough.budget.highcharts.TimeSeries
 import com.caseyscarborough.budget.security.User
 import grails.converters.JSON
@@ -17,7 +18,6 @@ class GraphController {
   private static final String DAY_FORMAT = "MM/dd/yy"
   private static final Integer NUMBER_OF_MONTHS_TO_ANALYZE = 12
   private static final Integer SPENDING_BY_PAYEE_COUNT = 40
-  private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
   def index() {
     def months = []
@@ -55,42 +55,28 @@ class GraphController {
   }
 
   def spendingByCategory() {
-    def data = [:]
     def now = new Date()
-    def startCal = Calendar.instance
-    def endCal = Calendar.instance
+    def startCal = DateUtils.calendarAtMidnight
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE - 1))
     startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal = setCalendarToMidnight(startCal)
-    endCal.setTime(startCal.time)
+    def endCal = DateUtils.getCalendarFromCalendar(startCal)
     endCal.add(Calendar.MONTH, 1)
 
+    def stackedColumn = new StackedColumn(NUMBER_OF_MONTHS_TO_ANALYZE)
     int i = 0
-    def months = []
     while (startCal.time <= now) {
-      months << startCal.time.format(MONTH_FORMAT)
-      def transactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser)
+      stackedColumn.addToXAxisCategories(startCal.time.format(MONTH_FORMAT))
+      def transactions = Transaction.findAllByDateGreaterThanEqualsAndDateLessThanAndUser(startCal.time, endCal.time, springSecurityService.currentUser as User)
       transactions?.each { Transaction t ->
         if (t.subCategory.type == CategoryType.DEBIT) {
-          if (!data."${t.subCategory.category}") {
-            data."${t.subCategory.category}" = [(BigDecimal) 0] * NUMBER_OF_MONTHS_TO_ANALYZE
-          }
-          try {
-            data."${t.subCategory.category}"[i] += t.amount
-          } catch (NullPointerException e) { /* Ignore */
-          }
+          stackedColumn.addToSeries(t.subCategory.category.name, t.amount, i)
         }
       }
       i++
       startCal.add(Calendar.MONTH, 1)
       endCal.add(Calendar.MONTH, 1)
     }
-
-    def categories = []
-    data.each { k, v ->
-      categories << [name: k, data: v]
-    }
-    render([months: months, categories: categories] as JSON)
+    render stackedColumn as JSON
   }
 
   def spendingWithSubcategory() {

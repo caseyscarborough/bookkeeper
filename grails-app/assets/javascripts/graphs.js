@@ -217,7 +217,7 @@ function getSpendingByCategory(data) {
             text: 'Spending By Category'
         },
         xAxis: {
-            categories: data.months
+            categories: data.xAxisCategories
         },
         yAxis: {
             min: 0,
@@ -251,7 +251,7 @@ function getSpendingByCategory(data) {
                 }
             }
         },
-        series: data.categories
+        series: data.series
     });
 }
 

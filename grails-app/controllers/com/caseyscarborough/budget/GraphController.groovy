@@ -27,7 +27,7 @@ class GraphController {
       def startCal = Calendar.instance
       startCal.setTime(transactions.first()?.date)
       startCal.set(Calendar.DAY_OF_MONTH, 1)
-      startCal = setCalendarToMidnight(startCal)
+      DateUtils.setCalendarToMidnight(startCal)
       def endCal = Calendar.instance
       endCal.setTime(transactions.last().date)
 
@@ -86,8 +86,8 @@ class GraphController {
     def startCal = Calendar.instance
     def endCal = Calendar.instance
     startCal.setTime(time)
+    DateUtils.setCalendarToMidnight(startCal)
     startCal.set(Calendar.DAY_OF_MONTH, 1)
-    startCal = setCalendarToMidnight(startCal)
     endCal.setTime(startCal.time)
     endCal.add(Calendar.MONTH, 1)
 
@@ -132,7 +132,7 @@ class GraphController {
       def startCal = Calendar.instance
       startCal.setTime(firstTransaction.first().date)
       startCal.set(Calendar.DAY_OF_MONTH, 1)
-      startCal = setCalendarToMidnight(startCal)
+      DateUtils.setCalendarToMidnight(startCal)
       def endCal = Calendar.instance
       endCal.setTime(startCal.time)
       endCal.add(Calendar.MONTH, 1)
@@ -189,7 +189,7 @@ class GraphController {
     if (firstTransaction) {
       def startCal = Calendar.instance
       startCal.setTime(firstTransaction.first().date)
-      startCal = setCalendarToMidnight(startCal)
+      DateUtils.setCalendarToMidnight(startCal)
       def endCal = Calendar.instance
       endCal.setTime(startCal.time)
       endCal.add(Calendar.DAY_OF_YEAR, 1)
@@ -264,13 +264,5 @@ class GraphController {
       }
     }
     return sum
-  }
-
-  private Calendar setCalendarToMidnight(Calendar cal) {
-    cal.set(Calendar.HOUR_OF_DAY, 0)
-    cal.set(Calendar.MINUTE, 0)
-    cal.set(Calendar.SECOND, 0)
-    cal.set(Calendar.MILLISECOND, 0)
-    return cal
   }
 }

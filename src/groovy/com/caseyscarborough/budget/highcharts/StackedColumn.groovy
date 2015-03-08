@@ -2,7 +2,7 @@ package com.caseyscarborough.budget.highcharts
 
 import org.apache.log4j.Logger
 
-class StackedColumn {
+class StackedColumn extends HighChart {
 
   private static final Logger log = Logger.getLogger(StackedColumn.class)
   private Integer numberOfColumns
@@ -10,7 +10,8 @@ class StackedColumn {
   List<String> xAxisCategories
   List<Map> series
 
-  public StackedColumn(Integer numberOfColumns) {
+  public StackedColumn(String title, Integer numberOfColumns) {
+    super(title)
     xAxisCategories = []
     series = []
     this.numberOfColumns = numberOfColumns

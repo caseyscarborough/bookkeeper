@@ -43,7 +43,7 @@ class GraphController {
   def spendingByDay() {
     def startCal = DateUtils.calendarAtMidnight
     startCal.add(Calendar.MONTH, -(NUMBER_OF_MONTHS_TO_ANALYZE))
-    def timeSeries = new TimeSeries('USD', 24 * 3600 * 1000, startCal.time)
+    def timeSeries = new TimeSeries('Spending By Day', 'USD', 24 * 3600 * 1000, startCal.time)
 
     def transactions = Transaction.findAllByDateBetweenAndUser(startCal.time, new Date(), springSecurityService.currentUser as User)
     transactions?.each { Transaction t ->
@@ -62,7 +62,7 @@ class GraphController {
     def endCal = DateUtils.getCalendarFromCalendar(startCal)
     endCal.add(Calendar.MONTH, 1)
 
-    def stackedColumn = new StackedColumn(NUMBER_OF_MONTHS_TO_ANALYZE)
+    def stackedColumn = new StackedColumn('Spending By Category', NUMBER_OF_MONTHS_TO_ANALYZE)
     int i = 0
     while (startCal.time <= now) {
       stackedColumn.addToXAxisCategories(startCal.time.format(MONTH_FORMAT))

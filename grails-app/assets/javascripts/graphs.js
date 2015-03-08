@@ -161,7 +161,9 @@ function getSpendingByPayee(data) {
 
 function getSpendingByDay(data) {
     $('#spendingByDay').highcharts({
-        title: { text: 'Spending By Day' },
+        title: {
+            text: data.title
+        },
         subtitle: {
             text: document.ontouchstart === undefined ?
                 'Click and drag in the plot area to zoom in' :
@@ -214,7 +216,7 @@ function getSpendingByCategory(data) {
                 'Pinch the chart to zoom in'
         },
         title: {
-            text: 'Spending By Category'
+            text: data.title
         },
         xAxis: {
             categories: data.xAxisCategories

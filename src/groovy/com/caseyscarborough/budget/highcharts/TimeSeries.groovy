@@ -2,7 +2,7 @@ package com.caseyscarborough.budget.highcharts
 
 import org.apache.log4j.Logger
 
-class TimeSeries {
+class TimeSeries extends HighChart {
 
   private static final Logger log = Logger.getLogger(TimeSeries.class)
 
@@ -12,7 +12,8 @@ class TimeSeries {
   Long pointStart
   List<BigDecimal> data
 
-  public TimeSeries(String name, Long pointInterval, Date startDate) {
+  public TimeSeries(String title, String name, Long pointInterval, Date startDate) {
+    super(title)
     this.type = 'area'
     this.name = name
     this.pointInterval = pointInterval

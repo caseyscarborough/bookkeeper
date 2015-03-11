@@ -21,19 +21,7 @@ class TransactionController {
     params.max = Math.min(max ?: 30, 100)
     params.offset = params.offset ?: 0
 
-    def c = Transaction.createCriteria()
-    def results = c.list(max: params.max, offset: params.offset) {
-      if (params.account) {
-        fromAccount { eq('id', params.account as Long) }
-      }
-      if (params.category) {
-        subCategory { eq('id', params.category as Long) }
-      }
-      if (params.description) {
-        like('description', "%${params.description}%")
-      }
-    }
-
+    def results = getTransactionsForParameters(params)
     def accounts = Account.findAllByUserAndActive(springSecurityService.currentUser as User, true)
     [transactions: results, transactionInstanceCount: results.totalCount, accounts: accounts, categories: Category.all]
   }
@@ -104,5 +92,21 @@ class TransactionController {
   def synchronize() {
     transactionService.synchronizeBalances()
     render ""
+  }
+
+  private getTransactionsForParameters(params) {
+    def c = Transaction.createCriteria()
+    def results = c.list(params) {
+      if (params.account) {
+        fromAccount { eq('id', params.account as Long) }
+      }
+      if (params.category) {
+        subCategory { eq('id', params.category as Long) }
+      }
+      if (params.description) {
+        like('description', "%${params.description}%")
+      }
+    }
+    return results
   }
 }

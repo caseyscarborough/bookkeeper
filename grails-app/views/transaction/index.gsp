@@ -186,45 +186,47 @@
       </div>
 
       <div id="search-area" class="hidden-xs pull-right">
-        <div class="form-group pull-left" style="margin-right:5px">
-          <select class="form-control domain-property" id="filter-account">
-            <option selected disabled>Select an Account</option>
-            <g:each in="${accounts}" var="account">
-              <option value="${account.id}" <g:if
-                  test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
-            </g:each>
-          </select>
-        </div>
+        <form id="search-form" onsubmit="return false">
+          <div class="form-group pull-left" style="margin-right:5px">
+            <select class="form-control domain-property" id="filter-account">
+              <option selected disabled>Select an Account</option>
+              <g:each in="${accounts}" var="account">
+                <option value="${account.id}" <g:if
+                    test="${account.id.toString() == params.account}">selected</g:if>>${account.description}</option>
+              </g:each>
+            </select>
+          </div>
 
-        <div class="form-group pull-left" style="margin-right:5px">
-          <select class="form-control domain-property" id="filter-category">
-            <option selected disabled>Select a Category</option>
-            <g:each in="${categories}" var="category">
-              <optgroup label="${category.name}">
-                <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if
-                      test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
-                </g:each>
-              </optgroup>
-            </g:each>
-          </select>
-        </div>
+          <div class="form-group pull-left" style="margin-right:5px">
+            <select class="form-control domain-property" id="filter-category">
+              <option selected disabled>Select a Category</option>
+              <g:each in="${categories}" var="category">
+                <optgroup label="${category.name}">
+                  <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
+                    <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if
+                        test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
+                  </g:each>
+                </optgroup>
+              </g:each>
+            </select>
+          </div>
 
-        <div class="form-group pull-left" style="margin-right:5px;">
-          <input type="text" class="form-control" id="filter-description" placeholder="Description" value="${params.description}">
-        </div>
+          <div class="form-group pull-left" style="margin-right:5px;">
+            <input type="text" class="form-control" id="filter-description" placeholder="Description" value="${params.description}">
+          </div>
 
-        <div class="form-group pull-left" style="margin-right:5px">
-          <select class="form-control domain-property" id="filter-max">
-            <option value="Per Page" selected disabled>Per Page</option>
-            <g:each in="[10, 30, 50, 100]" var="number">
-              <option value="${number}" <g:if test="${number == params.max}">selected</g:if>>${number}</option>
-            </g:each>
-          </select>
-        </div>
+          <div class="form-group pull-left" style="margin-right:5px">
+            <select class="form-control domain-property" id="filter-max">
+              <option value="Per Page" selected disabled>Per Page</option>
+              <g:each in="[10, 30, 50, 100]" var="number">
+                <option value="${number}" <g:if test="${number == params.max}">selected</g:if>>${number}</option>
+              </g:each>
+            </select>
+          </div>
 
-        <button id="search" class="btn btn-primary">Search</button>
-        <button id="reset" class="btn btn-warning">Reset</button>
+          <button id="search" type="submit" class="btn btn-primary">Search</button>
+          <button id="reset" class="btn btn-warning">Reset</button>
+        </form>
       </div>
       <div class="clearfix"></div>
 

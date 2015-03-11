@@ -3,6 +3,9 @@ package com.caseyscarborough.budget
 import com.caseyscarborough.budget.security.User
 import grails.transaction.Transactional
 import org.springframework.web.multipart.commons.CommonsMultipartFile
+import pl.touk.excel.export.WebXlsxExporter
+
+import javax.servlet.http.HttpServletResponse
 
 class TransactionException extends RuntimeException {
   String message
@@ -107,6 +110,18 @@ class TransactionService {
       }
     }
     log.info("Complete.")
+  }
+
+  public exportTransactionsToExcel(List<Transaction> transactions, HttpServletResponse response) {
+    def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type', 'Account Balance']
+    def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type', 'accountBalance']
+
+    new WebXlsxExporter().with {
+      setResponseHeaders(response)
+      fillHeader(headers)
+      add(transactions, properties)
+      save(response.outputStream)
+    }
   }
 
   private void updateAccountBalance(Transaction transaction, Boolean deletion) {

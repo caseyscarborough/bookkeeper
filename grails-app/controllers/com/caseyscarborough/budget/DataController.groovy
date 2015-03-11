@@ -7,6 +7,7 @@ import pl.touk.excel.export.WebXlsxExporter
 class DataController {
 
   def springSecurityService
+  def transactionService
 
   def index() {}
 
@@ -42,14 +43,6 @@ class DataController {
 
   def exportToExcel() {
     def transactions = Transaction.findAllByUser(springSecurityService.currentUser as User)
-    def headers = ['Date', 'Description', 'Amount', 'Category', 'Subcategory', 'From Account', 'To Account', 'Transaction Type', 'Account Balance']
-    def properties = ['date', 'description', 'amount', 'subCategory.category', 'subCategory', 'fromAccount', 'toAccount', 'subCategory.type', 'accountBalance']
-
-    new WebXlsxExporter().with {
-      setResponseHeaders(response)
-      fillHeader(headers)
-      add(transactions, properties)
-      save(response.outputStream)
-    }
+    transactionService.exportTransactionsToExcel(transactions, response)
   }
 }

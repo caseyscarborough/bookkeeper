@@ -94,6 +94,11 @@ class TransactionController {
     render ""
   }
 
+  def exportCurrentResults() {
+    def transactions = getTransactionsForParameters(params)
+    transactionService.exportTransactionsToExcel(transactions, response)
+  }
+
   private getTransactionsForParameters(params) {
     def c = Transaction.createCriteria()
     def results = c.list(params) {
@@ -106,6 +111,7 @@ class TransactionController {
       if (params.description) {
         like('description', "%${params.description}%")
       }
+      eq('user', springSecurityService.currentUser)
     }
     return results
   }

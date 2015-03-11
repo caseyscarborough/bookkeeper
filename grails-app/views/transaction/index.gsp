@@ -400,7 +400,7 @@
         </g:each>
       </div>
 
-      <button class="btn btn-primary tooltip-link" id="synchronize" data-loading-text="Synchronizing... This may take some time." title="This will synchronize the account balances at the time of each transaction. It can take some time to complete">Synchronize Balances</button>
+      <button class="btn btn-primary tooltip-link" id="synchronize" data-loading-text="Synchronizing... This may take some time." title="This will synchronize the account balances at the time of each transaction. It can take some time to complete">Synchronize Balances</button>&nbsp;
       <g:link action="exportCurrentResults" params="[account: params.account, category: params.category, description: params.description]" class="btn btn-primary">Export Current Results to Excel</g:link>
       <br><br>
     </div>

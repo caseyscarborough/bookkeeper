@@ -54,7 +54,7 @@
       <h1>Export</h1>
       <p>Select the format you'd like to export your transactions to:</p>
       <ul>
-        <li><g:link action="exportToExcel" target="_blank">Excel</g:link></li>
+        <li><g:link action="exportToExcel">Excel</g:link></li>
       </ul>
     </div>
   </div>

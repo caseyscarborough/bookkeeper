@@ -30,7 +30,7 @@ class Transaction {
   }
 
   String getAccountBalanceString() {
-    if (accountBalance) {
+    if (accountBalance != null) {
       def sb = new StringBuilder()
       if (accountBalance < 0) {
         sb.append("-")

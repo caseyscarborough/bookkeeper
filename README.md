@@ -8,12 +8,16 @@ Features:
 * Transfers between accounts
 * Inputting transactions with category
 * Receipt uploading with transactions
+* Searching through transactions by category, description, and account
+* Viewing account balance at time of transaction
 * Graphs and spending analysis:
   * Spending by day for the past year
   * Spending by category for the past year
   * Side-by-side comparisons of monthly spending
   * Total spending by payee
+  * Account balances over lifetime of account
 * Importing transactions from Excel spreadsheet (works with export from Mint.com)
+* Exporting transaction search results or all transactions to Excel
 
 ## Requirements
 

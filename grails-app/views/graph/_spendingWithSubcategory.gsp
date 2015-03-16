@@ -6,7 +6,8 @@
   }
 
   $(function () {
-    showSpinner('spendingWithSubcategory');
+    showSpinner('spendingWithSubcategory1');
+    showSpinner('spendingWithSubcategory2');
     getChart($("#spendingWithSubcategory-month1").val(), "1");
     getChart($("#spendingWithSubcategory-month2").val(), "2");
     $("#spendingWithSubcategory-month1").on('change', function () {

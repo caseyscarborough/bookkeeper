@@ -146,13 +146,16 @@
 </head>
 
 <body>
-<div id="content">
+<div id="content" class="container">
   <div class="row">
     <div class="col-md-12">
-      <h1>Category Management</h1>
-      <a class="btn btn-primary new-category"><i class="glyphicon glyphicon-plus"></i> New Category</a>
-      <a class="btn btn-primary new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
-      <br>
+      <h1 class="pull-left">Category Management</h1>
+      <div class="pull-right">
+        <br>
+        <a class="btn btn-primary new-category"><i class="glyphicon glyphicon-plus"></i> New Category</a>
+        <a class="btn btn-info new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
+      </div>
+      <div class="clearfix"></div>
       <g:each in="${categories}" var="category">
         <div id="category-${category.id}">
           <h2 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h2>
@@ -166,38 +169,41 @@
 
           <div class="clearfix"></div>
 
-          <table class="table table-hover table-condensed">
-            <thead>
-            <tr>
-              <th width="40%">Name</th>
-              <th width="20%">Transactions</th>
-              <th width="20%">Type</th>
-              <th width="20%">Options</th>
-            </tr>
-            </thead>
-            <tbody>
-            <g:each in="${category.subcategories}" var="subcategory">
-              <tr id="subcategory-${subcategory.id}">
-                <td>
-                  <g:link controller="transaction" action="index" params="[category: subcategory.id]"
-                          class="tooltip-link"
-                          title="View Transactions for ${subcategory}">
-                    <span id="subcategory-${subcategory.id}-name">${subcategory.name}</span>
-                  </g:link>
-                </td>
-                <td>${subcategory.transactions.size()}</td>
-                <td><span id="subcategory-${subcategory.id}-type">${subcategory.type}</span></td>
-                <td>
-                  <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}"
-                     data-category="${category}"><i
-                      class="glyphicon glyphicon-pencil"></i></a>
-                  <a class="delete-subcategory tooltip-link" title="Delete" data-id="${subcategory.id}"><i
-                      class="glyphicon glyphicon-remove"></i></a>
-                </td>
+          <div class="subcategory-table table-responsive">
+            <table class="table table-hover table-condensed">
+              <thead>
+              <tr>
+                <th width="40%">Name</th>
+                <th width="20%">Transactions</th>
+                <th width="20%">Type</th>
+                <th width="20%">Options</th>
               </tr>
-            </g:each>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              <g:each in="${category.subcategories}" var="subcategory">
+                <tr id="subcategory-${subcategory.id}">
+                  <td>
+                    <g:link controller="transaction" action="index" params="[category: subcategory.id]"
+                            class="tooltip-link"
+                            title="View Transactions for ${subcategory}">
+                      <span id="subcategory-${subcategory.id}-name">${subcategory.name}</span>
+                    </g:link>
+                  </td>
+                  <td>${subcategory.transactions.size()}</td>
+                  <td><span id="subcategory-${subcategory.id}-type">${subcategory.type}</span></td>
+                  <td>
+                    <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}"
+                       data-category="${category}"><i
+                        class="glyphicon glyphicon-pencil"></i></a>
+                    <a class="delete-subcategory tooltip-link" title="Delete" data-id="${subcategory.id}"><i
+                        class="glyphicon glyphicon-remove"></i></a>
+                  </td>
+                </tr>
+              </g:each>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </g:each>
     </div>

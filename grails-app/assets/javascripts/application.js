@@ -120,6 +120,25 @@ function deleteRequest(url, success, error) {
     });
 }
 
+function setupAutocomplete(queryUrl, descriptionSelector, subcategorySelector, toAccountSelector) {
+    $(descriptionSelector).autocomplete({
+        serviceUrl: queryUrl,
+        minChars: 3,
+        autoSelectFirst: true,
+        formatResult: function (suggestion, currentValue) {
+            return suggestion.value + " (" + suggestion.data.category.name + ")";
+        },
+        onSelect: function (suggestion) {
+            $(descriptionSelector).val(suggestion.data.description);
+            $(subcategorySelector).val(suggestion.data.id);
+            if (suggestion.data.toAccount !== null) {
+                $(toAccountSelector).val(suggestion.data.toAccount);
+            }
+            updateToAccount();
+        }
+    });
+}
+
 function deleteTransaction(id, success, error) {
     deleteRequest(TRANSACTION_DELETE_URL + "/" + id, success, error);
 }

@@ -77,17 +77,17 @@
             <g:sortableColumn property="date" title="Date"
                               params="[category: params.category, account: params.account, description: params.description]" width="7%"/>
             <g:sortableColumn property="description" title="Description"
-                              params="[category: params.category, account: params.account, description: params.description]"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="23%"/>
             <g:sortableColumn property="amount" title="Amount"
                               params="[category: params.category, account: params.account, description: params.description]" width="8%"/>
             <g:sortableColumn property="fromAccount" title="From Account"
-                              params="[category: params.category, account: params.account, description: params.description]"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="16%"/>
             <g:sortableColumn property="subCategory" title="Category"
-                              params="[category: params.category, account: params.account, description: params.description]"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="10%"/>
             <g:sortableColumn property="toAccount" title="To Account"
-                              params="[category: params.category, account: params.account, description: params.description]"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="16%"/>
             <g:sortableColumn property="accountBalance" title="Balance"
-                              params="[category: params.category, account: params.account, description: params.description]"/>
+                              params="[category: params.category, account: params.account, description: params.description]" width="8%"/>
             <th>Receipt</th>
             <th></th>
           </tr>

@@ -88,10 +88,10 @@
         <table class="table table-hover table-condensed">
           <thead>
           <tr>
-            <th>Name</th>
-            <th>Transactions</th>
-            <th>Type</th>
-            <th>Options</th>
+            <th width="40%">Name</th>
+            <th width="20%">Transactions</th>
+            <th width="20%">Type</th>
+            <th width="20%">Options</th>
           </tr>
           </thead>
           <tbody>

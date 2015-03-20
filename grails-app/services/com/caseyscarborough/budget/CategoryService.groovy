@@ -44,7 +44,7 @@ class CategoryService {
     try {
       category.delete(flush: true)
     } catch (Exception e) {
-      throw new CategoryException(message: "Could not delete category due to relationship with other entities.", category: category)
+      throw new CategoryException(message: "Oops! Couldn't delete the ${category} category due to relationship with other entities. Try deleting related subcategories first.", category: category)
     }
   }
 }

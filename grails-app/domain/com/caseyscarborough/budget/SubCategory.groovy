@@ -12,6 +12,10 @@ class SubCategory {
     type nullable: true
   }
 
+  static mapping = {
+    sort "name"
+  }
+
   CategoryType getType() {
     type ?: category.type
   }

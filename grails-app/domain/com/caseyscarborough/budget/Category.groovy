@@ -12,6 +12,7 @@ class Category {
 
   static mapping = {
     sort name: "asc"
+    subcategories sort: "name"
   }
 
   String toString() {

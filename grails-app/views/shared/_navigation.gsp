@@ -19,7 +19,7 @@
         <li><g:link controller="graph" action="index">Graphs</g:link></li>
         <li><g:link controller="data" action="index">Import/Export</g:link></li>
         <sec:ifAnyGranted roles="ROLE_ADMIN">
-          <li><g:link controller="subCategory" action="index">SubCategory Management</g:link></li>
+          <li><g:link controller="category" action="manage">Categories</g:link></li>
         </sec:ifAnyGranted>
       </ul>
       <ul class="nav navbar-nav navbar-right">

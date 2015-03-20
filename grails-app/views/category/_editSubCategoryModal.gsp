@@ -1,14 +1,14 @@
-<div class="modal fade" id="edit-subCategory-modal" tabindex="-1" role="dialog" aria-labelledby="edit-subCategory-label" aria-hidden="true">
+<div class="modal fade" id="edit-subcategory-modal" tabindex="-1" role="dialog" aria-labelledby="edit-subcategory-label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="edit-subCategory-form" onsubmit="return false">
+      <form id="edit-subcategory-form" onsubmit="return false">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="edit-subCategory-label">Edit SubCategory</h4>
+          <h4 class="modal-title" id="edit-subcategory-label">Edit SubCategory</h4>
         </div>
         <div class="modal-body">
-          <div id="subCategory-edit-error" class="alert alert-danger" style="display:none">
-            <div id="subCategory-edit-error-message"></div>
+          <div id="subcategory-edit-error" class="alert alert-danger" style="display:none">
+            <div id="subcategory-edit-error-message"></div>
           </div>
 
           <input id="edit-id" type="hidden" value="" name="id" class="modal-domain-property">

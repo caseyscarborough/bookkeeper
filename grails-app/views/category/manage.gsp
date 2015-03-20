@@ -87,8 +87,6 @@
           }
         });
 
-        console.log(data);
-
         $.ajax({
           type: "post",
           data: data,

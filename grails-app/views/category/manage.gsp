@@ -18,6 +18,19 @@
         });
       });
 
+      $(".delete-category").click(function () {
+        var id = $(this).attr("data-id");
+        $.ajax({
+          type: "delete",
+          url: "${createLink(controller: 'category', action: 'delete')}/" + id,
+          success: function () {
+            $("#category-" + id).fadeOut();
+          }, error: function (response) {
+            alert(response.responseJSON.message);
+          }
+        });
+      });
+
       $(".edit-category").click(function () {
         var id = $(this).attr("data-id");
         var name = $(this).attr("data-name");
@@ -42,6 +55,30 @@
           },
           error: function (response) {
             showErrorMessage("#edit-category-error", response.responseJSON.message, "edit-category-" + response.responseJSON.field);
+          }
+        });
+      });
+
+      $(".new-category").click(function () {
+        $("#create-category-modal").modal('show');
+      });
+
+      $("#create-category-form").on('submit', function () {
+        var data = {
+          name: $("#create-category-name").val(),
+          type: $("#create-category-type").val()
+        };
+
+        $.ajax({
+          type: "post",
+          data: data,
+          url: "${createLink(controller: 'category', action: 'save')}",
+          dataType: 'json',
+          success: function () {
+            window.location.reload()
+          },
+          error: function (response) {
+            showErrorMessage("#create-category-error", response.responseJSON.message, "create-category-" + response.responseJSON.field);
           }
         });
       });
@@ -113,51 +150,55 @@
   <div class="row">
     <div class="col-md-12">
       <h1>Category Management</h1>
-      <a class="btn btn-success new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
+      <a class="btn btn-primary new-category"><i class="glyphicon glyphicon-plus"></i> New Category</a>
+      <a class="btn btn-primary new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
       <br>
       <g:each in="${categories}" var="category">
-        <h2 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h2>
+        <div id="category-${category.id}">
+          <h2 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h2>
 
-        <div class="pull-left heading-options">
-          <a class="edit-category tooltip-link" title="Edit the ${category} Category" data-id="${category.id}"
-             data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i></a>
-          <a class="delete-category tooltip-link" title="Delete the ${category} Category" data-id="${category.id}"><i
-              class="glyphicon glyphicon-trash"></i></a>
-        </div>
+          <div class="pull-left heading-options">
+            <a class="edit-category tooltip-link" title="Edit the ${category} Category" data-id="${category.id}"
+               data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a class="delete-category tooltip-link" title="Delete the ${category} Category" data-id="${category.id}"><i
+                class="glyphicon glyphicon-trash"></i></a>
+          </div>
 
-        <div class="clearfix"></div>
+          <div class="clearfix"></div>
 
-        <table class="table table-hover table-condensed">
-          <thead>
-          <tr>
-            <th width="40%">Name</th>
-            <th width="20%">Transactions</th>
-            <th width="20%">Type</th>
-            <th width="20%">Options</th>
-          </tr>
-          </thead>
-          <tbody>
-          <g:each in="${category.subcategories}" var="subcategory">
-            <tr id="subcategory-${subcategory.id}">
-              <td>
-                <g:link controller="transaction" action="index" params="[category: subcategory.id]" class="tooltip-link"
-                        title="View Transactions for ${subcategory}">
-                  <span id="subcategory-${subcategory.id}-name">${subcategory.name}</span>
-                </g:link>
-              </td>
-              <td>${subcategory.transactions.size()}</td>
-              <td><span id="subcategory-${subcategory.id}-type">${subcategory.type}</span></td>
-              <td>
-                <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}"
-                   data-category="${category}"><i
-                    class="glyphicon glyphicon-pencil"></i></a>
-                <a class="delete-subcategory tooltip-link" title="Delete" data-id="${subcategory.id}"><i
-                    class="glyphicon glyphicon-remove"></i></a>
-              </td>
+          <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+              <th width="40%">Name</th>
+              <th width="20%">Transactions</th>
+              <th width="20%">Type</th>
+              <th width="20%">Options</th>
             </tr>
-          </g:each>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            <g:each in="${category.subcategories}" var="subcategory">
+              <tr id="subcategory-${subcategory.id}">
+                <td>
+                  <g:link controller="transaction" action="index" params="[category: subcategory.id]"
+                          class="tooltip-link"
+                          title="View Transactions for ${subcategory}">
+                    <span id="subcategory-${subcategory.id}-name">${subcategory.name}</span>
+                  </g:link>
+                </td>
+                <td>${subcategory.transactions.size()}</td>
+                <td><span id="subcategory-${subcategory.id}-type">${subcategory.type}</span></td>
+                <td>
+                  <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}"
+                     data-category="${category}"><i
+                      class="glyphicon glyphicon-pencil"></i></a>
+                  <a class="delete-subcategory tooltip-link" title="Delete" data-id="${subcategory.id}"><i
+                      class="glyphicon glyphicon-remove"></i></a>
+                </td>
+              </tr>
+            </g:each>
+            </tbody>
+          </table>
+        </div>
       </g:each>
     </div>
   </div>
@@ -165,5 +206,6 @@
 <g:render template="editSubCategoryModal"/>
 <g:render template="editCategoryModal"/>
 <g:render template="newSubCategoryModal"/>
+<g:render template="newCategoryModal"/>
 </body>
 </html>

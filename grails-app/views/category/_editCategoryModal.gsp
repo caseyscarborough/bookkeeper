@@ -4,7 +4,7 @@
       <form id="edit-category-form" onsubmit="return false">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="edit-category-label">Edit SubCategory</h4>
+          <h4 class="modal-title" id="edit-category-label">Edit Category</h4>
         </div>
         <div class="modal-body">
           <div id="edit-category-error" class="alert alert-danger" style="display:none">

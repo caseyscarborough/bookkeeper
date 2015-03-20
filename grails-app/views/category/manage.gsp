@@ -13,12 +13,12 @@
           success: function () {
             $("#subcategory-" + id).fadeOut();
           }, error: function (response) {
-            showErrorMessage("#subcategory-error", response.responseJSON.message, response.responseJSON.field);
+            alert(response.responseJSON.message);
           }
         });
       });
 
-      $(".edit-category").click(function() {
+      $(".edit-category").click(function () {
         var id = $(this).attr("data-id");
         var name = $(this).attr("data-name");
         $("#edit-category-id").val(id);
@@ -26,7 +26,7 @@
         $("#edit-category-modal").modal('show');
       });
 
-      $("#edit-category-form").on('submit', function() {
+      $("#edit-category-form").on('submit', function () {
         var data = {
           id: $("#edit-category-id").val(),
           name: $("#edit-category-name").val()
@@ -49,7 +49,7 @@
       $(".edit-subcategory").click(function () {
         var id = $(this).attr("data-id");
         var category = $(this).attr("data-category");
-        var type = $("#subcategory-" + id + "-type");
+        var type = $("#subcategory-" + id + "-type").html();
         console.log(category);
         $("#edit-id").val(id);
         $("#edit-name").val($("#subcategory-" + id + "-name").html());
@@ -101,9 +101,7 @@
         });
       });
 
-      $(".new-subcategory").click(function() {
-        var id = $(this).attr("data-id");
-        $("#create-category").val(id);
+      $(".new-subcategory").click(function () {
         $("#create-subcategory-modal").modal('show');
       });
     });
@@ -115,16 +113,18 @@
   <div class="row">
     <div class="col-md-12">
       <h1>Category Management</h1>
-
+      <a class="btn btn-success new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
+      <br>
       <g:each in="${categories}" var="category">
-        <h2 class="pull-left" id="category-${category.id}-name">${category}</h2>
+        <h2 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h2>
 
-        <div class="pull-right">
-          <br>
-          <a class="btn btn-success new-subcategory" data-id="${category.id}"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
-          <a class="btn btn-warning edit-category" data-id="${category.id}" data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-          <a class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+        <div class="pull-left heading-options">
+          <a class="edit-category tooltip-link" title="Edit the ${category} Category" data-id="${category.id}"
+             data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i></a>
+          <a class="delete-category tooltip-link" title="Delete the ${category} Category" data-id="${category.id}"><i
+              class="glyphicon glyphicon-trash"></i></a>
         </div>
+
         <div class="clearfix"></div>
 
         <table class="table table-hover table-condensed">
@@ -148,7 +148,8 @@
               <td>${subcategory.transactions.size()}</td>
               <td><span id="subcategory-${subcategory.id}-type">${subcategory.type}</span></td>
               <td>
-                <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}" data-category="${category}"><i
+                <a class="edit-subcategory tooltip-link" title="Edit" data-id="${subcategory.id}"
+                   data-category="${category}"><i
                     class="glyphicon glyphicon-pencil"></i></a>
                 <a class="delete-subcategory tooltip-link" title="Delete" data-id="${subcategory.id}"><i
                     class="glyphicon glyphicon-remove"></i></a>
@@ -157,7 +158,6 @@
           </g:each>
           </tbody>
         </table>
-        <hr>
       </g:each>
     </div>
   </div>

@@ -18,6 +18,34 @@
         });
       });
 
+      $(".edit-category").click(function() {
+        var id = $(this).attr("data-id");
+        var name = $(this).attr("data-name");
+        $("#edit-category-id").val(id);
+        $("#edit-category-name").val(name);
+        $("#edit-category-modal").modal('show');
+      });
+
+      $("#edit-category-form").on('submit', function() {
+        var data = {
+          id: $("#edit-category-id").val(),
+          name: $("#edit-category-name").val()
+        };
+
+        $.ajax({
+          type: "post",
+          data: data,
+          url: "${createLink(controller: 'category', action: 'update')}",
+          dataType: 'json',
+          success: function () {
+            window.location.reload()
+          },
+          error: function (response) {
+            showErrorMessage("#edit-category-error", response.responseJSON.message, "edit-category-" + response.responseJSON.field);
+          }
+        });
+      });
+
       $(".edit-subcategory").click(function () {
         var id = $(this).attr("data-id");
         var category = $(this).attr("data-category");
@@ -83,7 +111,15 @@
       <h1>Category Management</h1>
 
       <g:each in="${categories}" var="category">
-        <h3>${category}</h3>
+        <h2 class="pull-left" id="category-${category.id}-name">${category}</h2>
+
+        <div class="pull-right">
+          <br>
+          <a class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
+          <a class="btn btn-warning edit-category" data-id="${category.id}" data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+          <a class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+        </div>
+        <div class="clearfix"></div>
 
         <table class="table table-hover table-condensed">
           <thead>
@@ -121,6 +157,6 @@
   </div>
 </div>
 <g:render template="editSubCategoryModal"/>
-
+<g:render template="editCategoryModal"/>
 </body>
 </html>

@@ -8,6 +8,7 @@ class Category {
   static hasMany = [subcategories: SubCategory]
 
   static constraints = {
+    name blank: false, nullable: false
   }
 
   static mapping = {

@@ -7,27 +7,19 @@
     $(function () {
       $(".delete-subcategory").click(function () {
         var id = $(this).attr("data-id");
-        $.ajax({
-          type: "delete",
-          url: "${createLink(controller: 'subCategory', action: 'delete')}/" + id,
-          success: function () {
-            $("#subcategory-" + id).fadeOut();
-          }, error: function (response) {
-            alert(response.responseJSON.message);
-          }
+        deleteSubCategory(id, function () {
+          $("#subcategory-" + id).fadeOut();
+        }, function (response) {
+          alert(response.responseJSON.message);
         });
       });
 
       $(".delete-category").click(function () {
         var id = $(this).attr("data-id");
-        $.ajax({
-          type: "delete",
-          url: "${createLink(controller: 'category', action: 'delete')}/" + id,
-          success: function () {
-            $("#category-" + id).fadeOut();
-          }, error: function (response) {
-            alert(response.responseJSON.message);
-          }
+        deleteCategory(id, function () {
+          window.location.reload();
+        }, function (response) {
+          alert(response.responseJSON.message);
         });
       });
 
@@ -40,22 +32,11 @@
       });
 
       $("#edit-category-form").on('submit', function () {
-        var data = {
-          id: $("#edit-category-id").val(),
-          name: $("#edit-category-name").val()
-        };
-
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'category', action: 'update')}",
-          dataType: 'json',
-          success: function () {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#edit-category-error", response.responseJSON.message, "edit-category-" + response.responseJSON.field);
-          }
+        var data = {id: $("#edit-category-id").val(), name: $("#edit-category-name").val()};
+        updateCategory(data, function () {
+          window.location.reload()
+        }, function (response) {
+          showErrorMessage("#edit-category-error", response.responseJSON.message, "edit-category-" + response.responseJSON.field);
         });
       });
 
@@ -64,22 +45,11 @@
       });
 
       $("#create-category-form").on('submit', function () {
-        var data = {
-          name: $("#create-category-name").val(),
-          type: $("#create-category-type").val()
-        };
-
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'category', action: 'save')}",
-          dataType: 'json',
-          success: function () {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#create-category-error", response.responseJSON.message, "create-category-" + response.responseJSON.field);
-          }
+        var data = {name: $("#create-category-name").val(), type: $("#create-category-type").val()};
+        createCategory(data, function () {
+          window.location.reload()
+        }, function (response) {
+          showErrorMessage("#create-category-error", response.responseJSON.message, "create-category-" + response.responseJSON.field);
         });
       });
 
@@ -100,18 +70,10 @@
         $(".edit.modal-domain-property").each(function () {
           data[$(this).attr("name")] = $(this).val();
         });
-
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'subCategory', action: 'update')}",
-          dataType: 'json',
-          success: function () {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#subcategory-error", response.responseJSON.message, response.responseJSON.field);
-          }
+        updateSubCategory(data, function () {
+          window.location.reload();
+        }, function (response) {
+          showErrorMessage("#subcategory-error", response.responseJSON.message, response.responseJSON.field);
         });
       });
 
@@ -124,22 +86,29 @@
           }
         });
 
-        $.ajax({
-          type: "post",
-          data: data,
-          url: "${createLink(controller: 'subCategory', action: 'save')}",
-          dataType: 'json',
-          success: function (response) {
-            window.location.reload()
-          },
-          error: function (response) {
-            showErrorMessage("#subcategory-create-error", response.responseJSON.message, "create-" + response.responseJSON.field);
-          }
+        createSubCategory(data, function () {
+          window.location.reload();
+        }, function (response) {
+          showErrorMessage("#subcategory-create-error", response.responseJSON.message, "create-" + response.responseJSON.field);
         });
       });
 
       $(".new-subcategory").click(function () {
         $("#create-subcategory-modal").modal('show');
+      });
+
+      $(".show-subcategories").click(function () {
+        var id = $(this).attr("data-id");
+        $("#subcategories-" + id).show();
+        $(this).hide();
+        $("#hide-" + id).show();
+      });
+
+      $(".hide-subcategories").click(function () {
+        var id = $(this).attr("data-id");
+        $("#subcategories-" + id).hide();
+        $(this).hide();
+        $("#show-" + id).show();
       });
     });
   </script>
@@ -150,17 +119,25 @@
   <div class="row">
     <div class="col-md-12">
       <h1 class="pull-left">Category Management</h1>
+
       <div class="pull-right">
         <br>
         <a class="btn btn-primary new-category"><i class="glyphicon glyphicon-plus"></i> New Category</a>
         <a class="btn btn-info new-subcategory"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
       </div>
+
       <div class="clearfix"></div>
       <g:each in="${categories}" var="category">
         <div id="category-${category.id}">
-          <h2 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h2>
+          <h3 class="pull-left" id="category-${category.id}-name">${category}&nbsp;</h3>
 
           <div class="pull-left heading-options">
+            <a id="show-${category.id}" class="show-subcategories tooltip-link"
+               title="Show SubCategories for this Category" data-id="${category.id}"><i
+                class="glyphicon glyphicon-plus"></i></a>
+            <a id="hide-${category.id}" class="hide-subcategories tooltip-link" style="display:none"
+               data-id="${category.id}" title="Hide SubCategories for this Category"><i
+                class="glyphicon glyphicon-minus"></i></a>
             <a class="edit-category tooltip-link" title="Edit the ${category} Category" data-id="${category.id}"
                data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i></a>
             <a class="delete-category tooltip-link" title="Delete the ${category} Category" data-id="${category.id}"><i
@@ -169,7 +146,7 @@
 
           <div class="clearfix"></div>
 
-          <div class="subcategory-table table-responsive">
+          <div id="subcategories-${category.id}" style="display:none" class="subcategory-table table-responsive">
             <table class="table table-hover table-condensed">
               <thead>
               <tr>

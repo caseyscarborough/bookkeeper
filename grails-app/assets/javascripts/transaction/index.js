@@ -134,7 +134,7 @@ $(function () {
     $("#synchronize").click(function () {
         $(this).button('loading');
         $.ajax({
-            url: "${createLink(controller: 'transaction', action: 'synchronize')}",
+            url: TRANSACTION_SYNC_URL,
             success: function () {
                 window.location.reload();
             }

@@ -60,7 +60,7 @@
 
       $("#edit-subcategory-form").on('submit', function () {
         var data = {};
-        $(".modal-domain-property").each(function () {
+        $(".edit.modal-domain-property").each(function () {
           data[$(this).attr("name")] = $(this).val();
         });
 
@@ -78,27 +78,35 @@
         });
       });
 
-      $("#new-subcategory-form").on('submit', function () {
+      $("#create-subcategory-form").on('submit', function () {
         var data = {};
-        $(".domain-property").each(function () {
+        $(".create.modal-domain-property").each(function () {
           if ($(this).attr("disabled") === "disabled") {
           } else {
-            data[$(this).attr("id")] = $(this).val();
+            data[$(this).attr("name")] = $(this).val();
           }
         });
+
+        console.log(data);
 
         $.ajax({
           type: "post",
           data: data,
-          url: "${createLink(controller: 'subcategory', action: 'save')}",
+          url: "${createLink(controller: 'subCategory', action: 'save')}",
           dataType: 'json',
           success: function (response) {
             window.location.reload()
           },
           error: function (response) {
-            showErrorMessage("#subcategory-error", response.responseJSON.message, response.responseJSON.field);
+            showErrorMessage("#subcategory-create-error", response.responseJSON.message, "create-" + response.responseJSON.field);
           }
         });
+      });
+
+      $(".new-subcategory").click(function() {
+        var id = $(this).attr("data-id");
+        $("#create-category").val(id);
+        $("#create-subcategory-modal").modal('show');
       });
     });
   </script>
@@ -115,7 +123,7 @@
 
         <div class="pull-right">
           <br>
-          <a class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
+          <a class="btn btn-success new-subcategory" data-id="${category.id}"><i class="glyphicon glyphicon-plus"></i> New SubCategory</a>
           <a class="btn btn-warning edit-category" data-id="${category.id}" data-name="${category.name}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
           <a class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
         </div>
@@ -158,5 +166,6 @@
 </div>
 <g:render template="editSubCategoryModal"/>
 <g:render template="editCategoryModal"/>
+<g:render template="newSubCategoryModal"/>
 </body>
 </html>

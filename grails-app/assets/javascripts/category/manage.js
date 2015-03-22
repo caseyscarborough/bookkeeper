@@ -39,7 +39,11 @@ $(function () {
     });
 
     $("#create-category-form").on('submit', function () {
-        var data = {name: $("#create-category-name").val(), type: $("#create-category-type").val()};
+        var data = {
+            name: $("#create-category-name").val(),
+            type: $("#create-category-type").val()
+        };
+
         createCategory(data, function () {
             window.location.reload()
         }, function (response) {
@@ -72,13 +76,11 @@ $(function () {
     });
 
     $("#create-subcategory-form").on('submit', function () {
-        var data = {};
-        $(".create.modal-domain-property").each(function () {
-            if ($(this).attr("disabled") === "disabled") {
-            } else {
-                data[$(this).attr("name")] = $(this).val();
-            }
-        });
+        var data = {
+            name: $("#create-name").val(),
+            category: $("#create-category").val(),
+            type: $("#create-type").val()
+        };
 
         createSubCategory(data, function () {
             window.location.reload();

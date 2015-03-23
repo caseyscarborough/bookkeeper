@@ -1,6 +1,8 @@
 var CONTEXT_PATH = "/budget";
 
+var ACCOUNT_CREATE_URL = CONTEXT_PATH + "/account/save";
 var ACCOUNT_UPDATE_URL = CONTEXT_PATH + "/account/update";
+var ACCOUNT_DELETE_URL = CONTEXT_PATH + "/account/delete";
 var CATEGORY_CREATE_URL = CONTEXT_PATH + "/category/save";
 var CATEGORY_UPDATE_URL = CONTEXT_PATH + "/category/update";
 var CATEGORY_DELETE_URL = CONTEXT_PATH + "/category/delete";

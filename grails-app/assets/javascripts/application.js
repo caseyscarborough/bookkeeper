@@ -153,8 +153,16 @@ function createTransaction(data, success, error) {
     postRequestWithFileFormData(TRANSACTION_CREATE_URL, data, success, error);
 }
 
+function createAccount(data, success, error) {
+    postRequest(ACCOUNT_CREATE_URL, data, success, error);
+}
+
 function updateAccount(data, success, error) {
     postRequest(ACCOUNT_UPDATE_URL, data, success, error);
+}
+
+function deleteAccount(id, success, error) {
+    deleteRequest(ACCOUNT_DELETE_URL + "/" + id, success, error);
 }
 
 function createCategory(data, success, error) {

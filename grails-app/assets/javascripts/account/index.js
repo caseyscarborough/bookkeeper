@@ -23,32 +23,18 @@ $(function () {
             data[$(this).attr("id")] = $(this).val();
         });
 
-        $.ajax({
-            type: "post",
-            data: data,
-            url: "${createLink(controller: 'account', action: 'save')}",
-            dataType: 'json',
-            success: function () {
-                window.location.reload()
-            },
-            error: function (response) {
-                showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
-            }
+        createAccount(data, function() { window.location.reload(); }, function(response) {
+            showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
         });
     });
 
     $(".account-delete").on('click', function () {
         var id = $(this).attr("data-id");
-        $.ajax({
-            type: "delete",
-            url: "${createLink(controller: 'account', action: 'delete')}/" + id,
-            success: function () {
-                $(".account-" + id).fadeOut();
-                $("#account-error").hide();
-            },
-            error: function (response) {
-                showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
-            }
+        deleteAccount(id, function() {
+            $(".account-" + id).fadeOut();
+            $("#account-error").hide();
+        }, function(response) {
+            showErrorMessage("#account-error", response.responseJSON.message, response.responseJSON.field);
         });
     });
 

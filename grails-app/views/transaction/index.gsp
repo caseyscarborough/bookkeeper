@@ -66,6 +66,7 @@
       </div>
       <div class="clearfix"></div>
 
+      <br>
       <div id="transaction-error" class="alert alert-danger" style="display:none">
         <div id="transaction-error-message"></div>
       </div>

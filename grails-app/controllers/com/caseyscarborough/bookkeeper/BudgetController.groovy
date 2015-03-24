@@ -24,6 +24,7 @@ class BudgetController {
     } else {
       budget = budgetService.getBudgetForDate(new Date())
     }
+
     def budgetItems = budget.budgetItems.sort { it.category.name }
     def budgets = Budget.findAllByUser(springSecurityService.currentUser as User).sort { it.startDate }
     [budget: budget, categories: Category.list(), budgetItems: budgetItems, budgets: budgets]

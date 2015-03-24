@@ -87,6 +87,14 @@
         <div id="budget-error-message"></div>
       </div>
 
+      <div class="row">
+        <div class="col-md-12">
+          Total Budget Allocation: $${budget.actualAmount} of $${budget.budgetedAmount}<br>
+          Net Budgeted Income: $${budget.netBudgetedIncome}<br>
+          Net Actual Income: $${budget.netActualIncome}
+        </div>
+      </div>
+
       <g:each in="${budgetItems}" var="budgetItem">
         <div class="row" id="budget-item-${budgetItem.id}">
           <div class="col-md-12">

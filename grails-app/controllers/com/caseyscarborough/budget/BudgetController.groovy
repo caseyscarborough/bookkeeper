@@ -11,7 +11,7 @@ class BudgetController {
   def budgetService
   def springSecurityService
 
-  static allowedMethods = [addCategoryToBudget: 'POST', synchronize: 'POST']
+  static allowedMethods = [addCategoryToBudget: 'POST', synchronize: 'POST', delete: 'GET']
 
   def index() {
     def budget = budgetService.getBudgetForDate(new Date())

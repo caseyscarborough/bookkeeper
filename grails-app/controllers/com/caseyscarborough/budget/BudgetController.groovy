@@ -13,10 +13,20 @@ class BudgetController {
 
   static allowedMethods = [addCategoryToBudget: 'POST', synchronize: 'POST', delete: 'GET']
 
-  def index() {
-    def budget = budgetService.getBudgetForDate(new Date())
+  def show(String slug) {
+    def budget
+    if (slug) {
+      budget = Budget.findBySlugAndUser(slug, springSecurityService.currentUser as User)
+      if (!budget) {
+        response.sendError(404)
+        return
+      }
+    } else {
+      budget = budgetService.getBudgetForDate(new Date())
+    }
     def budgetItems = budget.budgetItems.sort { it.category.name }
-    [budget: budget, categories: Category.list(), budgetItems: budgetItems]
+    def budgets = Budget.findAllByUser(springSecurityService.currentUser as User).sort { it.startDate }
+    [budget: budget, categories: Category.list(), budgetItems: budgetItems, budgets: budgets]
   }
 
   def addCategoryToBudget() {

@@ -33,7 +33,7 @@ class BudgetService {
     endCal.add(Calendar.MONTH, 1)
     endCal.add(Calendar.MILLISECOND, -1)
 
-    def budget = new Budget(user: springSecurityService.currentUser as User, startDate: startCal.time, endDate: endCal.time, budgetItems: [])
+    def budget = new Budget(user: springSecurityService.currentUser as User, startDate: startCal.time, endDate: endCal.time, budgetItems: [], slug: startCal.time.format("yyyyMM"))
     budget.save(flush: true)
 
     def budgets = Budget.findAllByUser(springSecurityService.currentUser)

@@ -14,6 +14,13 @@ class BootStrap {
       }
     }
 
+    Budget.all.each {
+      if (it.slug == null) {
+        it.slug = it.startDate.format("yyyyMM")
+        it.save(flush: true)
+      }
+    }
+
     if (User.count == 0) {
       log.debug("Creating default user...")
       def me = new User(firstName: "Initial", lastName: "User", username: "user", email: "user@example.com", password: "123")

@@ -108,6 +108,17 @@
       </g:each>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+      <h3>Previous Budgets</h3>
+      <ul>
+        <g:each in="${budgets}" var="previousBudget">
+          <li><g:link controller="budget" action="show" params="[slug: previousBudget.slug]">${previousBudget.startDate.format("MMMMM yyyy")}</g:link></li>
+        </g:each>
+      </ul>
+    </div>
+  </div>
 </div>
 
 </body>

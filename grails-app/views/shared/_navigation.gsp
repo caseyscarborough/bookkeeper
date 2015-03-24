@@ -16,7 +16,7 @@
       <ul class="nav navbar-nav">
         <li><g:link controller="account" action="index">Accounts</g:link></li>
         <li><g:link controller="transaction" action="index">Transactions</g:link></li>
-        <li><g:link controller="budget" action="index">Monthly Budget</g:link></li>
+        <li><g:link controller="budget" action="show">Monthly Budget</g:link></li>
         <li><g:link controller="graph" action="index">Graphs</g:link></li>
         <li><g:link controller="data" action="index">Import/Export</g:link></li>
         <sec:ifAnyGranted roles="ROLE_ADMIN">

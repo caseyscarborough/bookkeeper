@@ -7,6 +7,7 @@ class Budget {
   User user
   Date startDate
   Date endDate
+  String slug
 
   Date dateCreated
   Date lastUpdated
@@ -14,6 +15,7 @@ class Budget {
   static hasMany = [budgetItems: BudgetItem]
 
   static constraints = {
+    slug nullable: true
   }
 
   static mapping = {

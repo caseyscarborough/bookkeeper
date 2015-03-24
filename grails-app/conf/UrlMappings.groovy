@@ -12,6 +12,7 @@ class UrlMappings {
     "/graphs"(controller: "graph", action: "index")
     "/import"(controller: "import", action: "index")
     "/categories"(controller: "category", action: "manage")
+    "/budget/show/$slug"(controller: "budget", action: "show")
     "/"(controller: "home", action: "index")
     "500"(view: '/error')
   }

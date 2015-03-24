@@ -1,0 +1,32 @@
+package com.caseyscarborough.bookkeeper
+
+import com.caseyscarborough.bookkeeper.security.User
+
+class Budget {
+
+  User user
+  Date startDate
+  Date endDate
+  String slug
+
+  Date dateCreated
+  Date lastUpdated
+
+  static hasMany = [budgetItems: BudgetItem]
+
+  static constraints = {
+    slug nullable: true
+  }
+
+  static mapping = {
+    budgetItems cascade: 'all-delete-orphan', sort: 'category'
+  }
+
+  Boolean hasBudgetItemForCategory(SubCategory subCategory) {
+    def budgetItems = BudgetItem.where {
+      budget == this && category == subCategory
+    }
+
+    budgetItems.size() > 0
+  }
+}

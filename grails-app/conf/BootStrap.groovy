@@ -1,7 +1,7 @@
-import com.caseyscarborough.budget.*
-import com.caseyscarborough.budget.security.Role
-import com.caseyscarborough.budget.security.User
-import com.caseyscarborough.budget.security.UserRole
+import com.caseyscarborough.bookkeeper.*
+import com.caseyscarborough.bookkeeper.security.Role
+import com.caseyscarborough.bookkeeper.security.User
+import com.caseyscarborough.bookkeeper.security.UserRole
 
 class BootStrap {
 

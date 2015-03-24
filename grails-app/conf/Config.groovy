@@ -138,9 +138,9 @@ grails.assets.excludes = [
 ]
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.caseyscarborough.budget.security.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.caseyscarborough.budget.security.UserRole'
-grails.plugin.springsecurity.authority.className = 'com.caseyscarborough.budget.security.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.caseyscarborough.bookkeeper.security.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.caseyscarborough.bookkeeper.security.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.caseyscarborough.bookkeeper.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     '/': ['permitAll'],
     '/index': ['permitAll'],

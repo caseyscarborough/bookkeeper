@@ -1,4 +1,4 @@
-var CONTEXT_PATH = "/budget";
+var CONTEXT_PATH = "/bookkeeper";
 
 var ACCOUNT_CREATE_URL = CONTEXT_PATH + "/account/save";
 var ACCOUNT_UPDATE_URL = CONTEXT_PATH + "/account/update";

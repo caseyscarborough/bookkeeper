@@ -1,4 +1,4 @@
-<%@ page import="com.caseyscarborough.budget.Transaction" contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.caseyscarborough.bookkeeper.Transaction" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <meta name="layout" content="main">
@@ -132,7 +132,7 @@
               <td><button id="submit" class="btn btn-primary" tabindex="8">New</button></td>
             </tr>
           </form>
-          <g:each in="${transactions as List<com.caseyscarborough.budget.Transaction>}" var="transaction">
+          <g:each in="${transactions as List<com.caseyscarborough.bookkeeper.Transaction>}" var="transaction">
             <tr class="${transaction.cssClass} transaction-${transaction.id}">
               <td><span id="transaction-${transaction.id}-date">${transaction.date.format("MM/dd/yyyy")}</span></td>
               <td>

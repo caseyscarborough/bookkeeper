@@ -9,6 +9,7 @@ class BudgetService {
   def springSecurityService
 
   def getBudgetForDate(Date date) {
+    log.info("Looking up budget for user ${springSecurityService.currentUser}")
     def budget = Budget.findByStartDateLessThanAndEndDateGreaterThanAndUser(date, date, springSecurityService.currentUser as User)
 
     if (!budget) {

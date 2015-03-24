@@ -29,6 +29,7 @@
       });
 
       $("#sync-budget").click(function() {
+        $(this).button('loading');
         var id = $(this).attr("data-id");
         var data = { budget: id };
         postRequest("${createLink(controller: 'budget', action: 'synchronize')}", data, function() {
@@ -47,7 +48,7 @@
     <div class="col-md-12">
       <div class="pull-left">
         <h1>${budget.startDate.format("MMMMM yyyy")}</h1>
-        <button id="sync-budget" class="btn btn-success" data-id="${budget.id}">Synchronize</button>
+        <button id="sync-budget" class="btn btn-success" data-id="${budget.id}" data-loading-text="Synchronizing...">Synchronize</button>
       </div>
 
       <div class="pull-right">
@@ -69,7 +70,7 @@
 
       <div class="clearfix"></div>
 
-      <g:each in="${budget.budgetItems}" var="budgetItem">
+      <g:each in="${budgetItems}" var="budgetItem">
         <div class="row">
           <div class="col-md-12">
             <h2>${budgetItem.category}</h2>

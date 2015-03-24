@@ -8,13 +8,16 @@ class Budget {
   Date startDate
   Date endDate
 
+  Date dateCreated
+  Date lastUpdated
+
   static hasMany = [budgetItems: BudgetItem]
 
   static constraints = {
   }
 
   static mapping = {
-    budgetItems cascade: 'all-delete-orphan'
+    budgetItems cascade: 'all-delete-orphan', sort: 'category'
   }
 
   Boolean hasBudgetItemForCategory(SubCategory subCategory) {

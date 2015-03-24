@@ -15,7 +15,8 @@ class BudgetController {
 
   def index() {
     def budget = budgetService.getBudgetForDate(new Date())
-    [budget: budget, categories: Category.list()]
+    def budgetItems = budget.budgetItems.sort { it.category.name }
+    [budget: budget, categories: Category.list(), budgetItems: budgetItems]
   }
 
   def addCategoryToBudget() {

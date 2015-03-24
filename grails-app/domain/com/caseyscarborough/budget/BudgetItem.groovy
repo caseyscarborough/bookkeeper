@@ -7,7 +7,16 @@ class BudgetItem {
   SubCategory category
   Budget budget
 
+  Date dateCreated
+  Date lastUpdated
+
+  private transient List<String> classes = ["success", "warning", "danger"]
+
   static constraints = {
+  }
+
+  static mapping = {
+    sort "category"
   }
 
   BigDecimal getPercentage() {
@@ -19,14 +28,17 @@ class BudgetItem {
 
   String getCssClass() {
     def percentage = percentage
-    if (percentage <= 25) {
-      return "info"
-    } else if (percentage <= 50) {
-      return "success"
-    } else if (percentage <= 75) {
-      return "warning"
+    def classes = classes
+    if (category.type == CategoryType.CREDIT) {
+      classes = classes.reverse()
+    }
+
+    if (percentage <= 33.333) {
+      return classes[0]
+    } else if (percentage <= 66.666) {
+      return classes[1]
     } else {
-      return "danger"
+      return classes[2]
     }
   }
 }

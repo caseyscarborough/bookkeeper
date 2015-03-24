@@ -77,6 +77,7 @@
       </div>
 
       <div class="pull-right form-inline">
+        <br>
         <div class="form-group">
           <label for="category">Add Category to Budget:</label>
           <select class="form-control" id="category">

@@ -6,9 +6,9 @@
 </head>
 
 <body>
-<div id="content">
+<div id="content" class="container">
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12">
       <h1>Import</h1>
       <g:if test="${flash.message}">
         <div class="alert alert-info">
@@ -50,7 +50,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12">
       <h1>Export</h1>
       <p>Select the format you'd like to export your transactions to:</p>
       <ul>

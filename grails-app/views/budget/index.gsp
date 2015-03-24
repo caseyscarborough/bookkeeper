@@ -28,6 +28,17 @@
         });
       });
 
+      $(".delete-budget-item").click(function () {
+        var id = $(this).attr("data-id");
+        var category = $(this).attr("data-category");
+
+        if (confirm("Are you sure you'd like to delete the " + category + " category from this month's budget? (It can always be added back)")) {
+          deleteRequest("${createLink(controller: 'budgetItem', action: 'delete')}/" + id, function() {
+            $("#budget-item-" + id).fadeOut();
+          });
+        }
+      });
+
       $("#sync-budget").click(function() {
         $(this).button('loading');
         var id = $(this).attr("data-id");
@@ -71,7 +82,7 @@
       <div class="clearfix"></div>
 
       <g:each in="${budgetItems}" var="budgetItem">
-        <div class="row">
+        <div class="row" id="budget-item-${budgetItem.id}">
           <div class="col-md-12">
             <h3 class="pull-left">${budgetItem.category}</h3>
 
@@ -79,9 +90,9 @@
               $<span data-id="${budgetItem.id}">${budgetItem.actualAmount}</span> of
             $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmount}</span>
               <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}" style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
-              <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a>
+              <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a> &middot;
+              <a class="delete-budget-item tooltip-link" data-id="${budgetItem.id}" data-category="${budgetItem.category}"}>Delete</a>
             </div>
-
             <div class="clearfix"></div>
 
             <div class="progress">

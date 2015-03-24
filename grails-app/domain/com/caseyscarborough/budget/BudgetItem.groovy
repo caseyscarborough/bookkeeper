@@ -10,7 +10,7 @@ class BudgetItem {
   Date dateCreated
   Date lastUpdated
 
-  private transient List<String> classes = ["success", "warning", "danger"]
+  private transient List<String> classes = ["info", "success", "warning", "danger"]
 
   static constraints = {
   }
@@ -23,7 +23,7 @@ class BudgetItem {
     if (budgetedAmount == 0) {
       return 0
     }
-    (actualAmount / budgetedAmount) * 100
+    new BigDecimal((actualAmount / budgetedAmount) * 100).setScale(2, BigDecimal.ROUND_HALF_UP)
   }
 
   String getCssClass() {
@@ -33,12 +33,14 @@ class BudgetItem {
       classes = classes.reverse()
     }
 
-    if (percentage <= 33.333) {
+    if (percentage <= 33.3333) {
       return classes[0]
-    } else if (percentage <= 66.666) {
+    } else if (percentage <= 66.6666) {
       return classes[1]
-    } else {
+    } else if (percentage <= 100) {
       return classes[2]
+    } else {
+      return classes[3]
     }
   }
 }

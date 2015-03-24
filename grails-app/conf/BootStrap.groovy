@@ -1,4 +1,6 @@
-import com.caseyscarborough.bookkeeper.*
+import com.caseyscarborough.bookkeeper.Category
+import com.caseyscarborough.bookkeeper.CategoryType
+import com.caseyscarborough.bookkeeper.SubCategory
 import com.caseyscarborough.bookkeeper.security.Role
 import com.caseyscarborough.bookkeeper.security.User
 import com.caseyscarborough.bookkeeper.security.UserRole
@@ -6,20 +8,6 @@ import com.caseyscarborough.bookkeeper.security.UserRole
 class BootStrap {
 
   def init = { servletContext ->
-
-    Account.all.each {
-      if (it.active == null) {
-        it.active = true
-        it.save(flush: true)
-      }
-    }
-
-    Budget.all.each {
-      if (it.slug == null) {
-        it.slug = it.startDate.format("yyyyMM")
-        it.save(flush: true)
-      }
-    }
 
     if (User.count == 0) {
       log.debug("Creating default user...")

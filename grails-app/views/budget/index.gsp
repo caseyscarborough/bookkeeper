@@ -73,19 +73,25 @@
       <g:each in="${budgetItems}" var="budgetItem">
         <div class="row">
           <div class="col-md-12">
-            <h2>${budgetItem.category}</h2>
+            <h3 class="pull-left">${budgetItem.category}</h3>
+
+            <div class="pull-right budget-item-amounts">
+              $<span data-id="${budgetItem.id}">${budgetItem.actualAmount}</span> of
+            $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmount}</span>
+              <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}" style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
+              <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a>
+            </div>
+
+            <div class="clearfix"></div>
 
             <div class="progress">
               <div class="progress-bar progress-bar-${budgetItem.cssClass} progress-bar-striped" role="progressbar"
                    aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
                    aria-valuemax="100" style="width:${budgetItem.percentage}%">
-                <span class="sr-only"></span>
+                <span class="sr-only">${budgetItem.percentage}%</span>
               </div>
             </div>
-            $<span data-id="${budgetItem.id}">${budgetItem.actualAmount}</span> of
-          $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmount}</span>
-            <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}" style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
-            <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}" title="Edit Budgeted Amount">Edit</a>
+
           </div>
         </div>
       </g:each>

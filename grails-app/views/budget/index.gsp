@@ -87,8 +87,8 @@
             <div class="progress">
               <div class="progress-bar progress-bar-${budgetItem.cssClass} progress-bar-striped" role="progressbar"
                    aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
-                   aria-valuemax="100" style="width:${budgetItem.percentage}%">
-                <span class="sr-only">${budgetItem.percentage}%</span>
+                   aria-valuemax="100" style="width:${budgetItem.percentage > 100 ? 100 : budgetItem.percentage}%">
+                $${budgetItem.actualAmount} of $${budgetItem.budgetedAmount} (${budgetItem.percentage}%)
               </div>
             </div>
 

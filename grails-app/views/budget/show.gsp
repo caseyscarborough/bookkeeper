@@ -9,6 +9,8 @@
         var data = {category: $("#category").val(), budget: $("#budget").val()};
         postRequest("${createLink(controller: 'budget', action: 'addCategoryToBudget')}", data, function () {
           window.location.reload();
+        }, function(response) {
+          showErrorMessage("#budget-error", response.responseJSON.message);
         });
       });
 
@@ -80,6 +82,10 @@
       </div>
 
       <div class="clearfix"></div>
+      <br>
+      <div class="alert alert-danger" id="budget-error" style="display:none">
+        <div id="budget-error-message"></div>
+      </div>
 
       <g:each in="${budgetItems}" var="budgetItem">
         <div class="row" id="budget-item-${budgetItem.id}">

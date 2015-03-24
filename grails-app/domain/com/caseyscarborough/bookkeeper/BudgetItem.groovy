@@ -26,6 +26,14 @@ class BudgetItem {
     new BigDecimal((actualAmount / budgetedAmount) * 100).setScale(2, BigDecimal.ROUND_HALF_UP)
   }
 
+  String getBudgetedAmountString() {
+    String.format("%.2f", budgetedAmount)
+  }
+
+  String getActualAmountString() {
+    String.format("%.2f", actualAmount)
+  }
+
   String getCssClass() {
     def percentage = percentage
     def classes = classes

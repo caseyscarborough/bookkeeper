@@ -1,5 +1,4 @@
 package com.caseyscarborough.bookkeeper
-
 import com.caseyscarborough.bookkeeper.security.User
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -25,6 +24,9 @@ class BudgetController {
       budget = budgetService.getBudgetForDate(new Date())
     }
 
+    // Update values before displaying the budget
+    budgetService.synchronizeBudget(budget)
+
     def budgetItems = budget.budgetItems.sort { it.category.name }
     def budgets = Budget.findAllByUser(springSecurityService.currentUser as User).sort { it.startDate }
     [budget: budget, categories: Category.list(), budgetItems: budgetItems, budgets: budgets]
@@ -42,21 +44,5 @@ class BudgetController {
     }
     response.status = HttpStatus.BAD_REQUEST.value()
     render([message: "This budget already has an item for the ${category} category."] as JSON)
-  }
-
-  def synchronize() {
-    def budget = Budget.get(params.budget)
-    budget.budgetItems.each { BudgetItem item ->
-      log.info("Looking up transactions for ${item.category}")
-      def transactions = Transaction.findAllBySubCategoryAndDateGreaterThanEqualsAndDateLessThanEqualsAndUser(item.category, budget.startDate, budget.endDate, springSecurityService.currentUser as User)
-      BigDecimal sum = 0
-      transactions.each { Transaction t ->
-        log.info("${item.category} - ${t.amountString}")
-        sum += t.amount
-      }
-      item.actualAmount = sum
-    }
-    budget.save(flush: true)
-    render budget as JSON
   }
 }

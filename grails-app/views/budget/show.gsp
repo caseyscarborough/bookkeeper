@@ -40,15 +40,6 @@
           });
         }
       });
-
-      $("#sync-budget").click(function() {
-        $(this).button('loading');
-        var id = $(this).attr("data-id");
-        var data = { budget: id };
-        postRequest("${createLink(controller: 'budget', action: 'synchronize')}", data, function() {
-          window.location.reload();
-        });
-      });
     });
   </script>
 </head>
@@ -61,10 +52,13 @@
     <div class="col-md-12">
       <div class="pull-left">
         <h1>${budget.startDate.format("MMMMM yyyy")}</h1>
-        <button id="sync-budget" class="btn btn-success" data-id="${budget.id}" data-loading-text="Synchronizing...">Synchronize</button>
+
+        Total Budget Allocation: $${budget.actualAmount} of $${budget.budgetedAmount}<br>
+        Net Budgeted Income: $${budget.netBudgetedIncome}<br>
+        Net Actual Income: $${budget.netActualIncome}
       </div>
 
-      <div class="pull-right">
+      <div class="pull-right form-inline">
         <div class="form-group">
           <label for="category">Add Category to Budget:</label>
           <select class="form-control" id="category">
@@ -87,22 +81,14 @@
         <div id="budget-error-message"></div>
       </div>
 
-      <div class="row">
-        <div class="col-md-12">
-          Total Budget Allocation: $${budget.actualAmount} of $${budget.budgetedAmount}<br>
-          Net Budgeted Income: $${budget.netBudgetedIncome}<br>
-          Net Actual Income: $${budget.netActualIncome}
-        </div>
-      </div>
-
       <g:each in="${budgetItems}" var="budgetItem">
         <div class="row" id="budget-item-${budgetItem.id}">
           <div class="col-md-12">
             <h3 class="pull-left">${budgetItem.category}</h3>
 
             <div class="pull-right budget-item-amounts">
-              $<span data-id="${budgetItem.id}">${budgetItem.actualAmount}</span> of
-            $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmount}</span>
+              $<span data-id="${budgetItem.id}">${budgetItem.actualAmountString}</span> of
+            $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmountString}</span>
               <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}" style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
               <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a> &middot;
               <a class="delete-budget-item tooltip-link" data-id="${budgetItem.id}" data-category="${budgetItem.category}"}>Delete</a>
@@ -113,7 +99,7 @@
               <div class="progress-bar progress-bar-${budgetItem.cssClass} progress-bar-striped" role="progressbar"
                    aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
                    aria-valuemax="100" style="width:${budgetItem.percentage > 100 ? 100 : budgetItem.percentage}%">
-                $${budgetItem.actualAmount} of $${budgetItem.budgetedAmount} (${budgetItem.percentage}%)
+                $${budgetItem.actualAmountString} of $${budgetItem.budgetedAmountString} (${budgetItem.percentage}%)
               </div>
             </div>
 

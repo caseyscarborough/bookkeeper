@@ -59,4 +59,17 @@ class BudgetService {
     newBudget.save(flush: true)
     return newBudget
   }
+
+  void synchronizeBudget(Budget budget) {
+    log.info("Synchronizing budget with ID: ${budget.id}")
+    budget.budgetItems.each { BudgetItem item ->
+      def transactions = Transaction.findAllBySubCategoryAndDateGreaterThanEqualsAndDateLessThanEqualsAndUser(item.category, budget.startDate, budget.endDate, springSecurityService.currentUser as User)
+      BigDecimal sum = 0
+      transactions.each { Transaction t ->
+        sum += t.amount
+      }
+      item.actualAmount = sum
+    }
+    budget.save(flush: true)
+  }
 }

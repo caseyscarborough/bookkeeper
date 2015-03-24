@@ -2,30 +2,54 @@
 <html>
 <head>
   <meta name="layout" content="main">
-  <title></title>
+  <title>Budget for ${budget.startDate.format("MMMMM yyyy")}</title>
   <script>
-    $(function() {
-      $("#add-category-button").click(function() {
-        $.ajax({
-          type: 'post',
-          url: "${createLink(controller: 'budget', action: 'addCategoryToBudget')}",
-          data: { id: $("#category").val() },
-          dataType: 'json',
-          success: function() {
-            window.location.reload();
-          }
+    $(function () {
+      $("#add-category-button").click(function () {
+        var data = {category: $("#category").val(), budget: $("#budget").val()};
+        postRequest("${createLink(controller: 'budget', action: 'addCategoryToBudget')}", data, function () {
+          window.location.reload();
+        });
+      });
+
+      $(".edit-budgeted-amount").click(function () {
+        var id = $(this).attr("data-id");
+        $("#budgeted-amount-" + id).hide();
+        $("#edit-budgeted-amount-" + id).show();
+      });
+
+      $(".edit-budgeted-amount-input").blur(function() {
+        var id = $(this).attr("data-id");
+        var amount = $(this).val();
+        var data = { id: id, amount: amount };
+
+        postRequest("${createLink(controller: 'budgetItem', action: 'update')}", data, function() {
+          window.location.reload();
+        });
+      });
+
+      $("#sync-budget").click(function() {
+        var id = $(this).attr("data-id");
+        var data = { budget: id };
+        postRequest("${createLink(controller: 'budget', action: 'synchronize')}", data, function() {
+          window.location.reload();
         });
       });
     });
   </script>
 </head>
+
 <body>
+<input type="hidden" id="budget" value="${budget.id}">
+
 <div id="content">
   <div class="row">
     <div class="col-md-12">
       <div class="pull-left">
         <h1>${budget.startDate.format("MMMMM yyyy")}</h1>
+        <button id="sync-budget" class="btn btn-success" data-id="${budget.id}">Synchronize</button>
       </div>
+
       <div class="pull-right">
         <div class="form-group">
           <label for="category">Add Category to Budget:</label>
@@ -33,7 +57,8 @@
             <g:each in="${categories}" var="category">
               <optgroup label="${category.name}">
                 <g:each in="${category.subcategories?.sort { it.name }}" var="subcategory">
-                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
+                  <option data-type="${subcategory.type}" value="${subcategory.id}" <g:if
+                      test="${subcategory.id.toString() == params.category}">selected</g:if>>${subcategory.name}</option>
                 </g:each>
               </optgroup>
             </g:each>
@@ -41,30 +66,27 @@
         </div>
         <button id="add-category-button" class="btn btn-primary">Add</button>
       </div>
+
       <div class="clearfix"></div>
 
       <g:each in="${budget.budgetItems}" var="budgetItem">
-        <h4>${budgetItem.category.name}</h4>
-        <table class="table table-condensed">
-          <thead>
-          <tr>
-            <th>Category</th>
-            <th>Budgeted Amount</th>
-            <th>Actual Amount</th>
-            <th>Net</th>
-          </tr>
-          </thead>
-          <tbody>
-          <g:each in="${budgetItem.items}" var="item">
-            <tr id="item-${item.id}">
-              <td>${item.category}</td>
-              <td>${item.budgetedAmount}</td>
-              <td>${item.actualAmount}</td>
-              <td>${item.budgetedAmount - item.actualAmount}</td>
-            </tr>
-          </g:each>
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col-md-12">
+            <h2>${budgetItem.category}</h2>
+
+            <div class="progress">
+              <div class="progress-bar progress-bar-${budgetItem.cssClass} progress-bar-striped" role="progressbar"
+                   aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
+                   aria-valuemax="100" style="width:${budgetItem.percentage}%">
+                <span class="sr-only"></span>
+              </div>
+            </div>
+            $<span data-id="${budgetItem.id}">${budgetItem.actualAmount}</span> of
+          $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmount}</span>
+            <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}" style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
+            <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}" title="Edit Budgeted Amount">Edit</a>
+          </div>
+        </div>
       </g:each>
     </div>
   </div>

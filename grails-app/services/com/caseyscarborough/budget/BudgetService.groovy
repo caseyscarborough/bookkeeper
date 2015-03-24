@@ -1,5 +1,6 @@
 package com.caseyscarborough.budget
 
+import com.caseyscarborough.budget.security.User
 import grails.transaction.Transactional
 
 @Transactional
@@ -8,7 +9,7 @@ class BudgetService {
   def springSecurityService
 
   def getBudgetForDate(Date date) {
-    def budget = Budget.findByStartDateLessThanAndEndDateGreaterThan(date, date)
+    def budget = Budget.findByStartDateLessThanAndEndDateGreaterThanAndUser(date, date, springSecurityService.currentUser as User)
 
     if (!budget) {
       budget = createBudget(date)
@@ -16,7 +17,7 @@ class BudgetService {
     return budget
   }
 
-  def createBudget(Date date) {
+  Budget createBudget(Date date) {
     def startCal = Calendar.instance
     startCal.setTime(date)
     startCal.set(Calendar.DAY_OF_MONTH, 1)
@@ -30,7 +31,7 @@ class BudgetService {
     endCal.add(Calendar.MONTH, 1)
     endCal.add(Calendar.MILLISECOND, -1)
 
-    def budget = new Budget(user: springSecurityService.currentUser, startDate: startCal.time, endDate: endCal.time)
+    def budget = new Budget(user: springSecurityService.currentUser as User, startDate: startCal.time, endDate: endCal.time, budgetItems: [])
     budget.save(flush: true)
     return budget
   }

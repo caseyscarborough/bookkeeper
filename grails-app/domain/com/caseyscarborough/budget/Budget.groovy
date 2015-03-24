@@ -13,16 +13,15 @@ class Budget {
   static constraints = {
   }
 
-  List getBudgetItems() {
-    def data = []
-    Category.all.each { Category c ->
-      def items = BudgetItem.where {
-        category.category == c && budget == this
-      }.get()
-      if (items?.count() > 0) {
-        data << [category: c, items: items]
-      }
+  static mapping = {
+    budgetItems cascade: 'all-delete-orphan'
+  }
+
+  Boolean hasBudgetItemForCategory(SubCategory subCategory) {
+    def budgetItems = BudgetItem.where {
+      budget == this && category == subCategory
     }
-    return data
+
+    budgetItems.size() > 0
   }
 }

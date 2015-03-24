@@ -33,7 +33,7 @@ class BudgetController {
     def category = SubCategory.get(params.category)
     def budget = Budget.get(params.budget)
 
-    if (!budget.hasBudgetItemForCategory(category)) {
+    if (budget.user == springSecurityService.currentUser && !budget.hasBudgetItemForCategory(category)) {
       def budgetItem = new BudgetItem(category: category, budget: budget)
       budgetItem.save(flush: true)
       render budget as JSON

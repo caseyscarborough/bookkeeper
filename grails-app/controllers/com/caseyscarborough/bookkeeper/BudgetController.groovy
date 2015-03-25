@@ -27,9 +27,9 @@ class BudgetController {
     // Update values before displaying the budget
     budgetService.synchronizeBudget(budget)
 
-    def budgetItems = budget.budgetItems.sort { it.category.name }
+    def budgetData = budgetService.getDataForBudget(budget)
     def budgets = Budget.findAllByUser(springSecurityService.currentUser as User).sort { it.startDate }
-    [budget: budget, categories: Category.list(), budgetItems: budgetItems, budgets: budgets]
+    [budget: budget, categories: Category.list(), budgetData: budgetData, budgets: budgets]
   }
 
   def addCategoryToBudget() {

@@ -34,13 +34,15 @@
         input.val(tmp);
       });
 
-      $(".edit-budgeted-amount-input").blur(function () {
+      var editAmountInput = $(".edit-budgeted-amount-input");
+
+      editAmountInput.blur(function () {
         var id = $(this).attr("data-id");
         var amount = $(this).val();
         updateBudgetItemAmount(id, amount);
       });
 
-      $(".edit-budgeted-amount-input").on('keypress', function (e) {
+      editAmountInput.on('keypress', function (e) {
         if (e.keyCode === 13) {
           var id = $(this).attr("data-id");
           var amount = $(this).val();
@@ -101,33 +103,55 @@
         <div id="budget-error-message"></div>
       </div>
 
-      <g:each in="${budgetItems}" var="budgetItem">
-        <div class="row" id="budget-item-${budgetItem.id}">
-          <div class="col-md-12">
-            <h3 class="pull-left">${budgetItem.category}</h3>
+      <g:each in="${budgetData}" var="data">
+        <hr>
+        <h2>${data.name}</h2>
 
-            <div class="pull-right budget-item-amounts">
-              $<span data-id="${budgetItem.id}">${budgetItem.actualAmountString}</span> of
-            $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmountString}</span>
-              <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}"
-                     style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
-              <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a> &middot;
-              <a class="delete-budget-item tooltip-link" data-id="${budgetItem.id}"
-                 data-category="${budgetItem.category}" }>Delete</a>
+        <g:each in="${data.items}" var="budgetItem">
+          <div class="row budget-item" id="budget-item-${budgetItem.id}">
+            <div class="col-md-12">
+              <span class="budget-item-title pull-left">${budgetItem.category}</span>
+
+              <div class="pull-right budget-item-amounts">
+                $<span data-id="${budgetItem.id}">${budgetItem.actualAmountString}</span> of
+              $<span id="budgeted-amount-${budgetItem.id}">${budgetItem.budgetedAmountString}</span>
+                <input id="edit-budgeted-amount-${budgetItem.id}" value="${budgetItem.budgetedAmount}"
+                       style="display:none" class="edit-budgeted-amount-input" data-id="${budgetItem.id}">
+                <a class="edit-budgeted-amount tooltip-link" data-id="${budgetItem.id}">Edit</a> &middot;
+                <a class="delete-budget-item tooltip-link" data-id="${budgetItem.id}"
+                   data-category="${budgetItem.category}" }>Delete</a>
+              </div>
+              <div class="clearfix"></div>
+
+              <div class="progress">
+                <div class="progress-bar progress-bar-${budgetItem.cssClass}" role="progressbar"
+                     aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
+                     aria-valuemax="100" style="width:${budgetItem.percentage > 100 ? 100 : budgetItem.percentage}%">
+                  $${budgetItem.actualAmountString} of $${budgetItem.budgetedAmountString} (${budgetItem.percentage}%)
+                </div>
+              </div>
             </div>
+          </div>
+        </g:each>
 
+        <div class="row budget-item">
+          <div class="col-md-12">
+            <span class="budget-item-title pull-left">Total for ${data.name}</span>
+            <div class="pull-right budget-item-amounts">
+              ${String.format("\$%.2f", data.actualAmount)} of ${String.format("\$%.2f", data.budgetedAmount)}
+            </div>
             <div class="clearfix"></div>
 
             <div class="progress">
-              <div class="progress-bar progress-bar-${budgetItem.cssClass} progress-bar-striped" role="progressbar"
-                   aria-valuenow="${budgetItem.percentage}" aria-valuemin="0"
-                   aria-valuemax="100" style="width:${budgetItem.percentage > 100 ? 100 : budgetItem.percentage}%">
-                $${budgetItem.actualAmountString} of $${budgetItem.budgetedAmountString} (${budgetItem.percentage}%)
+              <div class="progress-bar progress-bar-primary" role="progressbar"
+                   aria-valuenow="${data.percentage}" aria-valuemin="0"
+                   aria-valuemax="100" style="width:${data.percentage > 100 ? 100 : data.percentage}%">
+                ${String.format("\$%.2f", data.actualAmount)} of ${String.format("\$%.2f", data.budgetedAmount)} (${data.percentage}%)
               </div>
             </div>
-
           </div>
         </div>
+
       </g:each>
     </div>
   </div>

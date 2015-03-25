@@ -72,4 +72,26 @@ class BudgetService {
     }
     budget.save(flush: true)
   }
+
+  def getDataForBudget(Budget budget) {
+    def data = [:]
+    budget.budgetItems.each { BudgetItem b ->
+      if (!data."${b.category.category}") {
+        data."${b.category.category}" = []
+      }
+
+      data."${b.category.category}" << b
+    }
+
+    def output = []
+    data.each { name, items ->
+      items = items.sort { it.category.name }
+      def budgetedAmount = items*.budgetedAmount.sum() as BigDecimal
+      def actualAmount = items*.actualAmount.sum() as BigDecimal
+
+      def percentage = budgetedAmount == 0 as BigDecimal ? 0 : new BigDecimal((actualAmount / budgetedAmount) * 100).setScale(2, BigDecimal.ROUND_HALF_UP)
+      output << [name: name, items: items, budgetedAmount: budgetedAmount, actualAmount: actualAmount, percentage: percentage]
+    }
+    return output
+  }
 }

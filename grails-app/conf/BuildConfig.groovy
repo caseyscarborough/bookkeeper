@@ -39,8 +39,8 @@ grails.project.dependency.resolution = {
     build ":tomcat:8.0.20"
     compile ":scaffolding:2.1.2"
     compile ':cache:1.1.8'
-    compile ":asset-pipeline:2.1.4"
-    runtime ":hibernate4:4.3.6.1"
+    compile ":asset-pipeline:2.1.5"
+    runtime ":hibernate4:4.3.8.1"
     runtime ":database-migration:1.4.0"
     compile ":spring-security-core:2.0-RC4"
     compile ":csv:0.3.1"

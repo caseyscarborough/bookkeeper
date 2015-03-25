@@ -1,4 +1,4 @@
-# Budget Application
+# Bookkeeper
 
 This is a small Grails app that allows you to track and analyze your spending over time.
 
@@ -29,11 +29,11 @@ Features:
 Clone the repository, and rename the example DataSource.groovy file.
 
 ```bash
-git clone https://github.com/caseyscarborough/budget.git
+git clone https://github.com/caseyscarborough/bookkeeper.git
 mv grails-app/conf/DataSource.groovy.example grails-app/conf/DataSource.groovy
 ```
 
-Update your initial user information in [BootStrap.groovy](https://github.com/caseyscarborough/budget/blob/master/grails-app/conf/BootStrap.groovy#L14), then run one of the following from the root of the project:
+Update your initial user information in [BootStrap.groovy](https://github.com/caseyscarborough/bookkeeper/blob/master/grails-app/conf/BootStrap.groovy#L14), then run one of the following from the root of the project:
 
 ```bash
 # Windows
@@ -43,7 +43,7 @@ grailsw.bat run-app
 ./grailsw run-app
 ```
 
-For development, receipts are uploaded to the `/tmp` directory. If you want to use this application in production, you'll need to update your receipt storage location in [Config.groovy](https://github.com/caseyscarborough/budget/blob/master/grails-app/conf/Config.groovy#L154).
+For development, receipts are uploaded to the `/tmp` directory. If you want to use this application in production, you'll need to update your receipt storage location in [Config.groovy](https://github.com/caseyscarborough/bookkeeper/blob/master/grails-app/conf/Config.groovy#L154).
 
 ## Example Screenshots
 
@@ -51,12 +51,12 @@ For development, receipts are uploaded to the `/tmp` directory. If you want to u
 
 You can set a monthly budget that will start over every new month, and will stay up to date with your transactions.
 
-![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-budget.png)
+![](https://raw.githubusercontent.com/caseyscarborough/bookkeeper/master/grails-app/assets/images/example-budget.png)
 
 ### Graphs
 
 Graphs are provided to analyze your spending in multiple areas.
 
-![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-1.png)
+![](https://raw.githubusercontent.com/caseyscarborough/bookkeeper/master/grails-app/assets/images/example-1.png)
 
-![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-2.png)
+![](https://raw.githubusercontent.com/caseyscarborough/bookkeeper/master/grails-app/assets/images/example-2.png)

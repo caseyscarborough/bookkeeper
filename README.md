@@ -10,6 +10,7 @@ Features:
 * Receipt uploading with transactions
 * Searching through transactions by category, description, and account
 * Viewing account balance at time of transaction
+* Monthly budget creation that stays up to date with your transactions
 * Graphs and spending analysis:
   * Spending by day for the past year
   * Spending by category for the past year
@@ -45,6 +46,16 @@ grailsw.bat run-app
 For development, receipts are uploaded to the `/tmp` directory. If you want to use this application in production, you'll need to update your receipt storage location in [Config.groovy](https://github.com/caseyscarborough/budget/blob/master/grails-app/conf/Config.groovy#L154).
 
 ## Example Screenshots
+
+### Budget
+
+You can set a monthly budget that will start over every new month, and will stay up to date with your transactions.
+
+![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-budget.png)
+
+### Graphs
+
+Graphs are provided to analyze your spending in multiple areas.
 
 ![](https://raw.githubusercontent.com/caseyscarborough/budget/master/grails-app/assets/images/example-1.png)
 

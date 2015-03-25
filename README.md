@@ -29,7 +29,7 @@ Clone the repository, and rename the example DataSource.groovy file.
 
 ```bash
 git clone https://github.com/caseyscarborough/budget.git
-mv grails-app/conf/DataSource.example.groovy grails-app/conf/DataSource.groovy
+mv grails-app/conf/DataSource.groovy.example grails-app/conf/DataSource.groovy
 ```
 
 Update your initial user information in [BootStrap.groovy](https://github.com/caseyscarborough/budget/blob/master/grails-app/conf/BootStrap.groovy#L14), then run one of the following from the root of the project:

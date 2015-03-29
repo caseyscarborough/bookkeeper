@@ -18,6 +18,10 @@ class TransactionService {
   def receiptService
   def springSecurityService
 
+  static enum TransactionType {
+    CREATION, DELETION
+  }
+
   def createTransaction(String description, BigDecimal amount, Account fromAccount, Account toAccount, SubCategory subCategory, Date date, User user, CommonsMultipartFile receipt) {
     def transaction = new Transaction(description: description, amount: amount, fromAccount: fromAccount, toAccount: toAccount, subCategory: subCategory, date: date, user: user)
 
@@ -26,7 +30,7 @@ class TransactionService {
       throw new TransactionException(message: message, transaction: transaction)
     }
 
-    updateAccountBalance(transaction, false)
+    updateAccountBalance(transaction, TransactionType.CREATION)
 
     if (receipt) {
       receiptService.createReceipt(receipt, transaction)
@@ -46,7 +50,7 @@ class TransactionService {
     }
     // Subtract amount from original account and add to new account,
     // whether it be the same account or a different one.
-    updateAccountBalance(transaction, true)
+    updateAccountBalance(transaction, TransactionType.DELETION)
     transaction.description = description
     transaction.amount = amount
     transaction.fromAccount = fromAccount
@@ -55,7 +59,7 @@ class TransactionService {
     transaction.date = date
     transaction.save(flush: true)
     receiptService.updateReceipt(transaction)
-    updateAccountBalance(transaction, false)
+    updateAccountBalance(transaction, TransactionType.CREATION)
 
     if (receipt) {
       receiptService.createReceipt(receipt, transaction)
@@ -80,7 +84,7 @@ class TransactionService {
       receipt.delete(flush: true)
     }
     transaction.delete(flush: true)
-    updateAccountBalance(transaction, true)
+    updateAccountBalance(transaction, TransactionType.DELETION)
   }
 
   public synchronizeBalances() {
@@ -124,14 +128,15 @@ class TransactionService {
     }
   }
 
-  private void updateAccountBalance(Transaction transaction, Boolean deletion) {
+  private void updateAccountBalance(Transaction transaction, TransactionType type) {
     def amount = transaction.amount
-    if (deletion) {
-      amount = -amount
+
+    if (type == TransactionType.DELETION) {
+      amount *= -1
     }
 
     if (transaction.subCategory.type == CategoryType.CREDIT) {
-      amount = -amount
+      amount *= -1
     }
 
     if (transaction.subCategory.type == CategoryType.TRANSFER) {

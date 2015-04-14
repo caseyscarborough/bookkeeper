@@ -53,4 +53,22 @@ class Budget {
     }
     income
   }
+
+  String getNextMonthSlug() {
+    def cal = startDateCalendar
+    cal.add(Calendar.MONTH, 1)
+    cal.time.format("yyyyMM")
+  }
+
+  String getPrevMonthSlug() {
+    def cal = startDateCalendar
+    cal.add(Calendar.MONTH, -1)
+    cal.time.format("yyyyMM")
+  }
+
+  private Calendar getStartDateCalendar() {
+    def cal = Calendar.instance
+    cal.setTime(startDate)
+    cal
+  }
 }

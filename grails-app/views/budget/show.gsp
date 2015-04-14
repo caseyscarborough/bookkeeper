@@ -75,7 +75,9 @@
 
         Total Budget Allocation: $${budget.actualAmount} of $${budget.budgetedAmount}<br>
         Net Budgeted Income: $${budget.netBudgetedIncome}<br>
-        Net Actual Income: $${budget.netActualIncome}
+        Net Actual Income: $${budget.netActualIncome}<br>
+        <g:link controller="budget" action="show" params="[slug: budget.prevMonthSlug]">Previous Month</g:link> &middot;
+        <g:link controller="budget" action="show" params="[slug: budget.nextMonthSlug]">Next Month</g:link>
       </div>
 
       <div class="pull-right form-inline">

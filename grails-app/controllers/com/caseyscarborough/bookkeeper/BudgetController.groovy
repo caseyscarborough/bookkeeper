@@ -17,8 +17,7 @@ class BudgetController {
     if (slug) {
       budget = Budget.findBySlugAndUser(slug, springSecurityService.currentUser as User)
       if (!budget) {
-        response.sendError(404)
-        return
+        budget = budgetService.getBudgetForDate(Date.parse("yyyyMM", slug))
       }
     } else {
       budget = budgetService.getBudgetForDate(new Date())

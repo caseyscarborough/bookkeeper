@@ -162,7 +162,7 @@
     <div class="col-md-12">
       <hr>
 
-      <h3>Previous Budgets</h3>
+      <h3>Other Budgets</h3>
       <ul>
         <g:each in="${budgets}" var="previousBudget">
           <li><g:link controller="budget" action="show"

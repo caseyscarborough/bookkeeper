@@ -153,6 +153,10 @@ function createTransaction(data, success, error) {
     postRequestWithFileFormData(TRANSACTION_CREATE_URL, data, success, error);
 }
 
+function duplicateTransaction(id, success, error) {
+    postRequest(TRANSACTION_DUPLICATE_URL, {id: id}, success, error);
+}
+
 function createAccount(data, success, error) {
     postRequest(ACCOUNT_CREATE_URL, data, success, error);
 }

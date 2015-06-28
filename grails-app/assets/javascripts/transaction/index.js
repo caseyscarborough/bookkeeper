@@ -62,6 +62,15 @@ $(function () {
         });
     });
 
+    $(".transaction-duplicate").on('click', function () {
+        var id = $(this).attr("data-id");
+        duplicateTransaction(id, function () {
+            window.location.reload();
+        }, function (response) {
+            showErrorMessage("#transaction-error", response.responseJSON.message, null);
+        })
+    });
+
     updateToAccount();
     $("#subCategory").on('change', function () {
         updateToAccount();

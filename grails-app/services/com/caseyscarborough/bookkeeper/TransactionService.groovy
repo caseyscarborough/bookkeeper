@@ -87,6 +87,35 @@ class TransactionService {
     updateAccountBalance(transaction, TransactionType.DELETION)
   }
 
+  def duplicateTransaction(Long id) {
+    def transaction = Transaction.get(id)
+
+    if (!transaction) {
+      throw new TransactionException(message: "Could not find transaction with ID: ${id}")
+    }
+
+    if (transaction.user != springSecurityService.currentUser) {
+      throw new TransactionException(message: "Unauthorized")
+    }
+
+    def newTransaction = new Transaction(
+        description: transaction.description,
+        amount: transaction.amount,
+        date: new Date(),
+        fromAccount: transaction.fromAccount,
+        toAccount: transaction.toAccount,
+        subCategory: transaction.subCategory,
+        user: transaction.user)
+
+    if (!newTransaction.save(flush: true)) {
+      def message = messageSource.getMessage(newTransaction.errors.fieldError, Locale.default)
+      throw new TransactionException(message: message, transaction: newTransaction)
+    }
+
+    updateAccountBalance(newTransaction, TransactionType.CREATION)
+    return newTransaction
+  }
+
   public synchronizeBalances() {
     Account.findAllByUser(springSecurityService.currentUser).each { Account a ->
       log.info("Processing transactions for account ${a}")

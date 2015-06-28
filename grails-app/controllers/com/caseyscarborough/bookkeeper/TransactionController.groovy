@@ -99,6 +99,16 @@ class TransactionController {
     transactionService.exportTransactionsToExcel(transactions, response)
   }
 
+  def duplicate() {
+    try {
+      def transaction = transactionService.duplicateTransaction(params.id as Long)
+      render transaction as JSON
+    } catch (TransactionException e) {
+      response.status = HttpStatus.BAD_REQUEST.value()
+      render([message: e.message] as JSON)
+    }
+  }
+
   private getTransactionsForParameters(params) {
     def c = Transaction.createCriteria()
     def results = c.list(params) {

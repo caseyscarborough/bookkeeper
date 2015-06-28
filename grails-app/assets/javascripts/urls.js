@@ -14,3 +14,4 @@ var TRANSACTION_DELETE_URL = CONTEXT_PATH + "/transaction/delete";
 var TRANSACTION_UPDATE_URL = CONTEXT_PATH + "/transaction/update";
 var TRANSACTION_QUERY_URL = CONTEXT_PATH + "/transaction/queryDescription";
 var TRANSACTION_SYNC_URL = CONTEXT_PATH + "/transaction/synchronize";
+var TRANSACTION_DUPLICATE_URL = CONTEXT_PATH + "/transaction/duplicate";

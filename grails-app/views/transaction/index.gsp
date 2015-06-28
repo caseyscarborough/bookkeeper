@@ -159,7 +159,9 @@
                 </g:if>
               </td>
               <td>
-                <a title="Edit" class="tooltip-link transaction-edit" data-id="${transaction.id}"><i
+                  <a title="Duplicate" class="tooltip-link transaction-duplicate" data-id="${transaction.id}"><i class="glyphicon glyphicon-duplicate"></i></a>
+
+                  <a title="Edit" class="tooltip-link transaction-edit" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-pencil"></i></a>
                 <a title="Delete" class="tooltip-link transaction-delete" data-id="${transaction.id}"><i
                     class="glyphicon glyphicon-remove"></i></a>

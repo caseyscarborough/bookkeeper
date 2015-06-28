@@ -101,7 +101,7 @@ class TransactionController {
 
   def duplicate() {
     try {
-      def transaction = transactionService.duplicateTransaction(params.id as Long)
+      def transaction = transactionService.duplicateTransaction(params.id as Long, params.date)
       render transaction as JSON
     } catch (TransactionException e) {
       response.status = HttpStatus.BAD_REQUEST.value()

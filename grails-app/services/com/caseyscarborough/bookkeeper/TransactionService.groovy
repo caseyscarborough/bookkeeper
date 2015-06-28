@@ -6,6 +6,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile
 import pl.touk.excel.export.WebXlsxExporter
 
 import javax.servlet.http.HttpServletResponse
+import java.text.ParseException
 
 class TransactionException extends RuntimeException {
   String message
@@ -87,7 +88,7 @@ class TransactionService {
     updateAccountBalance(transaction, TransactionType.DELETION)
   }
 
-  def duplicateTransaction(Long id) {
+  def duplicateTransaction(Long id, String dateString) {
     def transaction = Transaction.get(id)
 
     if (!transaction) {
@@ -98,10 +99,17 @@ class TransactionService {
       throw new TransactionException(message: "Unauthorized")
     }
 
+    Date date
+    try {
+      date = Date.parse('MM/dd/yyyy', dateString)
+    } catch (ParseException e) {
+      throw new TransactionException("Date must be in the following format: 'MM/dd/yyyy")
+    }
+
     def newTransaction = new Transaction(
         description: transaction.description,
         amount: transaction.amount,
-        date: new Date(),
+        date: date,
         fromAccount: transaction.fromAccount,
         toAccount: transaction.toAccount,
         subCategory: transaction.subCategory,

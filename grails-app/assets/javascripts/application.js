@@ -42,6 +42,22 @@ function showErrorMessage(selector, message, field) {
     $(selector).show();
 }
 
+function getTodaysDate() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    return mm + '/' + dd + '/' + yyyy;
+}
+
 function getData(selector) {
     var data = {};
     $(selector).each(function () {
@@ -153,8 +169,8 @@ function createTransaction(data, success, error) {
     postRequestWithFileFormData(TRANSACTION_CREATE_URL, data, success, error);
 }
 
-function duplicateTransaction(id, success, error) {
-    postRequest(TRANSACTION_DUPLICATE_URL, {id: id}, success, error);
+function duplicateTransaction(data, success, error) {
+    postRequest(TRANSACTION_DUPLICATE_URL, data, success, error);
 }
 
 function createAccount(data, success, error) {

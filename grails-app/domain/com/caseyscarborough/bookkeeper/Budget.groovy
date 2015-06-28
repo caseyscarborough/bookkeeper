@@ -30,28 +30,28 @@ class Budget {
     budgetItems.size() > 0
   }
 
-  BigDecimal getBudgetedAmount() {
-    budgetItems*.budgetedAmount.sum()
+  String getBudgetedAmount() {
+    String.format("%.2f", budgetItems*.budgetedAmount.sum())
   }
 
-  BigDecimal getActualAmount() {
-    budgetItems*.actualAmount.sum()
+  String getActualAmount() {
+    String.format("%.2f", budgetItems*.actualAmount.sum())
   }
 
-  BigDecimal getNetBudgetedIncome() {
+  String getNetBudgetedIncome() {
     def income = 0
     budgetItems.each { BudgetItem b ->
       income += b.category.type == CategoryType.CREDIT ? b.budgetedAmount : -b.budgetedAmount
     }
-    income
+    String.format("%.2f", income)
   }
 
-  BigDecimal getNetActualIncome() {
+  String getNetActualIncome() {
     def income = 0
     budgetItems.each { BudgetItem b ->
       income += b.category.type == CategoryType.CREDIT ? b.actualAmount : -b.actualAmount
     }
-    income
+    String.format("%.2f", income)
   }
 
   String getNextMonthSlug() {

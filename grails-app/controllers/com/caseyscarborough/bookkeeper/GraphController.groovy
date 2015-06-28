@@ -100,8 +100,8 @@ class GraphController {
       def categoryTransactionsSum = getSumForDebitTransactions(categoryTransactions)
       if (categories.size() != i + 1) {
         if (categoryTransactionsSum > 0) {
-          categories << [drilldown: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", visible: true, y: ((categoryTransactionsSum / totalTransactionsSum) * 100)]
-          drilldown << [id: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${categoryTransactionsSum}", grandTotal: "\$${totalTransactionsSum}", data: []]
+          categories << [drilldown: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${String.format('%.2f', categoryTransactionsSum)}", grandTotal: "\$${String.format('%.2f', totalTransactionsSum)}", visible: true, y: ((categoryTransactionsSum / totalTransactionsSum) * 100)]
+          drilldown << [id: "${c.name} - ${startCal.time.format(MONTH_FORMAT)}", name: c.name, categoryTotal: "\$${String.format('%.2f', categoryTransactionsSum)}", grandTotal: "\$${String.format('%.2f', totalTransactionsSum)}", data: []]
         }
       }
 
@@ -110,7 +110,7 @@ class GraphController {
         def subCategoryTransactionsSum = getSumForDebitTransactions(subCategoryTransactions)
         if (subCategoryTransactionsSum > 0) {
           if (categoryTransactionsSum > 0) {
-            drilldown.last().data << [name: s.name, y: ((subCategoryTransactionsSum / categoryTransactionsSum) * 100), categoryTotal: "\$${subCategoryTransactionsSum}", grandTotal: "\$${categoryTransactionsSum}"]
+            drilldown.last().data << [name: s.name, y: ((subCategoryTransactionsSum / categoryTransactionsSum) * 100), categoryTotal: "\$${String.format('%.2f', subCategoryTransactionsSum)}", grandTotal: "\$${String.format('%.2f', categoryTransactionsSum)}"]
           }
         }
       }

@@ -119,7 +119,7 @@ class TransactionController {
         subCategory { eq('id', params.category as Long) }
       }
       if (params.description) {
-        like('description', "%${params.description}%")
+        ilike('description', "%${params.description}%")
       }
       eq('user', springSecurityService.currentUser)
     }

@@ -231,14 +231,15 @@ function getSpendingByCategory(data) {
                 style: {
                     fontWeight: 'bold',
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
+                },
+                format: '${total}'
             }
         },
         tooltip: {
             formatter: function () {
                 return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
+                    this.series.name + ': $' + this.y + '<br/>' +
+                    'Total: $' + this.point.stackTotal;
             }
         },
         plotOptions: {
@@ -246,6 +247,12 @@ function getSpendingByCategory(data) {
                 stacking: 'normal',
                 dataLabels: {
                     enabled: true,
+                    formatter: function () {
+                        if (this.y != 0) {
+                            return '$' + this.y;
+                        }
+                        return '';
+                    },
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
                     style: {
                         textShadow: '0 0 3px black'
@@ -260,7 +267,7 @@ function getSpendingByCategory(data) {
 function getAccountBalancesOverTime(data) {
     $('#accountBalancesOverTime').highcharts({
         title: {
-            text: 'Account Balances Over Time',
+            text: 'Account Balances Over Time'
         },
         subtitle: {
             text: document.ontouchstart === undefined ?
